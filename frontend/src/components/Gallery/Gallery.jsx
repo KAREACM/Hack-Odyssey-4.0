@@ -237,6 +237,7 @@ const Gallery = () => {
 
     return (
         <section
+            id="gallery"
             ref={galleryRef}
             className="gallery-section relative w-full bg-[#030206] text-[#f4efe7] overflow-hidden select-none z-10"
         >

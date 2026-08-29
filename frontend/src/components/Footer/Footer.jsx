@@ -170,8 +170,8 @@ const Footer = () => {
             <a href="#welcome">THE ODYSSEY</a>
             <a href="#prizepool">PRIZE POOL</a>
             <a href="#page3">OUR TEAM</a>
-            <a href="#activities">ACTIVITIES</a>
-            <a href="#feedback">FEEDBACK & FAQ</a>
+            <a href="#gallery">GALLERY</a>
+            <a href="#contact">CONTACT</a>
           </div>
         </div>
 

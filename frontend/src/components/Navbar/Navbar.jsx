@@ -15,7 +15,7 @@ const Navbar = () => {
     { name: "The Odyssey", href: "#welcome" },
     { name: "Prize Pool", href: "#prizepool" },
     { name: "Our Team", href: "#page3" },
-    { name: "Activities", href: "#activities" },
+    { name: "Gallery", href: "#gallery" },
     { name: "Register Now", href: "#prizepool" },
   ];
 
