@@ -2,9 +2,13 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import handTopLeft from "../../assets/preloader/hand-top-left.png";
-import handBottomRight from "../../assets/preloader/hand-bottom-right.png.png";
-import acmLogo from "../../assets/preloader/acm_logo.png";
+import handTopLeft from "../../assets/preloader/Hand Top Left Corner.png";
+import handBottomRight from "../../assets/preloader/Hand Bottom Right Corner.png";
+import kareAcmLogo from "../../assets/preloader/acm_logo.png";
+import acmWLogo from "../../assets/preloader/ACM-W_logo.png";
+import ieeeLogo from "../../assets/preloader/IEEE_logo.png";
+import gfgLogo from "../../assets/preloader/GFG LOGO.png";
+import heroBg from "../../assets/hero_section.png";
 import "./HackOdysseyPreloader.css";
 
 gsap.registerPlugin(MotionPathPlugin);
@@ -33,15 +37,41 @@ export default function HackOdysseyPreloader() {
   const energyPulseRef = useRef(null);
   const centralCoreRef = useRef(null);
 
-  // Central Identity Group Refs (Phases 5, 6 & 7)
-  const identityGroupRef = useRef(null);
-  const logoContainerRef = useRef(null);
-  const logoHaloRef = useRef(null);
-  const logoSweepRef = useRef(null);
-  const convergeParticlesRef = useRef([]);
+  // 4-Partner Collaboration Orbit Refs
+  const orbitSvgRef = useRef(null);
+  const orbitCircleRef = useRef(null);
 
-  // Presentation Text Refs
-  const eventTextGroupRef = useRef(null);
+  // 4 Organization Logo Wrappers & Halos
+  const kareLogoWrapperRef = useRef(null);
+  const acmWLogoWrapperRef = useRef(null);
+  const ieeeLogoWrapperRef = useRef(null);
+  const gfgLogoWrapperRef = useRef(null);
+
+  const kareHaloRef = useRef(null);
+  const acmWHaloRef = useRef(null);
+  const ieeeHaloRef = useRef(null);
+  const gfgHaloRef = useRef(null);
+
+  // Active Orbit Nodes
+  const nodeKareRef = useRef(null);
+  const nodeAcmWRef = useRef(null);
+  const nodeIeeeRef = useRef(null);
+  const nodeGfgRef = useRef(null);
+
+  // Central Collaboration Subtitle Group Refs
+  const centralContentRef = useRef(null);
+  const collabGroupRef = useRef(null);
+  const collabEyebrowRef = useRef(null);
+  const collabNameKareRef = useRef(null);
+  const collabNameGfgRef = useRef(null);
+  const collabNameAcmWRef = useRef(null);
+  const collabNameIeeeRef = useRef(null);
+  const collabSep1Ref = useRef(null);
+  const collabSep2Ref = useRef(null);
+  const collabSep3Ref = useRef(null);
+
+  // Event Presentation Text Refs
+  const eventTitleGroupRef = useRef(null);
   const presentsRef = useRef(null);
   const titleWrapRef = useRef(null);
   const wordHackRef = useRef(null);
@@ -55,11 +85,15 @@ export default function HackOdysseyPreloader() {
 
   const handAnchorARef = useRef(null);
   const handWrapperARef = useRef(null);
+  const handATipRef = useRef(null);
   const topLeftLightRef = useRef(null);
 
   const handAnchorBRef = useRef(null);
   const handWrapperBRef = useRef(null);
+  const handBTipRef = useRef(null);
   const bottomRightLightRef = useRef(null);
+
+  const contactPointRef = useRef(null);
 
   // Smooth dismiss handler to reveal the underlying website / Hero section
   const handleSkip = useCallback(() => {
@@ -103,21 +137,28 @@ export default function HackOdysseyPreloader() {
       const height = window.innerHeight;
       const isMobile = width < 768;
 
-      // Phase 2 intermediate convergence gap (~60-70px diagonal)
-      const p2GapX = isMobile ? 18 : 30;
-      const p2GapY = isMobile ? 10 : 17;
-
-      // Phase 3 anticipation gap (~3-5px diagonal)
-      const finalGapX = isMobile ? 1.4 : 2.2;
-      const finalGapY = isMobile ? 0.8 : 1.2;
-
       const cx = width * 0.5;
       const cy = height * 0.5;
 
-      const startAX = width * 0.12;
-      const startAY = height * 0.18;
-      const startBX = width * 0.88;
-      const startBY = height * 0.82;
+      // Collinear diagonal slope ensuring pure straight diagonal motion
+      const diagSlope = cy / cx;
+
+      // Phase 2 intermediate convergence gap along diagonal vector (~32px from center)
+      const p2GapX = isMobile ? 22 : 32;
+      const p2GapY = p2GapX * diagSlope;
+
+      // Phase 3 anticipation gap along diagonal vector (~2.2px from center)
+      const finalGapX = isMobile ? 1.5 : 2.2;
+      const finalGapY = finalGapX * diagSlope;
+
+      // Hand fingertip entry starting positions (straight diagonal from outside / corners)
+      const startDistX = isMobile ? width * 0.44 : width * 0.43;
+      const startDistY = startDistX * diagSlope;
+
+      const startAX = cx - startDistX;
+      const startAY = cy - startDistY;
+      const startBX = cx + startDistX;
+      const startBY = cy + startDistY;
 
       const p2TargetAX = cx - p2GapX;
       const p2TargetAY = cy - p2GapY;
@@ -129,982 +170,442 @@ export default function HackOdysseyPreloader() {
       const finalTargetBX = cx + finalGapX;
       const finalTargetBY = cy + finalGapY;
 
-      // Calculate exact resting coordinates & scale for KARE ACM Logo in the Navbar
-      const navLogoEl =
-        document.querySelector(".nav-logo img") ||
-        document.querySelector(".nav-logo");
+      const minDim = Math.min(width, height);
+      const orbitRadius = isMobile
+        ? Math.min(width * 0.38, height * 0.28, minDim * 0.32)
+        : Math.min(width * 0.38, height * 0.36, minDim * 0.34);
 
-      let targetScreenX = isMobile ? 44 : 76;
-      let targetScreenY = isMobile ? 36 : 46;
-      let targetScale = isMobile ? 0.28 : 0.24;
+      const posKare = { x: 0, y: -orbitRadius };
+      const posAcmW = { x: orbitRadius, y: 0 };
+      const posIeee = { x: 0, y: orbitRadius };
+      const posGfg = { x: -orbitRadius, y: 0 };
+      const orbitCircumference = 2 * Math.PI * orbitRadius;
 
-      if (navLogoEl) {
-        const rect = navLogoEl.getBoundingClientRect();
-        targetScreenX = rect.left + rect.width / 2;
-        targetScreenY = rect.top + rect.height / 2;
-        if (logoContainerRef.current) {
-          const currentWidth = logoContainerRef.current.offsetWidth || 160;
-          targetScale = rect.width / currentWidth;
-        }
-      }
-
-      // Delta translation from screen center (cx, cy) to navbar logo target
-      const navDeltaX = targetScreenX - cx;
-      const navDeltaY = targetScreenY - cy;
-
-      // Subtle organic curved trajectories for Hand A & Hand B (Phase 2)
-      const pathA = [
-        { x: startAX, y: startAY },
-        { x: width * 0.25, y: height * 0.29 },
-        { x: width * 0.38, y: height * 0.40 },
-        { x: p2TargetAX, y: p2TargetAY },
-      ];
-
-      const pathB = [
-        { x: startBX, y: startBY },
-        { x: width * 0.75, y: height * 0.71 },
-        { x: width * 0.62, y: height * 0.60 },
-        { x: p2TargetBX, y: p2TargetBY },
-      ];
-
-      // Single Master GSAP Timeline across all Phases 1 → 7
       const tl = gsap.timeline({
         defaults: { ease: "power2.out" },
-        onComplete: () => {
-          setIsComplete(true);
-        },
+        onComplete: () => setIsComplete(true),
       });
 
-      if (prefersReduced) {
-        // Instant accessible transition for reduced motion
-        tl.to(containerRef.current, {
-          opacity: 0,
-          duration: 0.3,
-          ease: "power1.out",
-          delay: 0.1,
-          onComplete: () => {
-            setIsComplete(true);
-          },
+      tl.set([
+          atmosphereRef.current, contactPointRef.current, anticipationGlowRef.current,
+          contactFlashRef.current, energyPulseRef.current, centralCoreRef.current,
+          ambientParticlesRef.current, contactParticlesRef.current, topLeftLightRef.current,
+          bottomRightLightRef.current, handWrapperARef.current, handWrapperBRef.current,
+          kareLogoWrapperRef.current, acmWLogoWrapperRef.current, ieeeLogoWrapperRef.current,
+          gfgLogoWrapperRef.current, kareHaloRef.current, acmWHaloRef.current,
+          ieeeHaloRef.current, gfgHaloRef.current, nodeKareRef.current,
+          nodeAcmWRef.current, nodeIeeeRef.current, nodeGfgRef.current,
+          orbitSvgRef.current, centralContentRef.current, collabGroupRef.current,
+          collabEyebrowRef.current, collabNameKareRef.current, collabNameGfgRef.current,
+          collabNameAcmWRef.current, collabNameIeeeRef.current, collabSep1Ref.current,
+          collabSep2Ref.current, collabSep3Ref.current, eventTitleGroupRef.current,
+          presentsRef.current, wordHackRef.current, wordOdysseyRef.current, versionRef.current,
+        ], { opacity: 0 });
+
+      if (skipBtnRef.current) tl.set(skipBtnRef.current, { opacity: 0 });
+
+      tl.set(kareLogoWrapperRef.current, { x: 0, y: 0, scale: 1.0 });
+      tl.set(acmWLogoWrapperRef.current, { x: posAcmW.x, y: posAcmW.y, scale: 0.85 });
+      tl.set(ieeeLogoWrapperRef.current, { x: posIeee.x, y: posIeee.y, scale: 0.88 });
+      tl.set(gfgLogoWrapperRef.current, { x: posGfg.x, y: posGfg.y, scale: 0.85 });
+      tl.set(nodeKareRef.current, { x: posKare.x, y: posKare.y, scale: 0.5 });
+      tl.set(nodeAcmWRef.current, { x: posAcmW.x, y: posAcmW.y, scale: 0.5 });
+      tl.set(nodeIeeeRef.current, { x: posIeee.x, y: posIeee.y, scale: 0.5 });
+      tl.set(nodeGfgRef.current, { x: posGfg.x, y: posGfg.y, scale: 0.5 });
+
+      if (orbitCircleRef.current) {
+        tl.set(orbitCircleRef.current, {
+          strokeDasharray: orbitCircumference,
+          strokeDashoffset: orbitCircumference,
         });
-        return;
       }
 
-      // ============================================================
-      // PHASE 1: 0.00s → 0.70s (The Opening Shot)
-      // ============================================================
-
-      // 0.00s — Initial deterministic state
-      tl.set(
-        [
-          atmosphereRef.current,
-          anticipationGlowRef.current,
-          contactFlashRef.current,
-          energyPulseRef.current,
-          centralCoreRef.current,
-          logoContainerRef.current,
-          logoHaloRef.current,
-          logoSweepRef.current,
-          presentsRef.current,
-          wordHackRef.current,
-          wordOdysseyRef.current,
-          versionRef.current,
-          ambientParticlesRef.current,
-          contactParticlesRef.current,
-          convergeParticlesRef.current,
-          topLeftLightRef.current,
-          bottomRightLightRef.current,
-          handWrapperARef.current,
-          handWrapperBRef.current,
-        ],
-        { opacity: 0 }
-      );
+      tl.set(contactPointRef.current, { opacity: 0.05, scale: 1.0 });
       tl.set(atmosphereRef.current, { scale: 0.92 });
       tl.set(anticipationGlowRef.current, { scale: 0.6 });
       tl.set(contactFlashRef.current, { scale: 0.4 });
       tl.set(energyPulseRef.current, { scale: 0.15 });
-      tl.set(centralCoreRef.current, { scale: 0.2 });
-      tl.set(identityGroupRef.current, { x: 0, y: 0 });
-      tl.set(logoContainerRef.current, {
-        scale: 0.88,
-        y: 0,
-        clipPath: "circle(0% at 50% 50%)",
-        filter: "blur(10px)",
-      });
-      tl.set(logoHaloRef.current, { scale: 0.7 });
-      tl.set(logoSweepRef.current, { x: "-140%" });
-      tl.set(eventTextGroupRef.current, { opacity: 1, scale: 1.0, y: 0 });
-      tl.set(presentsRef.current, { y: 28, opacity: 0 });
-      tl.set([wordHackRef.current, wordOdysseyRef.current], {
-        y: 60,
-        opacity: 0,
-      });
-      tl.set(versionRef.current, {
-        scale: 0.3,
-        y: 12,
-        opacity: 0,
-        rotation: -15,
-      });
-      tl.set([topLeftLightRef.current, bottomRightLightRef.current], {
-        scale: 0.6,
-      });
-
-      // Initial positions of fingertip anchors at distant coordinates
       tl.set(handAnchorARef.current, { x: startAX, y: startAY });
       tl.set(handAnchorBRef.current, { x: startBX, y: startBY });
+      tl.set([handWrapperARef.current, handWrapperBRef.current], { scale: 1.06, rotation: 0, filter: "blur(1.5px)" });
 
-      // Initial entry state of hand wrappers
-      tl.set(handWrapperARef.current, {
-        scale: 1.08,
-        rotation: 1.5,
-        filter: "blur(2px)",
-      });
-      tl.set(handWrapperBRef.current, {
-        scale: 1.08,
-        rotation: 8.5,
-        filter: "blur(2px)",
+      ambientParticlesRef.current.forEach((particle, idx) => {
+        if (!particle) return;
+        tl.to(particle, { opacity: 0.10, duration: 0.55, ease: "sine.inOut" }, 0.10 + idx * 0.04);
       });
 
-      // 0.10s — Ambient micro particles emerge faintly with staggered drift
-      tl.to(
-        ambientParticlesRef.current,
-        {
-          opacity: 0.12,
-          duration: 0.20,
-          ease: "power1.out",
-          stagger: 0.04,
-        },
-        0.10
-      );
+      tl.to(atmosphereRef.current, { opacity: 0.15, scale: 1.0, duration: 0.50, ease: "power2.out" }, 0.20);
+      tl.to(topLeftLightRef.current, { opacity: 0.55, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.25);
+      tl.to(bottomRightLightRef.current, { opacity: 0.55, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.40);
 
-      // 0.20s — Center dormant atmosphere develops with gentle breathing
-      tl.to(
-        atmosphereRef.current,
-        {
-          opacity: 0.18,
-          scale: 1.0,
-          duration: 0.40,
-          ease: "sine.out",
-        },
-        0.20
-      );
+      if (skipBtnRef.current) tl.to(skipBtnRef.current, { opacity: 0.85, duration: 0.60, ease: "power2.out" }, 0.80);
 
-      // 0.25s — Top-left light emerges at Hand A index fingertip location
-      tl.to(
-        topLeftLightRef.current,
-        {
-          opacity: 0.65,
-          scale: 1.0,
-          duration: 0.25,
-          ease: "power2.out",
-        },
-        0.25
-      );
+      // --- PHASE 1 & 2: Smooth Continuous Diagonal Glide & Deceleration (0.70s → 2.80s) ---
+      // Fade in Hand A & Hand B opacity cleanly alongside lights
+      tl.to(handWrapperARef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.70);
+      tl.to(handWrapperBRef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.75);
 
-      // 0.40s — Bottom-right light emerges at Hand B index fingertip location
-      tl.to(
-        bottomRightLightRef.current,
-        {
-          opacity: 0.65,
-          scale: 1.0,
-          duration: 0.25,
-          ease: "power2.out",
-        },
-        0.40
-      );
+      // Softness & Scale settling
+      tl.to([handWrapperARef.current, handWrapperBRef.current], { filter: "blur(0px)", scale: 1.0, duration: 1.20, ease: "power2.out" }, 0.75);
 
-      // ============================================================
-      // PHASE 2: 0.70s → 2.20s ("The Hands Discover Each Other")
-      // ============================================================
+      // Single continuous, fluid diagonal deceleration from corner directly to center touch (Zero stops, Zero stutter)
+      tl.to(handAnchorARef.current, { x: cx, y: cy, duration: 2.10, ease: "power3.out" }, 0.70);
+      tl.to(handAnchorBRef.current, { x: cx, y: cy, duration: 2.05, ease: "power3.out" }, 0.75);
 
-      // Hand A (Top-Left) Motion Path across curved arc (0.70s → 2.20s)
-      tl.to(
-        handAnchorARef.current,
-        {
-          motionPath: {
-            path: pathA,
-            curviness: 1.15,
-            autoRotate: false,
-          },
-          duration: 1.50,
-          ease: "power2.inOut",
-        },
-        0.70
-      );
+      // Contact point & anticipation glow ramp as hands approach center
+      tl.to(contactPointRef.current, { opacity: 0.25, duration: 0.80, ease: "power2.out" }, 1.40);
+      tl.to(contactPointRef.current, { opacity: 0.60, scale: 1.25, duration: 0.60, ease: "power2.out" }, 2.20);
+      tl.to(anticipationGlowRef.current, { opacity: 0.08, scale: 0.85, duration: 0.30, ease: "sine.inOut" }, 2.20);
+      tl.to(anticipationGlowRef.current, { opacity: 0.25, scale: 1.20, duration: 0.30, ease: "power2.out" }, 2.50);
+      tl.to(atmosphereRef.current, { opacity: 0.20, duration: 0.60, ease: "sine.inOut" }, 2.20);
+      tl.to([topLeftLightRef.current, bottomRightLightRef.current], { opacity: 0.85, scale: 1.10, duration: 0.60, ease: "sine.inOut" }, 2.20);
 
-      // Hand A Entrance, Opacity, Depth Scale, Rotation, and Softness Transition
-      tl.to(
-        handWrapperARef.current,
-        {
-          opacity: 0.75,
-          scale: 1.04,
-          rotation: 0.8,
-          duration: 0.30,
-          ease: "power2.out",
-        },
-        0.70
-      );
-      tl.to(
-        handWrapperARef.current,
-        {
-          opacity: 1.0,
-          scale: 1.01,
-          rotation: 0.2,
-          duration: 0.45,
-          ease: "power1.out",
-        },
-        1.00
-      );
-      tl.to(
-        handWrapperARef.current,
-        {
-          filter: "blur(0px)",
-          duration: 0.55,
-          ease: "power1.out",
-        },
-        1.00
-      );
-      tl.to(
-        handWrapperARef.current,
-        {
-          scale: 1.00,
-          rotation: 0,
-          duration: 0.75,
-          ease: "power2.out",
-        },
-        1.45
-      );
+      // --- PHASE 3: Exact Contact Moment (2.80s → 3.20s) ---
+      tl.to(contactPointRef.current, { opacity: 1.0, scale: 2.2, duration: 0.06, ease: "power2.out" }, 2.80);
+      tl.to(contactPointRef.current, { opacity: 0, duration: 0.12, ease: "power2.in" }, 2.86);
+      tl.to(anticipationGlowRef.current, { opacity: 0, scale: 0.3, duration: 0.04, ease: "power3.in" }, 2.82);
+      tl.to(contactFlashRef.current, { opacity: 1.0, scale: 0.90, duration: 0.03, ease: "power4.out" }, 2.86);
+      tl.to(contactFlashRef.current, { opacity: 0, scale: 1.25, duration: 0.03, ease: "power2.in" }, 2.89);
+      tl.to(energyPulseRef.current, { opacity: 0.75, scale: 0.70, duration: 0.10, ease: "power2.out" }, 2.88);
+      tl.to(energyPulseRef.current, { opacity: 0, scale: 0.85, duration: 0.08, ease: "power1.out" }, 2.98);
 
-      // Hand B (Bottom-Right) Motion Path with organic 50ms timing offset (0.75s → 2.20s)
-      tl.to(
-        handAnchorBRef.current,
-        {
-          motionPath: {
-            path: pathB,
-            curviness: 1.15,
-            autoRotate: false,
-          },
-          duration: 1.45,
-          ease: "power2.inOut",
-        },
-        0.75
-      );
-
-      // Hand B Entrance, Opacity, Depth Scale, Rotation, and Softness Transition
-      tl.to(
-        handWrapperBRef.current,
-        {
-          opacity: 0.75,
-          scale: 1.04,
-          rotation: 9.0,
-          duration: 0.30,
-          ease: "power2.out",
-        },
-        0.75
-      );
-      tl.to(
-        handWrapperBRef.current,
-        {
-          opacity: 1.0,
-          scale: 1.01,
-          rotation: 9.6,
-          duration: 0.45,
-          ease: "power1.out",
-        },
-        1.05
-      );
-      tl.to(
-        handWrapperBRef.current,
-        {
-          filter: "blur(0px)",
-          duration: 0.55,
-          ease: "power1.out",
-        },
-        1.05
-      );
-      tl.to(
-        handWrapperBRef.current,
-        {
-          scale: 1.00,
-          rotation: 10.0,
-          duration: 0.70,
-          ease: "power2.out",
-        },
-        1.50
-      );
-
-      // Refine fingertip lights during Phase 2 convergence
-      tl.to(
-        [topLeftLightRef.current, bottomRightLightRef.current],
-        {
-          scale: 0.85,
-          opacity: 0.50,
-          duration: 0.75,
-          ease: "power2.out",
-        },
-        1.45
-      );
-
-      // ============================================================
-      // PHASE 3: 2.20s → 2.80s ("The Hands Slow Down / Anticipation")
-      // ============================================================
-
-      // Hand A Deceleration into ~3–5px separation
-      tl.to(
-        handAnchorARef.current,
-        {
-          x: finalTargetAX,
-          y: finalTargetAY,
-          duration: 0.60,
-          ease: "power3.out",
-        },
-        2.20
-      );
-
-      // Hand B Deceleration into ~3–5px separation
-      tl.to(
-        handAnchorBRef.current,
-        {
-          x: finalTargetBX,
-          y: finalTargetBY,
-          duration: 0.60,
-          ease: "power3.out",
-        },
-        2.20
-      );
-
-      // Anticipation Glow — Enhanced pulsing tension between closing fingertips
-      tl.to(
-        anticipationGlowRef.current,
-        {
-          opacity: 0.22,
-          scale: 1.25,
-          duration: 0.60,
-          ease: "power2.out",
-        },
-        2.20
-      );
-
-      // Subtle Center Atmosphere breath as tension peaks
-      tl.to(
-        atmosphereRef.current,
-        {
-          opacity: 0.22,
-          scale: 1.02,
-          duration: 0.60,
-          ease: "sine.out",
-        },
-        2.20
-      );
-
-      // Fingertip lights steady glow at the closing gap — brighter for tension
-      tl.to(
-        [topLeftLightRef.current, bottomRightLightRef.current],
-        {
-          scale: 1.0,
-          opacity: 0.75,
-          duration: 0.60,
-          ease: "power2.out",
-        },
-        2.20
-      );
-
-      // Microscopic depth stabilization
-      tl.to(
-        [handWrapperARef.current, handWrapperBRef.current],
-        {
-          scale: 0.995,
-          duration: 0.60,
-          ease: "power2.out",
-        },
-        2.20
-      );
-
-      // ============================================================
-      // PHASE 4: 2.80s → 3.20s ("Fingertip Contact / Energy Ignition")
-      // ============================================================
-
-      // 2.80s → 2.86s: Final micro movement (3–5px → 0px) to exact contact point (cx, cy)
-      tl.to(
-        handAnchorARef.current,
-        {
-          x: cx,
-          y: cy,
-          duration: 0.06,
-          ease: "power4.out",
-        },
-        2.80
-      );
-
-      tl.to(
-        handAnchorBRef.current,
-        {
-          x: cx,
-          y: cy,
-          duration: 0.06,
-          ease: "power4.out",
-        },
-        2.80
-      );
-
-      // 2.86s: Fade anticipation glow at contact
-      tl.to(
-        anticipationGlowRef.current,
-        {
-          opacity: 0,
-          scale: 1.6,
-          duration: 0.04,
-          ease: "power1.out",
-        },
-        2.86
-      );
-
-      // 2.86s → 2.92s: Micro White Contact Flash (60ms) — Enhanced with larger bloom
-      tl.to(
-        contactFlashRef.current,
-        {
-          opacity: 1,
-          scale: 1.2,
-          duration: 0.04,
-          ease: "power2.out",
-        },
-        2.86
-      );
-      tl.to(
-        contactFlashRef.current,
-        {
-          opacity: 0,
-          scale: 0.6,
-          duration: 0.04,
-          ease: "power2.in",
-        },
-        2.90
-      );
-
-      // 2.86s → 2.94s: Microscopic tactile hand response (consequence of contact)
-      tl.to(
-        [handWrapperARef.current, handWrapperBRef.current],
-        {
-          scale: 1.008,
-          duration: 0.05,
-          ease: "power2.out",
-        },
-        2.86
-      );
-      tl.to(
-        [handWrapperARef.current, handWrapperBRef.current],
-        {
-          scale: 1.000,
-          duration: 0.05,
-          ease: "power2.in",
-        },
-        2.91
-      );
-
-      // 2.86s → 3.04s: Fingertip lights flare to near-white and settle into violet glow
-      tl.to(
-        [topLeftLightRef.current, bottomRightLightRef.current],
-        {
-          opacity: 1.0,
-          scale: 1.5,
-          duration: 0.05,
-          ease: "power2.out",
-        },
-        2.86
-      );
-      tl.to(
-        [topLeftLightRef.current, bottomRightLightRef.current],
-        {
-          opacity: 0.70,
-          scale: 1.00,
-          duration: 0.14,
-          ease: "power2.out",
-        },
-        2.91
-      );
-
-      // 2.86s → 3.04s: Center atmosphere brief expansion — Enhanced pulse
-      tl.to(
-        atmosphereRef.current,
-        {
-          opacity: 0.32,
-          scale: 1.06,
-          duration: 0.10,
-          ease: "sine.out",
-        },
-        2.86
-      );
-      tl.to(
-        atmosphereRef.current,
-        {
-          opacity: 0.18,
-          scale: 1.0,
-          duration: 0.20,
-          ease: "sine.inOut",
-        },
-        2.96
-      );
-
-      // 2.88s → 3.06s: Controlled Radial Energy Pulse Expansion — Enhanced scale
-      tl.to(
-        energyPulseRef.current,
-        {
-          opacity: 0.50,
-          scale: 0.90,
-          duration: 0.12,
-          ease: "power2.out",
-        },
-        2.88
-      );
-      tl.to(
-        energyPulseRef.current,
-        {
-          opacity: 0.40,
-          scale: 1.05,
-          duration: 0.10,
-          ease: "power1.out",
-        },
-        3.00
-      );
-
-      // 2.92s → 3.12s: 18 Localized Energy Particles Dispersion — Enhanced radius & trails
       contactParticlesRef.current.forEach((particle, idx) => {
         if (!particle) return;
         const angle = (idx / 18) * Math.PI * 2 + (idx % 3) * 0.2;
-        const dist = 28 + (idx % 5) * 6;
-        const tx = Math.cos(angle) * dist;
-        const ty = Math.sin(angle) * dist;
-        tl.fromTo(
-          particle,
-          { x: 0, y: 0, opacity: 0.85, scale: 0.9 },
-          {
-            x: tx,
-            y: ty,
-            opacity: 0,
-            scale: 1.4,
-            duration: 0.24,
-            ease: "power2.out",
-          },
-          2.92 + (idx % 4) * 0.012
-        );
+        const dist = 20 + (idx % 5) * 4;
+        tl.fromTo(particle, { x: 0, y: 0, opacity: 0.85, scale: 0.8 }, { x: Math.cos(angle) * dist, y: Math.sin(angle) * dist, opacity: 0, scale: 1.2, duration: 0.20, ease: "power2.out" }, 2.92 + (idx % 4) * 0.01);
       });
 
-      // 3.06s → 3.16s: Energy Pulse Inward Contraction
-      tl.to(
-        energyPulseRef.current,
-        {
-          scale: 0.15,
-          opacity: 0,
-          duration: 0.10,
-          ease: "power2.in",
-        },
-        3.06
-      );
-
-      // 3.15s → 3.20s: Tiny Central Energy Core (✦) Condenses and Stabilizes — Enhanced brightness
-      tl.to(
-        centralCoreRef.current,
-        {
-          opacity: 1.0,
-          scale: 1.0,
-          duration: 0.05,
-          ease: "power2.out",
-        },
-        3.15
-      );
+      tl.to(centralCoreRef.current, { opacity: 1.0, scale: 1.0, duration: 0.05, ease: "power2.out" }, 3.15);
 
       // ============================================================
-      // PHASE 5: 3.20s → 3.85s ("KARE ACM Identity Formation")
+      // 4-PARTNER COLLABORATION ORBIT TIMELINE (WITH LABELS)
       // ============================================================
 
-      // 3.20s → 3.32s: Central Energy Core blossoms to seed the logo — Enhanced expansion
-      tl.to(
-        centralCoreRef.current,
-        {
-          scale: 2.2,
-          opacity: 0.6,
-          duration: 0.14,
-          ease: "power2.out",
-        },
-        3.20
+      tl.addLabel("identityStart", 3.20);
+      tl.addLabel("kareReveal", "identityStart+=0.08");
+      tl.addLabel("kareMove", "kareReveal+=0.48");
+      tl.addLabel("orbitStart", "kareMove+=0.44");
+      tl.addLabel("acmWReveal", "orbitStart+=0.00");
+      tl.addLabel("ieeeReveal", "acmWReveal+=0.45");
+      tl.addLabel("gfgReveal", "ieeeReveal+=0.45");
+      tl.addLabel("orbitComplete", "gfgReveal+=0.45");
+      tl.addLabel("collaborationComplete", "orbitComplete+=0.25");
+      tl.addLabel("presentsReveal", "collaborationComplete+=0.25");
+      tl.addLabel("titleReveal", "presentsReveal+=0.20");
+
+      // Step 1: Energy Bloom & Hands Fade
+      tl.to([handWrapperARef.current, handWrapperBRef.current, topLeftLightRef.current, bottomRightLightRef.current], {
+        opacity: 0,
+        duration: 0.25,
+        ease: "power2.out",
+      }, "identityStart");
+
+      tl.to(centralCoreRef.current, {
+        scale: 1.6,
+        opacity: 1.0,
+        duration: 0.12,
+        ease: "sine.out",
+      }, "identityStart");
+
+      // Step 2: KARE ACM Large Center Reveal
+      tl.fromTo(kareLogoWrapperRef.current,
+        { opacity: 0, scale: 1.15, x: 0, y: 0 },
+        { opacity: 1.0, scale: 1.40, x: 0, y: 0, duration: 0.34, ease: "power3.out" },
+        "kareReveal"
+      );
+      tl.fromTo(kareHaloRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 0.18, scale: 1.1, duration: 0.34, ease: "power2.out" },
+        "kareReveal"
       );
 
-      // 3.20s → 3.34s: 14 Particles Converge Inward toward Center Core — Enhanced luminosity
-      convergeParticlesRef.current.forEach((particle, idx) => {
-        if (!particle) return;
-        const angle = (idx / 14) * Math.PI * 2 + (idx % 4) * 0.3;
-        const dist = 56 + (idx % 4) * 14;
-        const startX = Math.cos(angle) * dist;
-        const startY = Math.sin(angle) * dist;
-        tl.fromTo(
-          particle,
-          { x: startX, y: startY, opacity: 0, scale: 0.7 },
-          {
-            x: 0,
-            y: 0,
-            opacity: 0.9,
-            scale: 1.2,
-            duration: 0.16,
-            ease: "power2.in",
-            onComplete: () => {
-              gsap.set(particle, { opacity: 0 });
-            },
-          },
-          3.20 + (idx % 3) * 0.01
-        );
-      });
+      // Step 3: Recognition Hold happens naturally between kareReveal end and kareMove
 
-      // 3.28s → 3.72s: KARE ACM Logo Materializes from Central Spark — Enhanced radial clip reveal
-      tl.to(
-        logoContainerRef.current,
-        {
-          opacity: 1.0,
-          scale: 1.0,
-          clipPath: "circle(100% at 50% 50%)",
-          filter: "blur(0px)",
-          duration: 0.44,
-          ease: "power3.out",
-        },
-        3.28
+      // Step 4 & 5: KARE ACM Moves UP + Scales Down Simultaneously in ONE Tween
+      tl.to(kareLogoWrapperRef.current, {
+        x: posKare.x,
+        y: posKare.y,
+        scale: 1.00,
+        duration: 0.44,
+        ease: "power3.inOut",
+      }, "kareMove");
+
+      tl.to(centralCoreRef.current, {
+        opacity: 0,
+        scale: 0.4,
+        duration: 0.26,
+        ease: "power2.in",
+      }, "kareMove");
+
+      tl.to(kareHaloRef.current, {
+        opacity: 0.08,
+        scale: 0.9,
+        duration: 0.44,
+        ease: "power3.inOut",
+      }, "kareMove");
+
+      // Step 7: Settle at Top Anchor (-90°)
+      tl.to(kareLogoWrapperRef.current, {
+        scale: 1.02,
+        duration: 0.18,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: 1,
+      }, "kareMove+=0.42");
+
+      // Step 8–11: Circular SVG Orbit Begins at 3 o'clock (0° / Right)
+      tl.set(orbitSvgRef.current, { opacity: 1 }, "orbitStart");
+      tl.fromTo(orbitCircleRef.current,
+        { strokeDashoffset: orbitCircumference },
+        { strokeDashoffset: 0, duration: 1.35, ease: "power2.inOut" },
+        "orbitStart"
       );
 
-      // 3.32s → 3.76s: Subtle Ambient Halo blooms behind the Logo — Enhanced visibility
-      tl.to(
-        logoHaloRef.current,
-        {
-          opacity: 0.28,
-          scale: 1.05,
-          duration: 0.44,
-          ease: "power2.out",
-        },
-        3.32
+      // Step 12 & 13: ACM-W Reveal at 0° (Right) + Text Synchronization
+      tl.fromTo(nodeAcmWRef.current,
+        { opacity: 0, scale: 0.4 },
+        { opacity: 0.90, scale: 1.3, duration: 0.15, ease: "power2.out" },
+        "acmWReveal"
+      );
+      tl.to(nodeAcmWRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "acmWReveal+=0.15");
+
+      tl.fromTo(acmWLogoWrapperRef.current,
+        { opacity: 0, scale: 0.88 },
+        { opacity: 1.0, scale: 1.00, duration: 0.28, ease: "power3.out" },
+        "acmWReveal"
+      );
+      tl.fromTo(acmWHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.28 }, "acmWReveal");
+
+      // Reveal ACM-W text fragment
+      tl.set(centralContentRef.current, { opacity: 1 }, "acmWReveal");
+      tl.set(collabGroupRef.current, { opacity: 1 }, "acmWReveal");
+      tl.fromTo(collabNameAcmWRef.current,
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+        "acmWReveal+=0.04"
       );
 
-      // 3.55s → 3.78s: Hands gently dissolve into surrounding darkness
-      tl.to(
-        [
-          handWrapperARef.current,
-          handWrapperBRef.current,
-          topLeftLightRef.current,
-          bottomRightLightRef.current,
-        ],
-        {
-          opacity: 0,
-          duration: 0.25,
-          ease: "power2.out",
-        },
-        3.55
+      // Step 14–16: Orbit Reaches 90° (Bottom / IEEE) + Text Synchronization
+      tl.fromTo(nodeIeeeRef.current,
+        { opacity: 0, scale: 0.4 },
+        { opacity: 0.90, scale: 1.3, duration: 0.15, ease: "power2.out" },
+        "ieeeReveal"
+      );
+      tl.to(nodeIeeeRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "ieeeReveal+=0.15");
+
+      tl.fromTo(ieeeLogoWrapperRef.current,
+        { opacity: 0, scale: 0.90 },
+        { opacity: 1.0, scale: 1.00, duration: 0.28, ease: "power3.out" },
+        "ieeeReveal"
+      );
+      tl.fromTo(ieeeHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.28 }, "ieeeReveal");
+
+      tl.fromTo([collabSep3Ref.current, collabNameIeeeRef.current],
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+        "ieeeReveal+=0.04"
       );
 
-      // 3.55s → 3.78s: Energy Core softens into background halo behind logo
-      tl.to(
-        centralCoreRef.current,
-        {
-          scale: 0.4,
-          opacity: 0.06,
-          duration: 0.25,
-          ease: "power3.inOut",
-        },
-        3.55
+      // Step 17 & 18: Orbit Reaches 180° (Left / GFG) + Text Synchronization
+      tl.fromTo(nodeGfgRef.current,
+        { opacity: 0, scale: 0.4 },
+        { opacity: 0.90, scale: 1.3, duration: 0.15, ease: "power2.out" },
+        "gfgReveal"
+      );
+      tl.to(nodeGfgRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "gfgReveal+=0.15");
+
+      tl.fromTo(gfgLogoWrapperRef.current,
+        { opacity: 0, scale: 0.88 },
+        { opacity: 1.0, scale: 1.00, duration: 0.28, ease: "power3.out" },
+        "gfgReveal"
+      );
+      tl.fromTo(gfgHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.28 }, "gfgReveal");
+
+      tl.fromTo([collabSep2Ref.current, collabNameGfgRef.current],
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+        "gfgReveal+=0.04"
       );
 
-      // 3.68s → 3.84s: Single Delicate Light Sweep passes across Logo — Enhanced sweep
-      tl.fromTo(
-        logoSweepRef.current,
-        { x: "-140%", opacity: 0.55 },
-        {
-          x: "140%",
-          opacity: 0,
-          duration: 0.20,
-          ease: "power2.inOut",
-        },
-        3.68
+      // Step 19: Orbit Closes at 270° (Top / KARE ACM) + Full Collaboration Settle
+      tl.fromTo(nodeKareRef.current,
+        { opacity: 0, scale: 0.4 },
+        { opacity: 0.90, scale: 1.3, duration: 0.15, ease: "power2.out" },
+        "orbitComplete"
+      );
+      tl.to(nodeKareRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "orbitComplete+=0.15");
+
+      tl.fromTo([collabNameKareRef.current, collabSep1Ref.current],
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+        "orbitComplete+=0.04"
+      );
+      tl.fromTo(collabEyebrowRef.current,
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" },
+        "orbitComplete+=0.08"
       );
 
-      // 3.85s — KARE ACM Logo becomes stable at center
-
-      // ============================================================
-      // PHASE 6: 3.85s → 4.55s ("ACM Logo → Presents HackOdyssey 4.0")
-      // ============================================================
-
-      const logoOffsetY = isMobile ? -18 : -26;
-
-      // 3.90s → 4.18s: KARE ACM Logo shifts upward & scales slightly (anchor on top)
-      tl.to(
-        logoContainerRef.current,
-        {
-          scale: 0.88,
-          y: logoOffsetY,
-          duration: 0.30,
-          ease: "power3.inOut",
-        },
-        3.90
+      // Step 23: PRESENTS Reveal
+      tl.set(eventTitleGroupRef.current, { opacity: 1 }, "presentsReveal");
+      tl.fromTo(presentsRef.current,
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" },
+        "presentsReveal"
       );
 
-      tl.to(
-        logoHaloRef.current,
-        {
-          scale: 0.75,
-          opacity: 0.16,
-          duration: 0.30,
-          ease: "power3.inOut",
-        },
-        3.90
+      // Step 24: HACK ODYSSEY Reveal
+      tl.fromTo([wordHackRef.current, wordOdysseyRef.current],
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.38, ease: "power3.out" },
+        "titleReveal"
       );
 
-      // 3.95s → 4.23s: "PRESENTS" Eyebrow begins appearing via masked reveal — Enhanced slide
-      tl.to(
-        presentsRef.current,
-        {
-          y: 0,
-          opacity: 1.0,
-          duration: 0.32,
-          ease: "power3.out",
-        },
-        3.95
+      // Step 25: 4.0 Badge Reveal
+      tl.fromTo(versionRef.current,
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1, scale: 1.0, duration: 0.26, ease: "back.out(1.8)" },
+        "titleReveal+=0.12"
       );
 
-      // 4.08s → 4.50s: "HACK" word-level masked upward reveal — Enhanced timing
-      tl.to(
-        wordHackRef.current,
-        {
-          y: 0,
-          opacity: 1.0,
-          duration: 0.44,
-          ease: "power3.out",
-        },
-        4.06
-      );
-
-      // 4.12s → 4.54s: "ODYSSEY" word-level masked upward reveal
-      tl.to(
-        wordOdysseyRef.current,
-        {
-          y: 0,
-          opacity: 1.0,
-          duration: 0.44,
-          ease: "power3.out",
-        },
-        4.12
-      );
-
-      // 4.26s → 4.58s: Circled "4.0" Exponent Badge pops into place — Enhanced bounce & rotation
-      tl.to(
-        versionRef.current,
-        {
-          scale: 1.0,
-          y: 0,
-          rotation: 0,
-          opacity: 1.0,
-          duration: 0.34,
-          ease: "back.out(2.0)",
-        },
-        4.26
-      );
-
-      // 4.48s → 4.58s: Badge settle micro-bounce for polish
-      tl.to(
-        versionRef.current,
-        {
-          scale: 1.05,
-          duration: 0.06,
-          ease: "power1.out",
-        },
-        4.48
-      );
-      tl.to(
-        versionRef.current,
-        {
-          scale: 1.0,
-          duration: 0.08,
-          ease: "power2.inOut",
-        },
-        4.54
-      );
-
-      // 4.45s → 4.65s: Complete identity holds calmly: [KARE ACM LOGO] / PRESENTS / HACK ODYSSEY ⁴˙⁰
-
-      // ============================================================
-      // PHASE 7: 4.65s → 5.30s ("Cinematic Outro — Logo to Navbar")
-      // ============================================================
-
-      // 4.65s → 4.85s: Event presentation text gently dissolves downward — Enhanced with blur
-      tl.to(
-        eventTextGroupRef.current,
-        {
-          opacity: 0,
-          y: 20,
-          scale: 0.94,
-          filter: "blur(4px)",
-          duration: 0.22,
-          ease: "power2.in",
-        },
-        4.65
-      );
-
-      // 4.65s: Fade out temporary skip button
+      // Outro & Dissolve
       if (skipBtnRef.current) {
-        tl.to(
-          skipBtnRef.current,
-          {
-            opacity: 0,
-            duration: 0.15,
-            ease: "power2.in",
-          },
-          4.65
-        );
+        tl.to(skipBtnRef.current, { opacity: 0, duration: 0.20, ease: "power2.in" }, "titleReveal+=0.90");
       }
+      tl.to(containerRef.current, { opacity: 0, duration: 0.45, ease: "power2.inOut" }, "titleReveal+=1.05");
 
-      // 4.70s → 5.25s: KARE ACM Logo glides smoothly from center to Navbar Logo position
-      tl.to(
-        identityGroupRef.current,
-        {
-          x: navDeltaX,
-          y: navDeltaY,
-          duration: 0.55,
-          ease: "power3.inOut",
-        },
-        4.70
-      );
-
-      tl.to(
-        logoContainerRef.current,
-        {
-          scale: targetScale,
-          y: 0,
-          duration: 0.55,
-          ease: "power3.inOut",
-        },
-        4.70
-      );
-
-      // Halo behind logo fades away during flight
-      tl.to(
-        logoHaloRef.current,
-        {
-          opacity: 0,
-          scale: 0.25,
-          duration: 0.35,
-          ease: "power2.in",
-        },
-        4.70
-      );
-
-      // 4.80s → 5.25s: Preloader dark overlay smoothly dissolves away to reveal the Hero section
-      tl.to(
-        containerRef.current,
-        {
-          opacity: 0,
-          duration: 0.45,
-          ease: "power2.inOut",
-        },
-        4.80
-      );
-
-      // 5.30s — Preloader unmounts completely, website is 100% interactive.
     },
     { scope: containerRef, dependencies: [isSkipped, isComplete] }
   );
 
   if (isComplete || isSkipped) return null;
 
-  const addAmbientParticleRef = (el) => {
-    if (el && !ambientParticlesRef.current.includes(el)) {
-      ambientParticlesRef.current.push(el);
-    }
-  };
-
-  const addContactParticleRef = (el) => {
-    if (el && !contactParticlesRef.current.includes(el)) {
-      contactParticlesRef.current.push(el);
-    }
-  };
-
-  const addConvergeParticleRef = (el) => {
-    if (el && !convergeParticlesRef.current.includes(el)) {
-      convergeParticlesRef.current.push(el);
-    }
-  };
+  const addAmbientParticleRef = (el) => { if (el && !ambientParticlesRef.current.includes(el)) ambientParticlesRef.current.push(el); };
+  const addContactParticleRef = (el) => { if (el && !contactParticlesRef.current.includes(el)) contactParticlesRef.current.push(el); };
 
   return (
-    <div
-      ref={containerRef}
-      className="hackodyssey-preloader"
-      role="presentation"
-      aria-hidden="true"
-    >
-      {/* 1. Preloader Background */}
+    <div ref={containerRef} className="hackodyssey-preloader" role="presentation" aria-hidden="true">
       <div className="hop-background" />
-
-      {/* 2. Center Atmosphere */}
       <div ref={atmosphereRef} className="hop-atmosphere" />
-
-      {/* 3. Anticipation Glow between Fingertips (Phase 3) */}
+      <div ref={contactPointRef} className="preloader-contact-point hop-contact-point" />
       <div ref={anticipationGlowRef} className="hop-anticipation-glow" />
-
-      {/* 4. Contact Flash & Energy Pulse (Phase 4) */}
       <div ref={contactFlashRef} className="hop-contact-flash" />
       <div ref={energyPulseRef} className="hop-energy-pulse" />
       <div ref={centralCoreRef} className="hop-central-core" />
+      {/* 5. Circular Collaboration Orbit System (One Continuous Master Orbit SVG) */}
+      <svg
+        ref={orbitSvgRef}
+        className="hop-orbit-svg"
+        viewBox={`0 0 ${typeof window !== "undefined" ? window.innerWidth : 1920} ${typeof window !== "undefined" ? window.innerHeight : 1080}`}
+        style={{ opacity: 0 }}
+      >
+        <circle
+          ref={orbitCircleRef}
+          cx={typeof window !== "undefined" ? window.innerWidth * 0.5 : 960}
+          cy={typeof window !== "undefined" ? window.innerHeight * 0.5 : 540}
+          r={
+            typeof window !== "undefined"
+              ? window.innerWidth < 768
+                ? Math.min(window.innerWidth * 0.36, window.innerHeight * 0.22, 130)
+                : Math.min(window.innerWidth * 0.22, window.innerHeight * 0.25, 200)
+              : 200
+          }
+          className="hop-orbit-circle"
+        />
+      </svg>
 
-      {/* 5. Inward Converging Energy Particles (Phase 5 — 14 Particles) */}
-      <div className="hop-converge-particles-container">
-        {Array.from({ length: 14 }).map((_, i) => (
-          <div
-            key={i}
-            ref={addConvergeParticleRef}
-            className="hop-converge-particle"
-          />
-        ))}
+      {/* 6. Active Orbit Node Highlights at 4 Cardinal Positions */}
+      <div className="hop-orbit-nodes-layer">
+        <div ref={nodeAcmWRef} className="hop-orbit-node hop-node-acmw" style={{ opacity: 0 }} />
+        <div ref={nodeIeeeRef} className="hop-orbit-node hop-node-ieee" style={{ opacity: 0 }} />
+        <div ref={nodeGfgRef}  className="hop-orbit-node hop-node-gfg"  style={{ opacity: 0 }} />
+        <div ref={nodeKareRef} className="hop-orbit-node hop-node-kare" style={{ opacity: 0 }} />
       </div>
 
-      {/* 6. Central Identity Group (Phases 5, 6 & 7 — ACM Logo + PRESENTS + Title + Circled 4.0) */}
-      <div ref={identityGroupRef} className="hop-identity-group">
-        {/* KARE ACM Logo Halo & Container (Primary Visual Anchor) */}
-        <div ref={logoHaloRef} className="hop-logo-halo" />
-        <div ref={logoContainerRef} className="hop-logo-container">
-          <img
-            src={acmLogo}
-            alt="KARE ACM"
-            className="hop-logo-img"
-            draggable="false"
-            loading="eager"
-            decoding="sync"
-          />
-          <div ref={logoSweepRef} className="hop-logo-sweep" />
+      {/* 7. Four Partner Organization Logos around the Orbit */}
+      <div className="hop-orbit-logos-layer">
+        {/* KARE ACM — Top (-90° / 270°) */}
+        <div ref={kareLogoWrapperRef} className="hop-orbit-logo-anchor hop-logo-kare" style={{ opacity: 0 }}>
+          <div ref={kareHaloRef} className="hop-partner-halo" />
+          <div className="hop-partner-box hop-box-kare">
+            <img src={kareAcmLogo} alt="KARE ACM" className="hop-partner-img" draggable="false" loading="eager" />
+          </div>
         </div>
 
-        {/* Event Presentation Layer (PRESENTS + HACK ODYSSEY ⁴˙⁰) */}
-        <div ref={eventTextGroupRef} className="hop-event-text-group">
-          {/* "PRESENTS" Eyebrow */}
-          <div className="hop-presents-mask">
-            <span ref={presentsRef} className="hop-presents-text">
-              PRESENTS
+        {/* ACM-W — Right (0°) */}
+        <div ref={acmWLogoWrapperRef} className="hop-orbit-logo-anchor hop-logo-acmw" style={{ opacity: 0 }}>
+          <div ref={acmWHaloRef} className="hop-partner-halo" />
+          <div className="hop-partner-box hop-box-acmw">
+            <img src={acmWLogo} alt="ACM-W" className="hop-partner-img" draggable="false" loading="eager" />
+          </div>
+        </div>
+
+        {/* IEEE Education Society — Bottom (90°) */}
+        <div ref={ieeeLogoWrapperRef} className="hop-orbit-logo-anchor hop-logo-ieee" style={{ opacity: 0 }}>
+          <div ref={ieeeHaloRef} className="hop-partner-halo" />
+          <div className="hop-partner-box hop-box-ieee">
+            <img src={ieeeLogo} alt="IEEE Education Society" className="hop-partner-img" draggable="false" loading="eager" />
+          </div>
+        </div>
+
+        {/* GFG — Left (180°) */}
+        <div ref={gfgLogoWrapperRef} className="hop-orbit-logo-anchor hop-logo-gfg" style={{ opacity: 0 }}>
+          <div ref={gfgHaloRef} className="hop-partner-halo" />
+          <div className="hop-partner-box hop-box-gfg">
+            <img src={gfgLogo} alt="GeeksforGeeks" className="hop-partner-img" draggable="false" loading="eager" />
+          </div>
+        </div>
+      </div>
+
+      {/* 8. Central Content Area (Collaboration Subtitle + Event Presentation Title) */}
+      <div ref={centralContentRef} className="hop-central-content" style={{ opacity: 0 }}>
+        {/* Progressive Collaboration Subtitle */}
+        <div ref={collabGroupRef} className="hop-collab-group" style={{ opacity: 0 }}>
+          <div ref={collabEyebrowRef} className="hop-collab-eyebrow" style={{ opacity: 0 }}>
+            A COLLABORATION BETWEEN
+          </div>
+          <div className="hop-collab-names-line">
+            <span ref={collabNameKareRef} className="hop-collab-item" style={{ opacity: 0 }}>
+              KARE ACM
+            </span>
+            <span ref={collabSep1Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
+              ×
+            </span>
+            <span ref={collabNameGfgRef} className="hop-collab-item" style={{ opacity: 0 }}>
+              GFG
+            </span>
+            <span ref={collabSep2Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
+              ×
+            </span>
+            <span ref={collabNameAcmWRef} className="hop-collab-item" style={{ opacity: 0 }}>
+              ACM-W
+            </span>
+            <span ref={collabSep3Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
+              ×
+            </span>
+            <span ref={collabNameIeeeRef} className="hop-collab-item" style={{ opacity: 0 }}>
+              IEEE EDUCATION SOCIETY
             </span>
           </div>
+        </div>
 
-          {/* HackOdyssey 4.0 Typography with Circled Exponent Badge */}
+        {/* Event Presentation Title */}
+        <div ref={eventTitleGroupRef} className="hop-event-title-group" style={{ opacity: 0 }}>
+          <div ref={presentsRef} className="hop-presents-text" style={{ opacity: 0 }}>
+            PRESENTS
+          </div>
+
           <div ref={titleWrapRef} className="hop-title-wrap">
-            <div className="hop-title-mask">
-              <span ref={wordHackRef} className="hop-title-word hop-title-hack">
-                HACK
-              </span>
-            </div>
-
-            {/* ODYSSEY + Circled 4.0 Badge */}
+            <span ref={wordHackRef} className="hop-title-word hop-title-hack" style={{ opacity: 0 }}>
+              HACK
+            </span>
             <div className="hop-odyssey-group">
-              <div className="hop-title-mask">
-                <span ref={wordOdysseyRef} className="hop-title-word hop-title-odyssey">
-                  ODYSSEY
-                </span>
-              </div>
-
-              {/* Exponential Circled 4.0 Badge (Matching Website Hero Section) */}
+              <span ref={wordOdysseyRef} className="hop-title-word hop-title-odyssey" style={{ opacity: 0 }}>
+                ODYSSEY
+              </span>
               <div className="hop-badge-wrap">
-                <span
-                  ref={versionRef}
-                  className="hop-badge-exponent"
-                  title="Version 4.0"
-                >
+                <span ref={versionRef} className="hop-badge-exponent" style={{ opacity: 0 }}>
                   4.0
                 </span>
               </div>
@@ -1144,6 +645,7 @@ export default function HackOdysseyPreloader() {
               loading="eager"
               decoding="sync"
             />
+            <span ref={handATipRef} className="hop-fingertip-anchor" />
           </div>
         </div>
         <div ref={topLeftLightRef} className="hop-light hop-light-top-left">
@@ -1165,6 +667,7 @@ export default function HackOdysseyPreloader() {
               loading="eager"
               decoding="sync"
             />
+            <span ref={handBTipRef} className="hop-fingertip-anchor" />
           </div>
         </div>
         <div ref={bottomRightLightRef} className="hop-light hop-light-bottom-right">
