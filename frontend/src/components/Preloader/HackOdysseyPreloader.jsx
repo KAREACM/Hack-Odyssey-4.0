@@ -214,7 +214,8 @@ export default function HackOdysseyPreloader() {
       if (arc3Ref.current) tl.set(arc3Ref.current, { strokeDasharray: arc3Len, strokeDashoffset: arc3Len });
       if (arc4Ref.current) tl.set(arc4Ref.current, { strokeDasharray: arc4Len, strokeDashoffset: arc4Len });
 
-      tl.set(contactPointRef.current, { opacity: 0.05, scale: 1.0 });
+      // 1. Initialize static properties
+      tl.set(contactPointRef.current, { opacity: 0.35, scale: 1.0 });
       tl.set(atmosphereRef.current, { scale: 0.92 });
       tl.set(anticipationGlowRef.current, { scale: 0.6 });
       tl.set(contactFlashRef.current, { scale: 0.4 });
@@ -235,7 +236,7 @@ export default function HackOdysseyPreloader() {
       if (skipBtnRef.current) tl.to(skipBtnRef.current, { opacity: 0.85, duration: 0.60, ease: "power2.out" }, 0.80);
 
       // --- PHASE 1 & 2: Smooth Continuous Diagonal Glide & Deceleration (0.70s → 2.80s) ---
-      // Fade in Hand A & Hand B opacity cleanly alongside lights (from commit 6695a0b)
+      // Fade in Hand A & Hand B opacity cleanly alongside lights
       tl.to(handWrapperARef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.70);
       tl.to(handWrapperBRef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.75);
 
@@ -246,185 +247,225 @@ export default function HackOdysseyPreloader() {
       tl.to(handAnchorARef.current, { x: cx, y: cy, duration: 2.10, ease: "power3.out" }, 0.70);
       tl.to(handAnchorBRef.current, { x: cx, y: cy, duration: 2.05, ease: "power3.out" }, 0.75);
 
-      // Contact point & anticipation glow ramp as hands approach center
-      tl.to(contactPointRef.current, { opacity: 0.25, duration: 0.80, ease: "power2.out" }, 1.40);
-      tl.to(contactPointRef.current, { opacity: 0.60, scale: 1.25, duration: 0.60, ease: "power2.out" }, 2.20);
-      tl.to(anticipationGlowRef.current, { opacity: 0.08, scale: 0.85, duration: 0.30, ease: "sine.inOut" }, 2.20);
-      tl.to(anticipationGlowRef.current, { opacity: 0.25, scale: 1.20, duration: 0.30, ease: "power2.out" }, 2.50);
-      tl.to(atmosphereRef.current, { opacity: 0.20, duration: 0.60, ease: "sine.inOut" }, 2.20);
-      tl.to([topLeftLightRef.current, bottomRightLightRef.current], { opacity: 0.85, scale: 1.10, duration: 0.60, ease: "sine.inOut" }, 2.20);
+      // Contact point is consistent throughout, then ramps up intensity as hands close in
+      tl.to(contactPointRef.current, { opacity: 0.55, scale: 1.15, duration: 0.80, ease: "power2.out" }, 1.40);
+      tl.to(contactPointRef.current, { opacity: 0.90, scale: 1.50, duration: 0.60, ease: "power2.out" }, 2.20);
+      tl.to(anticipationGlowRef.current, { opacity: 0.12, scale: 0.85, duration: 0.30, ease: "sine.inOut" }, 2.20);
+      tl.to(anticipationGlowRef.current, { opacity: 0.30, scale: 1.25, duration: 0.30, ease: "power2.out" }, 2.50);
+      tl.to(atmosphereRef.current, { opacity: 0.22, duration: 0.60, ease: "sine.inOut" }, 2.20);
+      tl.to([topLeftLightRef.current, bottomRightLightRef.current], { opacity: 0.90, scale: 1.10, duration: 0.60, ease: "sine.inOut" }, 2.20);
 
-      // --- PHASE 3: Exact Contact Moment (2.80s → 3.20s) ---
-      tl.to(contactPointRef.current, { opacity: 1.0, scale: 2.2, duration: 0.06, ease: "power2.out" }, 2.80);
-      tl.to(contactPointRef.current, { opacity: 0, duration: 0.12, ease: "power2.in" }, 2.86);
-      tl.to(anticipationGlowRef.current, { opacity: 0, scale: 0.3, duration: 0.04, ease: "power3.in" }, 2.82);
-      tl.to(contactFlashRef.current, { opacity: 1.0, scale: 0.90, duration: 0.03, ease: "power4.out" }, 2.86);
-      tl.to(contactFlashRef.current, { opacity: 0, scale: 1.25, duration: 0.03, ease: "power2.in" }, 2.89);
-      tl.to(energyPulseRef.current, { opacity: 0.75, scale: 0.70, duration: 0.10, ease: "power2.out" }, 2.88);
-      tl.to(energyPulseRef.current, { opacity: 0, scale: 0.85, duration: 0.08, ease: "power1.out" }, 2.98);
+      // --- PHASE 3: Exact Contact Moment, Radiant Flash & Explosive Sparks (2.80s → 2.95s) ---
+      // Brilliant contact touch flare
+      tl.to(contactPointRef.current, { opacity: 1.0, scale: 2.8, duration: 0.05, ease: "power4.out" }, 2.80);
+      tl.to(contactPointRef.current, { opacity: 0, duration: 0.10, ease: "power2.in" }, 2.85);
+      tl.to(anticipationGlowRef.current, { opacity: 0, scale: 0.2, duration: 0.04, ease: "power3.in" }, 2.81);
 
-      tl.addLabel("identityStart", 3.20);
-      tl.addLabel("kareReveal", "identityStart+=0.08");
-      tl.addLabel("kareMove", "kareReveal+=0.48");
-      tl.addLabel("orbitStart", "kareMove+=0.44");
-      tl.addLabel("acmWReveal", "orbitStart+=0.38");
-      tl.addLabel("ieeeReveal", "acmWReveal+=0.45");
-      tl.addLabel("gfgReveal", "ieeeReveal+=0.45");
-      tl.addLabel("orbitComplete", "gfgReveal+=0.45");
+      // High-visibility Contact Flash
+      tl.fromTo(contactFlashRef.current, { opacity: 0, scale: 0.4 }, { opacity: 1.0, scale: 2.2, duration: 0.07, ease: "power4.out" }, 2.80);
+      tl.to(contactFlashRef.current, { opacity: 0, scale: 2.8, duration: 0.16, ease: "power2.in" }, 2.87);
+
+      // Expanding Energy Pulse
+      tl.fromTo(energyPulseRef.current, { opacity: 0.95, scale: 0.15 }, { opacity: 0, scale: 1.8, duration: 0.32, ease: "power2.out" }, 2.82);
+
+      // 18 Radiant Contact Spark Particles shooting outward with sparkling trail
+      contactParticlesRef.current.forEach((particle, idx) => {
+        if (!particle) return;
+        const angle = (idx / 18) * Math.PI * 2 + ((idx * 7) % 5) * 0.15;
+        const dist = isMobile ? (24 + (idx % 6) * 6) : (35 + (idx % 6) * 10);
+        tl.fromTo(
+          particle,
+          { x: 0, y: 0, opacity: 1.0, scale: 1.0 },
+          {
+            x: Math.cos(angle) * dist,
+            y: Math.sin(angle) * dist,
+            opacity: 0,
+            scale: 0.2,
+            duration: 0.32 + (idx % 4) * 0.04,
+            ease: "power3.out",
+          },
+          2.81 + (idx % 3) * 0.015
+        );
+      });
+
+      // Ignited Central Core (✦)
+      tl.fromTo(centralCoreRef.current, { opacity: 0, scale: 0.2 }, { opacity: 1.0, scale: 1.8, duration: 0.09, ease: "power2.out" }, 2.83);
+
+      // --- PHASE 4: Immediate Seamless KARE ACM Logo Manifestation (Zero Delay! 2.92s) ---
+      tl.addLabel("identityStart", 2.92);
+      tl.addLabel("kareReveal", "identityStart+=0.04");
+      tl.addLabel("kareMove", "kareReveal+=0.36");
+      tl.addLabel("orbitStart", "kareMove+=0.42");
+      tl.addLabel("acmWReveal", "orbitStart+=0.34");
+      tl.addLabel("ieeeReveal", "acmWReveal+=0.36");
+      tl.addLabel("gfgReveal", "ieeeReveal+=0.36");
+      tl.addLabel("orbitComplete", "gfgReveal+=0.36");
       tl.addLabel("collaborationComplete", "orbitComplete+=0.25");
-      tl.addLabel("presentsReveal", "collaborationComplete+=0.25");
+      tl.addLabel("presentsReveal", "collaborationComplete+=0.22");
       tl.addLabel("titleReveal", "presentsReveal+=0.22");
 
+      // Hands dissolve right as energy core expands into ACM logo
       tl.to([handWrapperARef.current, handWrapperBRef.current, topLeftLightRef.current, bottomRightLightRef.current], {
         opacity: 0,
-        duration: 0.25,
+        duration: 0.22,
         ease: "power2.out",
       }, "identityStart");
 
-      tl.to(centralCoreRef.current, {
-        scale: 1.6,
-        opacity: 1.0,
-        duration: 0.12,
-        ease: "sine.out",
-      }, "identityStart");
-
+      // KARE ACM Logo blooms immediately from the core
       tl.fromTo(kareLogoWrapperRef.current,
-        { opacity: 0, scale: 1.15, x: 0, y: 0 },
-        { opacity: 1.0, scale: 1.40, x: 0, y: 0, duration: 0.34, ease: "power3.out" },
+        { opacity: 0, scale: 0.65, x: 0, y: 0 },
+        { opacity: 1.0, scale: 1.45, x: 0, y: 0, duration: 0.32, ease: "back.out(1.4)" },
         "kareReveal"
       );
       tl.fromTo(kareHaloRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 0.18, scale: 1.1, duration: 0.34, ease: "power2.out" },
+        { opacity: 0, scale: 0.6 },
+        { opacity: 0.22, scale: 1.25, duration: 0.32, ease: "power2.out" },
         "kareReveal"
       );
 
+      // Core softly dissolves as logo takes flight
+      tl.to(centralCoreRef.current, {
+        opacity: 0,
+        scale: 0.4,
+        duration: 0.24,
+        ease: "power2.in",
+      }, "kareMove");
+
+      // KARE ACM glides smoothly to Top Orbit position (-90°)
       tl.to(kareLogoWrapperRef.current, {
         x: posKare.x,
         y: posKare.y,
         scale: 1.00,
-        duration: 0.44,
+        duration: 0.42,
         ease: "power3.inOut",
-      }, "kareMove");
-
-      tl.to(centralCoreRef.current, {
-        opacity: 0,
-        scale: 0.4,
-        duration: 0.26,
-        ease: "power2.in",
       }, "kareMove");
 
       tl.to(kareHaloRef.current, {
         opacity: 0.08,
         scale: 0.9,
-        duration: 0.44,
+        duration: 0.42,
         ease: "power3.inOut",
-      }, "kareMove");      // Settle at Top Anchor (-90°) & Reveal KARE ACM text
+      }, "kareMove");
+
       tl.to(kareLogoWrapperRef.current, {
         scale: 1.02,
-        duration: 0.18,
+        duration: 0.16,
         ease: "sine.inOut",
         yoyo: true,
         repeat: 1,
-      }, "kareMove+=0.40");
+      }, "kareMove+=0.38");
 
-      tl.set(centralContentRef.current, { opacity: 1 }, "kareMove+=0.35");
-      tl.set(collabGroupRef.current, { opacity: 1 }, "kareMove+=0.35");
+      // Reveal central content container & initial KARE ACM title
+      tl.set(centralContentRef.current, { opacity: 1 }, "kareMove+=0.32");
+      tl.set(collabGroupRef.current, { opacity: 1 }, "kareMove+=0.32");
+      tl.fromTo(collabEyebrowRef.current,
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+        "kareMove+=0.34"
+      );
       tl.fromTo(collabNameKareRef.current,
         { opacity: 0, y: 6 },
         { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
-        "kareMove+=0.38"
+        "kareMove+=0.36"
       );
 
-      // Step 8: Arc 1 draws from Top (284°) to Right (346°)
+      // --- PHASE 5: Continuous Clockwise Orbit Sweep & Synchronous Partner Revelations ---
+      // Arc 1: Top (284°) to Right (346°)
       tl.set(orbitSvgRef.current, { opacity: 1 }, "orbitStart");
       tl.fromTo(arc1Ref.current,
         { strokeDashoffset: arc1Len },
-        { strokeDashoffset: 0, duration: 0.40, ease: "power2.inOut" },
+        { strokeDashoffset: 0, duration: 0.36, ease: "power1.inOut" },
         "orbitStart"
       );
 
-      // Step 9: ACM-W Reveal at Right (0°) + "× ACM-W" Text + Arc 2 Starts
+      // Step: ACM-W Node & Logo + Synchronized "× ACM-W" Text
       tl.fromTo(nodeAcmWRef.current,
         { opacity: 0, scale: 0.4 },
         { opacity: 0.90, scale: 1.3, duration: 0.14, ease: "power2.out" },
         "acmWReveal"
       );
-      tl.to(nodeAcmWRef.current, { opacity: 0, scale: 1.4, duration: 0.20, ease: "power2.in" }, "acmWReveal+=0.14");
+      tl.to(nodeAcmWRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20, ease: "power2.in" }, "acmWReveal+=0.14");
 
       tl.fromTo(acmWLogoWrapperRef.current,
         { opacity: 0, scale: 0.88 },
-        { opacity: 1.0, scale: 1.00, duration: 0.28, ease: "power3.out" },
+        { opacity: 1.0, scale: 1.00, duration: 0.26, ease: "power3.out" },
         "acmWReveal"
       );
-      tl.fromTo(acmWHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.28 }, "acmWReveal");
+      tl.fromTo(acmWHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.26 }, "acmWReveal");
 
-      tl.set(centralContentRef.current, { opacity: 1 }, "acmWReveal");
-      tl.set(collabGroupRef.current, { opacity: 1 }, "acmWReveal");
-      tl.fromTo(collabNameAcmWRef.current,
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+      // Synchronous "× ACM-W" reveal
+      tl.fromTo([collabSep1Ref.current, collabNameAcmWRef.current],
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" },
         "acmWReveal+=0.04"
       );
 
+      // Arc 2: Right (14°) to Bottom (72°) - seamless continuation
       tl.fromTo(arc2Ref.current,
         { strokeDashoffset: arc2Len },
-        { strokeDashoffset: 0, duration: 0.40, ease: "power2.inOut" },
-        "acmWReveal+=0.05"
+        { strokeDashoffset: 0, duration: 0.36, ease: "power1.inOut" },
+        "acmWReveal+=0.02"
       );
 
+      // Step: IEEE Node & Logo + Synchronized "× IEEE EDUCATION SOCIETY" Text
       tl.fromTo(nodeIeeeRef.current,
         { opacity: 0, scale: 0.4 },
-        { opacity: 0.90, scale: 1.3, duration: 0.15, ease: "power2.out" },
+        { opacity: 0.90, scale: 1.3, duration: 0.14, ease: "power2.out" },
         "ieeeReveal"
       );
-      tl.to(nodeIeeeRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "ieeeReveal+=0.15");
+      tl.to(nodeIeeeRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "ieeeReveal+=0.14");
 
       tl.fromTo(ieeeLogoWrapperRef.current,
         { opacity: 0, scale: 0.90 },
-        { opacity: 1.0, scale: 1.00, duration: 0.28, ease: "power3.out" },
+        { opacity: 1.0, scale: 1.00, duration: 0.26, ease: "power3.out" },
         "ieeeReveal"
       );
-      tl.fromTo(ieeeHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.28 }, "ieeeReveal");
+      tl.fromTo(ieeeHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.26 }, "ieeeReveal");
 
-      tl.fromTo([collabSep3Ref.current, collabNameIeeeRef.current],
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+      // Synchronous "× IEEE" reveal
+      tl.fromTo([collabSep2Ref.current, collabNameIeeeRef.current],
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" },
         "ieeeReveal+=0.04"
       );
 
+      // Arc 3: Bottom (108°) to Left (166°) - seamless continuation
       tl.fromTo(arc3Ref.current,
         { strokeDashoffset: arc3Len },
-        { strokeDashoffset: 0, duration: 0.40, ease: "power2.inOut" },
-        "ieeeReveal+=0.05"
+        { strokeDashoffset: 0, duration: 0.36, ease: "power1.inOut" },
+        "ieeeReveal+=0.02"
       );
 
+      // Step: GFG Node & Logo + Synchronized "× GFG" Text
       tl.fromTo(nodeGfgRef.current,
         { opacity: 0, scale: 0.4 },
-        { opacity: 0.90, scale: 1.3, duration: 0.15, ease: "power2.out" },
+        { opacity: 0.90, scale: 1.3, duration: 0.14, ease: "power2.out" },
         "gfgReveal"
       );
-      tl.to(nodeGfgRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "gfgReveal+=0.15");
+      tl.to(nodeGfgRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "gfgReveal+=0.14");
 
       tl.fromTo(gfgLogoWrapperRef.current,
         { opacity: 0, scale: 0.88 },
-        { opacity: 1.0, scale: 1.00, duration: 0.28, ease: "power3.out" },
+        { opacity: 1.0, scale: 1.00, duration: 0.26, ease: "power3.out" },
         "gfgReveal"
       );
-      tl.fromTo(gfgHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.28 }, "gfgReveal");
+      tl.fromTo(gfgHaloRef.current, { opacity: 0 }, { opacity: 0.08, duration: 0.26 }, "gfgReveal");
 
-      tl.fromTo([collabSep2Ref.current, collabNameGfgRef.current],
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
+      // Synchronous "× GFG" reveal
+      tl.fromTo([collabSep3Ref.current, collabNameGfgRef.current],
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" },
         "gfgReveal+=0.04"
       );
 
+      // Arc 4: Left (194°) to Top (256°) - completes closed constellation
       tl.fromTo(arc4Ref.current,
         { strokeDashoffset: arc4Len },
-        { strokeDashoffset: 0, duration: 0.40, ease: "power2.inOut" },
-        "gfgReveal+=0.05"
+        { strokeDashoffset: 0, duration: 0.36, ease: "power1.inOut" },
+        "gfgReveal+=0.02"
       );
 
+      // Constellation Closed at Top Node (KARE ACM)
       tl.fromTo(nodeKareRef.current,
         { opacity: 0, scale: 0.4 },
         { opacity: 0.90, scale: 1.3, duration: 0.15, ease: "power2.out" },
@@ -432,17 +473,16 @@ export default function HackOdysseyPreloader() {
       );
       tl.to(nodeKareRef.current, { opacity: 0.45, scale: 1.0, duration: 0.20 }, "orbitComplete+=0.15");
 
-      tl.fromTo([collabNameKareRef.current, collabSep1Ref.current],
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" },
-        "orbitComplete+=0.04"
-      );
-      tl.fromTo(collabEyebrowRef.current,
-        { opacity: 0, y: 6 },
-        { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" },
-        "orbitComplete+=0.08"
-      );
+      // Unified subtle constellation gleam across the collaboration line
+      tl.to(collabGroupRef.current, {
+        filter: "drop-shadow(0 0 10px rgba(192, 132, 252, 0.5))",
+        duration: 0.25,
+        yoyo: true,
+        repeat: 1,
+        ease: "sine.inOut",
+      }, "orbitComplete+=0.04");
 
+      // --- PHASE 6: Grand Event Presentation Reveal ---
       tl.set(eventTitleGroupRef.current, { opacity: 1 }, "presentsReveal");
       tl.fromTo(presentsRef.current,
         { opacity: 0, y: 8 },
