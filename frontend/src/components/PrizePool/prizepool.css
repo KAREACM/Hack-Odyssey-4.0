@@ -1,6 +1,6 @@
 /* ==========================================================================
-   HACK ODYSSEY 4.0 — PRIZE POOL SECTION (EDITORIAL AWWWARDS REDESIGN)
-   Visual System: Typography + SpyltMilk Scroll Reveal + Tilted Hero Card
+   HACK ODYSSEY 4.0 — GRAND PRIZE POOL & VALUE ECOSYSTEM
+   Visual System: Kinetic Typography + Hero Odometer Vault + 4 Opportunity Pillars
    ========================================================================== */
 
 .prizepool-section {
@@ -16,7 +16,7 @@
     align-items: center;
 }
 
-/* Atmospheric Background Typography */
+/* Atmospheric Background Kinetic Typography */
 .prizepool-bg-word {
     position: absolute;
     font-family: 'Bebas Neue', 'Big Shoulders Display', 'plain regular', sans-serif;
@@ -67,6 +67,58 @@
     text-transform: uppercase;
 }
 
+/* Live Status Badge Pill */
+.prize-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124, 60, 255, 0.12);
+    border: 1px solid rgba(184, 140, 255, 0.35);
+    border-radius: 9999px;
+    padding: 5px 14px;
+    margin-top: 4px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 20px rgba(124, 60, 255, 0.2);
+}
+
+.prize-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8;
+    position: relative;
+}
+
+.prize-pulse-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid #38bdf8;
+    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.6);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+.prize-status-pill-text {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(9.5px, 0.85vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #E0D4FC;
+    text-transform: uppercase;
+}
+
 /* Main Display Headlines */
 .prize-display-font {
     font-family: 'Bebas Neue', 'Big Shoulders Display', 'plain regular', sans-serif;
@@ -77,14 +129,14 @@
 /* SpyltMilk Scrubbing Words */
 .first-msg-word,
 .second-msg-word {
-    color: rgba(245, 243, 255, 0.18); /* Dim initial state for scrub */
+    color: rgba(245, 243, 255, 0.18);
     display: inline-block;
     will-change: color, transform;
     transition: color 0.1s ease-out;
 }
 
 .first-message {
-    font-size: clamp(48px, 6.8vw, 105px);
+    font-size: clamp(44px, 6.4vw, 100px);
     font-weight: 800;
     text-transform: uppercase;
     line-height: 0.94;
@@ -93,7 +145,7 @@
 }
 
 .second-message {
-    font-size: clamp(42px, 5.8vw, 92px);
+    font-size: clamp(38px, 5.4vw, 88px);
     font-weight: 800;
     text-transform: uppercase;
     line-height: 0.96;
@@ -107,7 +159,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 2vh 0;
+    margin: 2.2vh 0;
     z-index: 10;
     perspective: 1000px;
 }
@@ -117,13 +169,13 @@
     position: relative;
     background: radial-gradient(
         ellipse at center,
-        rgba(45, 18, 92, 0.9) 0%,
-        rgba(20, 10, 48, 0.95) 70%,
-        rgba(10, 4, 24, 0.98) 100%
+        rgba(45, 18, 92, 0.92) 0%,
+        rgba(20, 10, 48, 0.96) 70%,
+        rgba(10, 4, 24, 0.99) 100%
     );
-    border: 1.8px solid rgba(124, 60, 255, 0.7);
-    border-radius: 16px;
-    padding: clamp(0.7rem, 1.5vw, 1.3rem) clamp(2.2rem, 5.5vw, 5rem);
+    border: 1.8px solid rgba(124, 60, 255, 0.75);
+    border-radius: 18px;
+    padding: clamp(0.8rem, 1.6vw, 1.4rem) clamp(2.5rem, 6vw, 5.5rem);
     transform: rotate(-3.5deg);
     box-shadow: 
         0 15px 40px rgba(0, 0, 0, 0.6),
@@ -138,13 +190,13 @@
 }
 
 .hero-prize-box:hover {
-    transform: rotate(0deg) scale(1.05);
-    border-color: rgba(184, 140, 255, 0.9);
+    transform: rotate(0deg) scale(1.04);
+    border-color: rgba(184, 140, 255, 0.95);
     box-shadow: 
         0 20px 50px rgba(0, 0, 0, 0.7),
-        0 0 60px rgba(124, 60, 255, 0.6),
-        0 0 110px rgba(184, 140, 255, 0.3),
-        inset 0 0 35px rgba(184, 140, 255, 0.25);
+        0 0 60px rgba(124, 60, 255, 0.65),
+        0 0 110px rgba(184, 140, 255, 0.35),
+        inset 0 0 35px rgba(184, 140, 255, 0.28);
 }
 
 /* Side Light Flare Beams */
@@ -199,13 +251,13 @@
     letter-spacing: -0.01em;
     color: #F5F3FF;
     text-shadow: 
-        0 0 25px rgba(184, 140, 255, 0.4),
-        0 0 50px rgba(124, 60, 255, 0.25);
+        0 0 25px rgba(184, 140, 255, 0.45),
+        0 0 50px rgba(124, 60, 255, 0.3);
     display: inline-block;
     will-change: transform;
 }
 
-/* Editorial Description Paragraph (Matching SpyltMilk) */
+/* Editorial Description Paragraph */
 .prize-editorial-desc {
     max-width: 44rem;
     margin: 3.5vh auto 0 auto;
@@ -233,7 +285,7 @@
     font-family: 'Inter', sans-serif;
     font-size: clamp(11px, 1.05vw, 13.5px);
     font-weight: 600;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.26em;
     color: #B88CFF;
     text-transform: uppercase;
 }
@@ -261,109 +313,397 @@
     box-shadow: 0 0 8px #B88CFF;
 }
 
-/* Bottom 3-Column Editorial Grid */
-.prize-columns-container {
+/* ==========================================================================
+   4-PILLAR OPPORTUNITY MATRIX (GLASSMORPHIC CARDS)
+   ========================================================================== */
+
+.opportunity-matrix-container {
     width: 100%;
-    max-width: 76rem;
+    max-width: 82rem;
     margin: 5vh auto 0 auto;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
     display: grid;
-    grid-template-columns: 1fr auto 1fr auto 1fr;
-    align-items: center;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
     position: relative;
     z-index: 10;
 }
 
-.prize-column-item {
+.opportunity-card {
+    position: relative;
+    background: linear-gradient(
+        155deg,
+        rgba(26, 12, 54, 0.6) 0%,
+        rgba(13, 6, 30, 0.8) 50%,
+        rgba(8, 3, 20, 0.92) 100%
+    );
+    border: 1px solid rgba(124, 60, 255, 0.25);
+    border-radius: 1.25rem;
+    padding: 1.75rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+    cursor: default;
+    will-change: transform;
+}
+
+/* Top Subtle Ambient Spotlight on Card */
+.opportunity-card-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 60px;
+    background: radial-gradient(ellipse at top, rgba(124, 60, 255, 0.22), transparent 70%);
+    pointer-events: none;
+    transition: opacity 0.4s ease, height 0.4s ease;
+}
+
+/* Card Hover Elevation */
+.opportunity-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(184, 140, 255, 0.65);
+    box-shadow: 
+        0 20px 45px rgba(0, 0, 0, 0.6),
+        0 0 35px rgba(124, 60, 255, 0.3),
+        inset 0 0 20px rgba(124, 60, 255, 0.1);
+}
+
+.opportunity-card:hover .opportunity-card-glow {
+    height: 100px;
+    opacity: 1;
+}
+
+/* Card Elements */
+.opportunity-icon-wrap {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.opportunity-card:hover .opportunity-icon-wrap {
+    transform: scale(1.1) rotate(2deg);
+}
+
+.opportunity-badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e2e8f0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.opportunity-amount {
+    font-family: 'Bebas Neue', 'Big Shoulders Display', 'plain regular', sans-serif;
+    font-size: clamp(34px, 3.2vw, 44px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    display: block;
+    margin-top: 0.75rem;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.opportunity-card:hover .opportunity-amount {
+    transform: translateX(2px);
+}
+
+.opportunity-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-top: 0.35rem;
+    letter-spacing: -0.01em;
+}
+
+.opportunity-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+    opacity: 0.8;
+}
+
+.opportunity-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin-top: 0.65rem;
+}
+
+.opportunity-footer-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #cbd5e1;
+}
+
+.opportunity-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #B88CFF;
+}
+
+/* Specific Accent Color Themes */
+/* 1. Cash Vault (Violet) */
+.opportunity-card.accent-violet .opportunity-icon-wrap {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.3);
+    color: #c084fc;
+}
+.opportunity-card.accent-violet .opportunity-subtitle {
+    color: #c084fc;
+}
+.opportunity-card.accent-violet .opportunity-badge {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.35);
+    color: #e9d5ff;
+}
+.opportunity-card.accent-violet .opportunity-dot {
+    background: #c084fc;
+    box-shadow: 0 0 8px #c084fc;
+}
+.opportunity-card.accent-violet:hover {
+    border-color: rgba(168, 85, 247, 0.6);
+}
+
+/* 2. Internships (Cyan Spotlight) */
+.opportunity-card.accent-cyan .opportunity-icon-wrap {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+}
+.opportunity-card.accent-cyan .opportunity-subtitle {
+    color: #38bdf8;
+}
+.opportunity-card.accent-cyan .opportunity-badge {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: rgba(56, 189, 248, 0.35);
+    color: #bae6fd;
+}
+.opportunity-card.accent-cyan .opportunity-dot {
+    background: #38bdf8;
+    box-shadow: 0 0 8px #38bdf8;
+}
+.opportunity-card.accent-cyan:hover {
+    border-color: rgba(56, 189, 248, 0.65);
+    box-shadow: 
+        0 20px 45px rgba(0, 0, 0, 0.6),
+        0 0 35px rgba(56, 189, 248, 0.25),
+        inset 0 0 20px rgba(56, 189, 248, 0.08);
+}
+.opportunity-card.accent-cyan:hover .opportunity-amount {
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+}
+
+/* 3. Incubation (Pink) */
+.opportunity-card.accent-pink .opportunity-icon-wrap {
+    background: rgba(236, 72, 153, 0.15);
+    border-color: rgba(236, 72, 153, 0.3);
+    color: #f472b6;
+}
+.opportunity-card.accent-pink .opportunity-subtitle {
+    color: #f472b6;
+}
+.opportunity-card.accent-pink .opportunity-badge {
+    background: rgba(236, 72, 153, 0.15);
+    border-color: rgba(236, 72, 153, 0.35);
+    color: #fbcfe8;
+}
+.opportunity-card.accent-pink .opportunity-dot {
+    background: #f472b6;
+    box-shadow: 0 0 8px #f472b6;
+}
+.opportunity-card.accent-pink:hover {
+    border-color: rgba(236, 72, 153, 0.6);
+}
+
+/* 4. Perks & Trophies (Gold/Amber) */
+.opportunity-card.accent-gold .opportunity-icon-wrap {
+    background: rgba(234, 179, 8, 0.15);
+    border-color: rgba(234, 179, 8, 0.3);
+    color: #facc15;
+}
+.opportunity-card.accent-gold .opportunity-subtitle {
+    color: #facc15;
+}
+.opportunity-card.accent-gold .opportunity-badge {
+    background: rgba(234, 179, 8, 0.15);
+    border-color: rgba(234, 179, 8, 0.35);
+    color: #fef08a;
+}
+.opportunity-card.accent-gold .opportunity-dot {
+    background: #facc15;
+    box-shadow: 0 0 8px #facc15;
+}
+.opportunity-card.accent-gold:hover {
+    border-color: rgba(234, 179, 8, 0.6);
+}
+
+/* ==========================================================================
+   ODYSSEY TRUST METRICS STRIP
+   ========================================================================== */
+
+.prize-trust-strip {
+    width: 100%;
+    max-width: 68rem;
+    margin: 5vh auto 0 auto;
+    padding: 1.25rem 2rem;
+    background: rgba(20, 10, 42, 0.45);
+    border: 1px solid rgba(124, 60, 255, 0.25);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 10;
+}
+
+.trust-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 2rem 1.2rem;
-    cursor: default;
-    position: relative;
-    border-radius: 1.5rem;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease;
 }
 
-.prize-column-separator {
-    width: 1px;
-    height: 110px;
-    background: linear-gradient(180deg, transparent, rgba(124, 60, 255, 0.35) 40%, rgba(184, 140, 255, 0.45) 50%, rgba(124, 60, 255, 0.35) 60%, transparent);
-}
-
-/* Column Elements */
-.prize-rank-number {
-    font-family: 'Bebas Neue', 'Big Shoulders Display', 'plain regular', sans-serif;
-    font-size: clamp(28px, 2.7vw, 38px);
+.trust-number {
+    font-family: 'Bebas Neue', 'Big Shoulders Display', sans-serif;
+    font-size: clamp(24px, 2.2vw, 32px);
     font-weight: 700;
-    color: #B88CFF;
-    letter-spacing: 0.15em;
+    color: #ffffff;
+    letter-spacing: 0.05em;
     line-height: 1;
 }
 
-.prize-rank-underline {
-    width: 26px;
-    height: 1.5px;
-    background: #7C3CFF;
-    margin: 6px 0 14px 0;
-    transition: width 0.35s ease, background-color 0.35s ease, box-shadow 0.35s ease;
-    border-radius: 1px;
-}
-
-.prize-col-amount {
-    font-family: 'Bebas Neue', 'Big Shoulders Display', 'plain regular', sans-serif;
-    font-size: clamp(40px, 4.6vw, 60px);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 0.01em;
-    color: #F5F3FF;
-    margin-bottom: 12px;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.35s ease;
-    will-change: transform;
-}
-
-.prize-col-amount-first {
-    font-size: clamp(46px, 5.2vw, 68px);
-    text-shadow: 0 0 20px rgba(184, 140, 255, 0.35);
-}
-
-.prize-rank-label {
+.trust-label {
     font-family: 'Inter', sans-serif;
-    font-size: clamp(11px, 1vw, 13.5px);
-    font-weight: 600;
-    letter-spacing: 0.26em;
+    font-size: clamp(10px, 0.9vw, 12px);
+    font-weight: 500;
+    letter-spacing: 0.08em;
     color: #A8A4BA;
+    margin-top: 4px;
+}
+
+.trust-divider {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(180deg, transparent, rgba(124, 60, 255, 0.4), transparent);
+}
+
+/* ==========================================================================
+   STRATEGIC ACTION BAR (CTA)
+   ========================================================================== */
+
+.prize-cta-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5vh auto 0 auto;
+    position: relative;
+    z-index: 10;
+    padding: 0 1.5rem;
+}
+
+.prize-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #7C3CFF 0%, #5B21B6 100%);
+    border: 1px solid rgba(184, 140, 255, 0.6);
+    border-radius: 9999px;
+    padding: 1rem 2.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(12px, 1.05vw, 14.5px);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: #ffffff;
     text-transform: uppercase;
-    transition: color 0.35s ease;
+    box-shadow: 
+        0 10px 30px rgba(124, 60, 255, 0.35),
+        0 0 25px rgba(124, 60, 255, 0.25),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, background 0.35s ease;
+    cursor: pointer;
+    text-decoration: none;
 }
 
-/* Hover Interactions on Desktop */
-@media (hover: hover) and (pointer: fine) {
-    .prize-column-item:hover {
-        transform: translateY(-5px);
-        background-color: rgba(124, 60, 255, 0.04);
+.prize-cta-primary:hover {
+    transform: translateY(-3px) scale(1.03);
+    background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+    box-shadow: 
+        0 15px 40px rgba(124, 60, 255, 0.55),
+        0 0 40px rgba(184, 140, 255, 0.4),
+        inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+}
+
+.prize-cta-subtext {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(11px, 0.95vw, 13px);
+    color: #94a3b8;
+    margin-top: 1rem;
+    text-align: center;
+    opacity: 0.85;
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (TABLETS & MOBILES)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .opportunity-matrix-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
     }
 
-    .prize-column-item:hover .prize-col-amount {
-        transform: scale(1.04);
-        text-shadow: 0 0 25px rgba(184, 140, 255, 0.55), 0 0 50px rgba(124, 60, 255, 0.35);
-        color: #ffffff;
+    .prize-trust-strip {
+        border-radius: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 1.5rem;
     }
 
-    .prize-column-item:hover .prize-rank-underline {
-        width: 42px;
-        background: #B88CFF;
-        box-shadow: 0 0 12px #B88CFF;
-    }
-
-    .prize-column-item:hover .prize-rank-label {
-        color: #F5F3FF;
+    .trust-divider {
+        display: none;
     }
 }
 
-/* Mobile & Tablet Responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     .prizepool-section {
         min-height: auto;
         padding: 5rem 1.25rem;
@@ -382,18 +722,33 @@
         padding: 0.8rem 1.8rem;
     }
 
-    .prize-columns-container {
+    .opportunity-matrix-container {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1rem;
         margin-top: 3.5rem;
         padding: 0;
     }
 
-    .prize-column-separator {
-        width: 60%;
-        height: 1px;
-        margin: 0 auto;
-        background: linear-gradient(90deg, transparent, rgba(124, 60, 255, 0.35) 50%, transparent);
+    .prize-trust-strip {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1.2rem 1rem;
+        border-radius: 1.25rem;
+    }
+
+    .trust-number {
+        font-size: 22px;
+    }
+
+    .trust-label {
+        font-size: 10px;
+    }
+
+    .prize-cta-primary {
+        width: 100%;
+        justify-content: center;
+        padding: 0.9rem 1.5rem;
+        font-size: 12px;
     }
 
     .hero-prize-flare-left,
@@ -413,11 +768,12 @@
     .prizepool-bg-word,
     .hero-prize-box,
     .hero-prize-amount,
-    .prize-column-item,
-    .prize-col-amount,
+    .opportunity-card,
+    .opportunity-amount,
     .first-msg-word,
     .second-msg-word,
-    .para-word {
+    .para-word,
+    .prize-cta-primary {
         transition: none !important;
         transform: none !important;
         animation: none !important;

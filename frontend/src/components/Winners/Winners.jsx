@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import './winners.css';
 import { BsFillPlusCircleFill, BsXCircleFill } from "react-icons/bs";
 
@@ -75,7 +76,7 @@ const Winners = () => {
     const pageRef = useRef(null);
     const [activeModal, setActiveModal] = useState(null);
 
-    useEffect(() => {
+    useGSAP(() => {
         const tl4 = gsap.timeline({
             scrollTrigger: {
                 trigger: ".winners-page4",
@@ -146,10 +147,7 @@ const Winners = () => {
             })
             .to({}, { duration: 0.4 }, "+=0");
 
-        return () => {
-            tl4.kill();
-        };
-    }, []);
+    }, { scope: pageRef });
 
     // Repeating HACK ODYSSEY 3.0 marquee items
     const generateMarqueeItems = (quantity = 6) => {
@@ -188,7 +186,7 @@ const Winners = () => {
 
             {/* ════════════════════ CARD 1: 1ST PLACE WINNER ════════════════════ */}
             <div className="winners-background">
-                <img src={WINNERS_DATA[0].image} alt={WINNERS_DATA[0].team} />
+                <img src={WINNERS_DATA[0].image} alt={WINNERS_DATA[0].team} loading="eager" decoding="async" />
                 <div className="winners-vignette-overlay" />
 
                 {/* Top-Left Corner: HACK ODYSSEY 3.0 + Position */}
@@ -247,7 +245,7 @@ const Winners = () => {
 
             {/* ════════════════════ CARD 2: 2ND PLACE WINNER ════════════════════ */}
             <div id="winners-second" className="winners-background2">
-                <img src={WINNERS_DATA[1].image} alt={WINNERS_DATA[1].team} />
+                <img src={WINNERS_DATA[1].image} alt={WINNERS_DATA[1].team} loading="eager" decoding="async" />
                 <div className="winners-vignette-overlay" />
 
                 {/* Top-Left Corner */}
@@ -304,7 +302,7 @@ const Winners = () => {
 
             {/* ════════════════════ CARD 3: 3RD PLACE WINNER ════════════════════ */}
             <div id="winners-third" className="winners-background2">
-                <img src={WINNERS_DATA[2].image} alt={WINNERS_DATA[2].team} />
+                <img src={WINNERS_DATA[2].image} alt={WINNERS_DATA[2].team} loading="eager" decoding="async" />
                 <div className="winners-vignette-overlay" />
 
                 {/* Top-Left Corner */}

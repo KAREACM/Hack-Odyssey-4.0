@@ -2,32 +2,73 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { 
+    BsCashCoin, 
+    BsBriefcaseFill, 
+    BsRocketTakeoffFill, 
+    BsLightningChargeFill 
+} from 'react-icons/bs';
+import { MdArrowOutward } from 'react-icons/md';
 import './prizepool.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PRIZES_DATA = [
+const OPPORTUNITY_PILLARS = [
     {
-        rank: "01",
-        numericValue: 50000,
-        amount: "₹50,000",
-        label: "WINNER",
-        isGrand: true,
+        id: "cash",
+        icon: BsCashCoin,
+        badge: "CONSOLIDATED POOL",
+        amount: "₹1,00,000",
+        title: "Liquid Cash Grants",
+        subtitle: "Direct Bank Disbursal",
+        desc: "Direct monetary prizes distributed to champion solutions and track toppers with zero deductions.",
+        highlight: "100% Cash Disbursal",
+        accentClass: "accent-violet",
+        accentColor: "#a855f7"
     },
     {
-        rank: "02",
-        numericValue: 30000,
-        amount: "₹30,000",
-        label: "RUNNER UP",
-        isGrand: false,
+        id: "internships",
+        icon: BsBriefcaseFill,
+        badge: "TOP PERFORMERS",
+        amount: "FAST-TRACK",
+        title: "Internship Offers",
+        subtitle: "Direct Hiring & PPIs",
+        desc: "Top performers & standout hackers receive direct summer/winter internship offers and pre-placement interviews from sponsor tech leaders.",
+        highlight: "Direct Industry Pipeline",
+        accentClass: "accent-cyan",
+        accentColor: "#38bdf8"
     },
     {
-        rank: "03",
-        numericValue: 20000,
-        amount: "₹20,000",
-        label: "THIRD PLACE",
-        isGrand: false,
+        id: "incubation",
+        icon: BsRocketTakeoffFill,
+        badge: "VENTURE TRACK",
+        amount: "SEED ACCESS",
+        title: "Startup Incubation",
+        subtitle: "VC Pitches & Mentorship",
+        desc: "Priority pitch slots in front of angel syndicates, institutional venture funds, and 1-on-1 architecture reviews with veteran founders.",
+        highlight: "1-on-1 Founder Mentorship",
+        accentClass: "accent-pink",
+        accentColor: "#ec4899"
     },
+    {
+        id: "perks",
+        icon: BsLightningChargeFill,
+        badge: "ALL FINALISTS",
+        amount: "₹5,00,000+",
+        title: "Cloud & Dev Credits",
+        subtitle: "Compute & Physical Swag",
+        desc: "Exclusive AI cloud credits, premium API quotas, custom handcrafted Hack Odyssey trophies, and limited-edition swag kits.",
+        highlight: "Hardware & Swag Kits",
+        accentClass: "accent-gold",
+        accentColor: "#eab308"
+    }
+];
+
+const TRUST_STATS = [
+    { value: "₹1,00,000", label: "Consolidated Prize Pool" },
+    { value: "Top Performers", label: "Direct Internship Offers" },
+    { value: "24 Hours", label: "Non-Stop Innovation Sprint" },
+    { value: "Pan-India", label: "Elite Collegiate Network" }
 ];
 
 const FIRST_MESSAGE = "BUILD BOLD, STIR UP YOUR FEARLESS IDEAS AND";
@@ -37,7 +78,7 @@ const EDITORIAL_PARAGRAPH = "Rev up your hacker spirit and engineer the extraord
 const PrizePool = () => {
     const sectionRef = useRef(null);
     const boxRef = useRef(null);
-    const countRefs = useRef([]);
+    const heroAmountRef = useRef(null);
 
     useGSAP(() => {
         if (!sectionRef.current) return;
@@ -81,12 +122,24 @@ const PrizePool = () => {
             }
         });
 
-        // 2. Eyebrow Scroll Entrance
+        // 2. Eyebrow & Status Pill Scroll Entrance
         gsap.from('.prizepool-eyebrow-container', {
             opacity: 0,
             y: -15,
             duration: 0.9,
             ease: 'power3.out',
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top 78%',
+            }
+        });
+
+        gsap.from('.prize-status-pill', {
+            opacity: 0,
+            scale: 0.88,
+            duration: 0.8,
+            delay: 0.15,
+            ease: 'back.out(1.7)',
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: 'top 78%',
@@ -119,7 +172,7 @@ const PrizePool = () => {
             }
         });
 
-        // 4. Central Tilted ₹1,00,000 Accent Box Clip-Path Reveal (SpyltMilk Inspired)
+        // 4. Central Tilted ₹1,00,000 Accent Box Clip-Path Reveal
         const revealTl = gsap.timeline({
             scrollTrigger: {
                 trigger: '.hero-prize-scroll-container',
@@ -169,6 +222,26 @@ const PrizePool = () => {
             delay: 1.2,
         });
 
+        // Dynamic Rolling Odometer Count-Up on the ₹1,00,000 Hero Badge
+        const counterObj = { val: 0 };
+        ScrollTrigger.create({
+            trigger: '.hero-prize-scroll-container',
+            start: 'top 76%',
+            once: true,
+            onEnter: () => {
+                gsap.to(counterObj, {
+                    val: 100000,
+                    duration: 2.2,
+                    ease: 'power3.out',
+                    onUpdate: () => {
+                        if (heroAmountRef.current) {
+                            heroAmountRef.current.innerText = `₹${Math.floor(counterObj.val).toLocaleString('en-IN')}`;
+                        }
+                    }
+                });
+            }
+        });
+
         // 5. SpyltMilk Second Message Scroll-Scrubbed Color & Vertical Unveil
         const secondWords = sectionRef.current.querySelectorAll('.second-msg-word');
         gsap.to(secondWords, {
@@ -195,7 +268,7 @@ const PrizePool = () => {
             }
         });
 
-        // 6. Editorial Description Split Words Reveal (Matching SpyltMilk)
+        // 6. Editorial Description Split Words Reveal
         const paraWords = sectionRef.current.querySelectorAll('.para-word');
         gsap.from(paraWords, {
             yPercent: 130,
@@ -245,62 +318,54 @@ const PrizePool = () => {
             }
         });
 
-        // 7. Dedicated GSAP Animations for 1st, 2nd, and 3rd Prize Podiums
-        const prizeColumns = sectionRef.current.querySelectorAll('.prize-column-item');
-        const separators = sectionRef.current.querySelectorAll('.prize-column-separator');
-
-        // Separators grow vertically from center
-        gsap.fromTo(separators,
-            { scaleY: 0, opacity: 0 },
+        // 7. 3D Perspective Card Stacking & Spring Entrance for 4 Opportunity Pillars
+        const opportunityCards = sectionRef.current.querySelectorAll('.opportunity-card');
+        gsap.fromTo(opportunityCards,
             {
-                scaleY: 1,
+                opacity: 0,
+                y: 50,
+                rotationX: 12,
+                scale: 0.95,
+                transformPerspective: 1000,
+            },
+            {
                 opacity: 1,
-                duration: 1.1,
+                y: 0,
+                rotationX: 0,
+                scale: 1,
+                stagger: 0.12,
+                duration: 1.0,
                 ease: 'power3.out',
                 scrollTrigger: {
-                    trigger: '.prize-columns-container',
-                    start: 'top 85%',
+                    trigger: '.opportunity-matrix-container',
+                    start: 'top 82%',
                 }
             }
         );
 
-        // Columns staggered elevation
-        gsap.from(prizeColumns, {
-            y: 60,
+        // 8. Trust Metrics Strip Entrance
+        gsap.from('.trust-item', {
             opacity: 0,
-            scale: 0.95,
-            stagger: 0.16,
-            duration: 1.1,
-            ease: 'power3.out',
+            y: 20,
+            stagger: 0.1,
+            duration: 0.8,
+            ease: 'power2.out',
             scrollTrigger: {
-                trigger: '.prize-columns-container',
-                start: 'top 85%',
+                trigger: '.prize-trust-strip',
+                start: 'top 88%',
             }
         });
 
-        // Dynamic Odometer Count-Up for 1st, 2nd, and 3rd Prize Amounts
-        countRefs.current.forEach((el, index) => {
-            if (!el) return;
-            const targetVal = PRIZES_DATA[index].numericValue;
-            const counterObj = { val: 0 };
-
-            ScrollTrigger.create({
-                trigger: '.prize-columns-container',
-                start: 'top 82%',
-                once: true,
-                onEnter: () => {
-                    gsap.to(counterObj, {
-                        val: targetVal,
-                        duration: 2.0 + index * 0.25,
-                        ease: 'power2.out',
-                        onUpdate: () => {
-                            if (el) {
-                                el.innerText = `₹${Math.floor(counterObj.val).toLocaleString('en-IN')}`;
-                            }
-                        }
-                    });
-                }
-            });
+        // 9. CTA Button Entrance
+        gsap.from('.prize-cta-container', {
+            opacity: 0,
+            y: 25,
+            duration: 0.9,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.prize-cta-container',
+                start: 'top 92%',
+            }
         });
 
     }, { scope: sectionRef });
@@ -316,11 +381,18 @@ const PrizePool = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[500px] bg-[#7C3CFF]/14 rounded-full blur-[150px] pointer-events-none z-0" />
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[#25104A]/30 rounded-full blur-[170px] pointer-events-none z-0" />
 
-            {/* Top Eyebrow */}
-            <div className="prizepool-eyebrow-container relative z-10 flex items-center justify-center gap-3 md:gap-4 mt-2 select-none">
-                <span className="prizepool-eyebrow-line" />
-                <p className="prizepool-eyebrow-text">WHAT'S AT STAKE</p>
-                <span className="prizepool-eyebrow-line" />
+            {/* Top Eyebrow & Live Pulse Badge */}
+            <div className="flex flex-col items-center gap-2 relative z-10 select-none">
+                <div className="prizepool-eyebrow-container flex items-center justify-center gap-3 md:gap-4 mt-2">
+                    <span className="prizepool-eyebrow-line" />
+                    <p className="prizepool-eyebrow-text">WHAT'S AT STAKE</p>
+                    <span className="prizepool-eyebrow-line" />
+                </div>
+
+                <div className="prize-status-pill">
+                    <span className="prize-pulse-dot" />
+                    <span className="prize-status-pill-text">GRAND PRIZE VAULT UNLOCKED</span>
+                </div>
             </div>
 
             {/* Center Main Composition */}
@@ -337,7 +409,7 @@ const PrizePool = () => {
                     ))}
                 </h1>
 
-                {/* 2. Central Hero Tilted ₹1,00,000 Accent Box (SpyltMilk FUEL UP Concept) */}
+                {/* 2. Central Hero Tilted ₹1,00,000 Accent Box with Live Rolling Odometer */}
                 <div className="hero-prize-scroll-container">
                     {/* Left Light Flare Beam */}
                     <div className="hero-prize-flare-left">
@@ -347,7 +419,7 @@ const PrizePool = () => {
                     {/* Glowing Tilted Accent Container with Clip-Path Reveal */}
                     <div ref={boxRef} className="hero-prize-box">
                         <div className="overflow-hidden">
-                            <span className="hero-prize-amount hero-prize-amount-inner">
+                            <span ref={heroAmountRef} className="hero-prize-amount hero-prize-amount-inner">
                                 ₹1,00,000
                             </span>
                         </div>
@@ -370,7 +442,7 @@ const PrizePool = () => {
                     ))}
                 </h1>
 
-                {/* 4. Editorial Description Paragraph (Matching SpyltMilk) */}
+                {/* 4. Editorial Description Paragraph */}
                 <div className="prize-editorial-desc">
                     <p className="max-w-xl mx-auto">
                         {EDITORIAL_PARAGRAPH.split(" ").map((word, i) => (
@@ -383,7 +455,7 @@ const PrizePool = () => {
                     </p>
                     <div className="mt-4 flex flex-col items-center">
                         <p className="prizepool-supporting-text">
-                            3 WINNERS. ONE PRIZE POOL.
+                            ONE UNIFIED PRIZE POOL &middot; INFINITE REWARDS &amp; CAREER ACCELERATION
                         </p>
                         <div className="prizepool-divider-motif">
                             <span className="prizepool-divider-line" />
@@ -394,24 +466,82 @@ const PrizePool = () => {
                 </div>
             </div>
 
-            {/* Bottom 3-Column Editorial Grid with Dedicated GSAP Animations */}
-            <div className="prize-columns-container select-none">
-                {PRIZES_DATA.map((prize, idx) => (
-                    <React.Fragment key={prize.rank}>
-                        {idx > 0 && <div className="prize-column-separator" />}
-                        <div className="prize-column-item group">
-                            <span className="prize-rank-number">{prize.rank}</span>
-                            <span className="prize-rank-underline" />
-                            <span 
-                                ref={(el) => (countRefs.current[idx] = el)}
-                                className={`prize-col-amount ${prize.isGrand ? 'prize-col-amount-first' : ''}`}
-                            >
-                                {prize.amount}
-                            </span>
-                            <span className="prize-rank-label">{prize.label}</span>
+            {/* 4-Pillar Glassmorphic Opportunity Matrix */}
+            <div className="opportunity-matrix-container select-none">
+                {OPPORTUNITY_PILLARS.map((pillar) => {
+                    const IconComponent = pillar.icon;
+                    return (
+                        <div 
+                            key={pillar.id} 
+                            className={`opportunity-card group ${pillar.accentClass}`}
+                        >
+                            {/* Card Ambient Glow Header */}
+                            <div className="opportunity-card-glow" />
+
+                            <div className="flex items-center justify-between w-full mb-4">
+                                <div className="opportunity-icon-wrap">
+                                    <IconComponent className="w-6 h-6" />
+                                </div>
+                                <span className="opportunity-badge">
+                                    {pillar.badge}
+                                </span>
+                            </div>
+
+                            <div className="text-left w-full">
+                                <span className="opportunity-amount">
+                                    {pillar.amount}
+                                </span>
+                                <h3 className="opportunity-title">
+                                    {pillar.title}
+                                </h3>
+                                <p className="opportunity-subtitle">
+                                    {pillar.subtitle}
+                                </p>
+                                <p className="opportunity-desc">
+                                    {pillar.desc}
+                                </p>
+                            </div>
+
+                            <div className="opportunity-footer-tag">
+                                <span className="opportunity-dot" />
+                                <span>{pillar.highlight}</span>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Trust Metrics Bar */}
+            <div className="prize-trust-strip select-none">
+                {TRUST_STATS.map((stat, idx) => (
+                    <React.Fragment key={idx}>
+                        {idx > 0 && <div className="trust-divider" />}
+                        <div className="trust-item">
+                            <span className="trust-number">{stat.value}</span>
+                            <span className="trust-label">{stat.label}</span>
                         </div>
                     </React.Fragment>
                 ))}
+            </div>
+
+            {/* Strategic Call to Action Strip */}
+            <div className="prize-cta-container select-none">
+                <a 
+                    href="#register" 
+                    className="prize-cta-primary group"
+                    onClick={(e) => {
+                        const target = document.querySelector('#register') || document.querySelector('#prizepool');
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }}
+                >
+                    <span>CLAIM YOUR STAKE &middot; REGISTER NOW</span>
+                    <MdArrowOutward className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </a>
+                <p className="prize-cta-subtext">
+                    Open to all collegiate innovators nationwide &middot; Verified Participation &middot; Accommodation, Meals &amp; Swag Included
+                </p>
             </div>
         </section>
     );
