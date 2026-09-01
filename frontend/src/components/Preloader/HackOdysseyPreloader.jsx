@@ -229,25 +229,34 @@ export default function HackOdysseyPreloader() {
       });
 
       tl.to(atmosphereRef.current, { opacity: 0.15, scale: 1.0, duration: 0.50, ease: "power2.out" }, 0.20);
-      tl.to(topLeftLightRef.current, { opacity: 0.45, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.25);
-      tl.to(bottomRightLightRef.current, { opacity: 0.45, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.40);
+      tl.to(topLeftLightRef.current, { opacity: 0.55, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.25);
+      tl.to(bottomRightLightRef.current, { opacity: 0.55, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.40);
 
       if (skipBtnRef.current) tl.to(skipBtnRef.current, { opacity: 0.85, duration: 0.60, ease: "power2.out" }, 0.80);
 
-      tl.to(handAnchorARef.current, { x: p2TargetAX, y: p2TargetAY, duration: 1.50, ease: "power2.inOut" }, 0.70);
-      tl.to(handAnchorBRef.current, { x: p2TargetBX, y: p2TargetBY, duration: 1.45, ease: "power2.inOut" }, 0.75);
-      tl.to([handWrapperARef.current, handWrapperBRef.current], { filter: "blur(0px)", scale: 1.0, duration: 1.40, ease: "power2.out" }, 0.75);
+      // --- PHASE 1 & 2: Smooth Continuous Diagonal Glide & Deceleration (0.70s → 2.80s) ---
+      // Fade in Hand A & Hand B opacity cleanly alongside lights (from commit 6695a0b)
+      tl.to(handWrapperARef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.70);
+      tl.to(handWrapperBRef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.75);
 
-      tl.to(handAnchorARef.current, { x: finalTargetAX, y: finalTargetAY, duration: 0.60, ease: "power3.out" }, 2.20);
-      tl.to(handAnchorBRef.current, { x: finalTargetBX, y: finalTargetBY, duration: 0.60, ease: "power3.out" }, 2.20);
+      // Softness & Scale settling
+      tl.to([handWrapperARef.current, handWrapperBRef.current], { filter: "blur(0px)", scale: 1.0, duration: 1.20, ease: "power2.out" }, 0.75);
 
+      // Single continuous, fluid diagonal deceleration from corner directly to center touch (Zero stops, Zero stutter)
+      tl.to(handAnchorARef.current, { x: cx, y: cy, duration: 2.10, ease: "power3.out" }, 0.70);
+      tl.to(handAnchorBRef.current, { x: cx, y: cy, duration: 2.05, ease: "power3.out" }, 0.75);
+
+      // Contact point & anticipation glow ramp as hands approach center
+      tl.to(contactPointRef.current, { opacity: 0.25, duration: 0.80, ease: "power2.out" }, 1.40);
+      tl.to(contactPointRef.current, { opacity: 0.60, scale: 1.25, duration: 0.60, ease: "power2.out" }, 2.20);
       tl.to(anticipationGlowRef.current, { opacity: 0.08, scale: 0.85, duration: 0.30, ease: "sine.inOut" }, 2.20);
-      tl.to(anticipationGlowRef.current, { opacity: 0.20, scale: 1.15, duration: 0.30, ease: "power2.out" }, 2.50);
+      tl.to(anticipationGlowRef.current, { opacity: 0.25, scale: 1.20, duration: 0.30, ease: "power2.out" }, 2.50);
       tl.to(atmosphereRef.current, { opacity: 0.20, duration: 0.60, ease: "sine.inOut" }, 2.20);
-      tl.to([topLeftLightRef.current, bottomRightLightRef.current], { opacity: 0.70, scale: 1.05, duration: 0.60, ease: "sine.inOut" }, 2.20);
+      tl.to([topLeftLightRef.current, bottomRightLightRef.current], { opacity: 0.85, scale: 1.10, duration: 0.60, ease: "sine.inOut" }, 2.20);
 
-      tl.to(handAnchorARef.current, { x: cx, y: cy, duration: 0.06, ease: "power2.out" }, 2.80);
-      tl.to(handAnchorBRef.current, { x: cx, y: cy, duration: 0.06, ease: "power2.out" }, 2.80);
+      // --- PHASE 3: Exact Contact Moment (2.80s → 3.20s) ---
+      tl.to(contactPointRef.current, { opacity: 1.0, scale: 2.2, duration: 0.06, ease: "power2.out" }, 2.80);
+      tl.to(contactPointRef.current, { opacity: 0, duration: 0.12, ease: "power2.in" }, 2.86);
       tl.to(anticipationGlowRef.current, { opacity: 0, scale: 0.3, duration: 0.04, ease: "power3.in" }, 2.82);
       tl.to(contactFlashRef.current, { opacity: 1.0, scale: 0.90, duration: 0.03, ease: "power4.out" }, 2.86);
       tl.to(contactFlashRef.current, { opacity: 0, scale: 1.25, duration: 0.03, ease: "power2.in" }, 2.89);
