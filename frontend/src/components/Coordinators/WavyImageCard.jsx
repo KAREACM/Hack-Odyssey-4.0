@@ -134,7 +134,14 @@ const WavyImageCard = ({
             powerPreference: 'high-performance'
         });
         renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+
+        const renderSingleFrame = (delta = 0) => {
+            uniforms.uTime.value += delta;
+            uniforms.uHover.value = currentHover;
+            uniforms.uMouse.value.set(currentMouse.x, currentMouse.y);
+            renderer.render(scene, camera);
+        };
 
         const textureLoader = new THREE.TextureLoader();
         const tex1 = textureLoader.load(primaryImg, (loaded) => {
@@ -142,9 +149,11 @@ const WavyImageCard = ({
                 material.uniforms.uImageRes.value.set(loaded.image.width, loaded.image.height);
             }
             tex1.needsUpdate = true;
+            renderSingleFrame(0);
         });
         const tex2 = textureLoader.load(secondaryImg, () => {
             tex2.needsUpdate = true;
+            renderSingleFrame(0);
         });
 
         tex1.minFilter = THREE.LinearFilter;
@@ -177,21 +186,66 @@ const WavyImageCard = ({
         let currentHover = 0;
         let targetMouse = { x: 0.5, y: 0.5 };
         let currentMouse = { x: 0.5, y: 0.5 };
-        let animId;
+        let animId = null;
+        let isRunning = false;
+        let isIntersecting = false;
         let lastTime = performance.now();
+
+        const tick = (time = performance.now()) => {
+            if (!isRunning) return;
+            const delta = Math.min((time - lastTime) / 1000, 0.05);
+            lastTime = time;
+
+            currentHover += (targetHover - currentHover) * 0.09;
+            currentMouse.x += (targetMouse.x - currentMouse.x) * 0.12;
+            currentMouse.y += (targetMouse.y - currentMouse.y) * 0.12;
+
+            renderSingleFrame(delta);
+
+            const isSettled = targetHover === 0 && Math.abs(currentHover) < 0.001 &&
+                Math.abs(targetMouse.x - currentMouse.x) < 0.002 &&
+                Math.abs(targetMouse.y - currentMouse.y) < 0.002;
+
+            if (isSettled) {
+                currentHover = 0;
+                renderSingleFrame(0);
+                isRunning = false;
+                animId = null;
+            } else {
+                animId = requestAnimationFrame(tick);
+            }
+        };
+
+        const startLoop = () => {
+            if (isRunning || !isIntersecting) return;
+            isRunning = true;
+            lastTime = performance.now();
+            animId = requestAnimationFrame(tick);
+        };
+
+        const stopLoop = () => {
+            isRunning = false;
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+        };
 
         const onPointerEnter = () => {
             targetHover = 1.0;
+            startLoop();
         };
 
         const onPointerLeave = () => {
             targetHover = 0.0;
+            startLoop();
         };
 
         const onPointerMove = (e) => {
             const rect = container.getBoundingClientRect();
             targetMouse.x = (e.clientX - rect.left) / rect.width;
             targetMouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
+            if (!isRunning) startLoop();
         };
 
         container.addEventListener('pointerenter', onPointerEnter);
@@ -205,30 +259,34 @@ const WavyImageCard = ({
                 if (newWidth > 0 && newHeight > 0) {
                     renderer.setSize(newWidth, newHeight);
                     uniforms.uResolution.value.set(newWidth, newHeight);
+                    renderSingleFrame(0);
                 }
             }
         });
         resizeObserver.observe(container);
 
-        const animate = (time = performance.now()) => {
-            animId = requestAnimationFrame(animate);
-            const delta = Math.min((time - lastTime) / 1000, 0.1);
-            lastTime = time;
-            uniforms.uTime.value += delta;
+        // Viewport IntersectionObserver to sleep/wake when in/out of view
+        const intersectionObserver = new IntersectionObserver((entries) => {
+            for (let entry of entries) {
+                isIntersecting = entry.isIntersecting;
+                if (isIntersecting) {
+                    renderSingleFrame(0);
+                    if (targetHover > 0 || currentHover > 0.001) {
+                        startLoop();
+                    }
+                } else {
+                    stopLoop();
+                }
+            }
+        }, { threshold: 0.05 });
+        intersectionObserver.observe(container);
 
-            currentHover += (targetHover - currentHover) * 0.08;
-            uniforms.uHover.value = currentHover;
-
-            currentMouse.x += (targetMouse.x - currentMouse.x) * 0.1;
-            currentMouse.y += (targetMouse.y - currentMouse.y) * 0.1;
-            uniforms.uMouse.value.set(currentMouse.x, currentMouse.y);
-
-            renderer.render(scene, camera);
-        };
-        animate();
+        // Initial render
+        renderSingleFrame(0);
 
         return () => {
-            cancelAnimationFrame(animId);
+            stopLoop();
+            intersectionObserver.disconnect();
             resizeObserver.disconnect();
             container.removeEventListener('pointerenter', onPointerEnter);
             container.removeEventListener('pointerleave', onPointerLeave);

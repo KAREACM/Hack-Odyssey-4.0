@@ -451,6 +451,8 @@ body:has(.hackodyssey-preloader) #crsr {
 .card {
 	width: fit-content;
 	flex-shrink: 0;
+	will-change: transform;
+	transform: translateZ(0);
 }
 
 .card-heading-container {
@@ -474,6 +476,8 @@ body:has(.hackodyssey-preloader) #crsr {
 	flex-shrink: 0;
 	position: relative;
 	background-color: #161616;
+	contain: paint;
+	transform: translateZ(0);
 }
 
 .card .card-details {

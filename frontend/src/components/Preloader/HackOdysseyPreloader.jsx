@@ -477,37 +477,96 @@ export default function HackOdysseyPreloader() {
 
       // Unified subtle constellation gleam across the collaboration line
       tl.to(collabGroupRef.current, {
-        filter: "drop-shadow(0 0 10px rgba(192, 132, 252, 0.5))",
-        duration: 0.25,
+        filter: "drop-shadow(0 0 12px rgba(192, 132, 252, 0.6))",
+        duration: 0.28,
         yoyo: true,
         repeat: 1,
         ease: "sine.inOut",
       }, "orbitComplete+=0.04");
 
-      // --- PHASE 6: Grand Event Presentation Reveal ---
+      // --- PHASE 6: Smooth Stage Transition & Grand Event Presentation ---
+      // Clear the stage: Gracefully dissolve the collaboration subtitle and soften the partner ring
+      tl.to(collabGroupRef.current, {
+        opacity: 0,
+        y: -14,
+        duration: 0.35,
+        ease: "power2.inOut",
+      }, "collaborationComplete");
+
+      tl.to([
+        orbitSvgRef.current,
+        kareLogoWrapperRef.current,
+        acmWLogoWrapperRef.current,
+        ieeeLogoWrapperRef.current,
+        gfgLogoWrapperRef.current,
+        nodeAcmWRef.current,
+        nodeIeeeRef.current,
+        nodeGfgRef.current,
+        nodeKareRef.current,
+      ], {
+        opacity: 0.10,
+        scale: 1.08,
+        duration: 0.45,
+        ease: "power2.inOut",
+      }, "collaborationComplete+=0.05");
+
+      // Reveal PRESENTS in clean, unobstructed center stage
       tl.set(eventTitleGroupRef.current, { opacity: 1 }, "presentsReveal");
       tl.fromTo(presentsRef.current,
-        { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" },
+        { opacity: 0, y: 12, letterSpacing: "0.32em" },
+        { opacity: 1, y: 0, letterSpacing: "0.45em", duration: 0.32, ease: "power3.out" },
         "presentsReveal"
       );
 
+      // Reveal HACK ODYSSEY with cinematic typographic weight
       tl.fromTo([wordHackRef.current, wordOdysseyRef.current],
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" },
+        { opacity: 0, y: 22, scale: 0.94 },
+        { opacity: 1, y: 0, scale: 1.0, duration: 0.42, stagger: 0.08, ease: "power4.out" },
         "titleReveal"
       );
 
+      // Punchy circled 4.0 exponent badge entrance
       tl.fromTo(versionRef.current,
-        { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1.0, duration: 0.24, ease: "back.out(1.8)" },
-        "titleReveal+=0.10"
+        { opacity: 0, scale: 0.2, rotation: -15 },
+        { opacity: 1, scale: 1.0, rotation: 0, duration: 0.32, ease: "back.out(2.0)" },
+        "titleReveal+=0.16"
       );
 
+      // Soft ambient nebula expansion
+      tl.fromTo(atmosphereRef.current,
+        { opacity: 0.22, scale: 1.0 },
+        { opacity: 0.40, scale: 1.25, duration: 0.45, yoyo: true, repeat: 1, ease: "sine.inOut" },
+        "titleReveal"
+      );
+
+      // --- PHASE 7: Master Cinematic Outro (Seamless Camera Push-Through to Live Website) ---
       if (skipBtnRef.current) {
-        tl.to(skipBtnRef.current, { opacity: 0, duration: 0.25, ease: "power2.in" }, "titleReveal+=1.50");
+        tl.to(skipBtnRef.current, { opacity: 0, duration: 0.20, ease: "power2.in" }, "titleReveal+=1.15");
       }
-      tl.to(containerRef.current, { opacity: 0, duration: 0.55, ease: "power2.inOut" }, "titleReveal+=1.70");
+
+      // Ethereal forward push through the title
+      tl.to(titleWrapRef.current, {
+        scale: 1.08,
+        filter: "blur(3px)",
+        opacity: 0,
+        duration: 0.55,
+        ease: "power2.in",
+      }, "titleReveal+=1.20");
+
+      tl.to(presentsRef.current, {
+        opacity: 0,
+        y: -8,
+        duration: 0.30,
+        ease: "power2.in",
+      }, "titleReveal+=1.20");
+
+      // Smooth cinematic aperture dissolve revealing the website beneath
+      tl.to(containerRef.current, {
+        opacity: 0,
+        scale: 1.03,
+        duration: 0.65,
+        ease: "power2.inOut",
+      }, "titleReveal+=1.30");
 
     },
     { scope: containerRef, dependencies: [isSkipped, isComplete] }
