@@ -214,8 +214,8 @@ export default function HackOdysseyPreloader() {
       if (arc3Ref.current) tl.set(arc3Ref.current, { strokeDasharray: arc3Len, strokeDashoffset: arc3Len });
       if (arc4Ref.current) tl.set(arc4Ref.current, { strokeDasharray: arc4Len, strokeDashoffset: arc4Len });
 
-      // 1. Initialize static properties
-      tl.set(contactPointRef.current, { opacity: 0.35, scale: 1.0 });
+      // 1. Initialize static properties (Contact point starts invisible so no static dot sits in the center)
+      tl.set(contactPointRef.current, { opacity: 0, scale: 0.4 });
       tl.set(atmosphereRef.current, { scale: 0.92 });
       tl.set(anticipationGlowRef.current, { scale: 0.6 });
       tl.set(contactFlashRef.current, { scale: 0.4 });
@@ -230,13 +230,13 @@ export default function HackOdysseyPreloader() {
       });
 
       tl.to(atmosphereRef.current, { opacity: 0.15, scale: 1.0, duration: 0.50, ease: "power2.out" }, 0.20);
-      tl.to(topLeftLightRef.current, { opacity: 0.55, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.25);
-      tl.to(bottomRightLightRef.current, { opacity: 0.55, scale: 0.85, duration: 0.45, ease: "sine.out" }, 0.40);
+      tl.to(topLeftLightRef.current, { opacity: 0.70, scale: 0.90, duration: 0.45, ease: "sine.out" }, 0.25);
+      tl.to(bottomRightLightRef.current, { opacity: 0.70, scale: 0.90, duration: 0.45, ease: "sine.out" }, 0.40);
 
       if (skipBtnRef.current) tl.to(skipBtnRef.current, { opacity: 0.85, duration: 0.60, ease: "power2.out" }, 0.80);
 
       // --- PHASE 1 & 2: Smooth Continuous Diagonal Glide & Deceleration (0.70s → 2.80s) ---
-      // Fade in Hand A & Hand B opacity cleanly alongside lights
+      // Hands fade in cleanly alongside their fingertip energy lights
       tl.to(handWrapperARef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.70);
       tl.to(handWrapperBRef.current, { opacity: 1.0, duration: 0.40, ease: "power2.out" }, 0.75);
 
@@ -247,26 +247,28 @@ export default function HackOdysseyPreloader() {
       tl.to(handAnchorARef.current, { x: cx, y: cy, duration: 2.10, ease: "power3.out" }, 0.70);
       tl.to(handAnchorBRef.current, { x: cx, y: cy, duration: 2.05, ease: "power3.out" }, 0.75);
 
-      // Contact point is consistent throughout, then ramps up intensity as hands close in
-      tl.to(contactPointRef.current, { opacity: 0.55, scale: 1.15, duration: 0.80, ease: "power2.out" }, 1.40);
-      tl.to(contactPointRef.current, { opacity: 0.90, scale: 1.50, duration: 0.60, ease: "power2.out" }, 2.20);
-      tl.to(anticipationGlowRef.current, { opacity: 0.12, scale: 0.85, duration: 0.30, ease: "sine.inOut" }, 2.20);
-      tl.to(anticipationGlowRef.current, { opacity: 0.30, scale: 1.25, duration: 0.30, ease: "power2.out" }, 2.50);
+      // Anticipation buildup: As fingertips approach within 45px (2.20s → 2.80s), an electric bridge hums between them
+      tl.to(anticipationGlowRef.current, { opacity: 0.18, scale: 0.95, duration: 0.35, ease: "sine.inOut" }, 2.20);
+      tl.to(anticipationGlowRef.current, { opacity: 0.45, scale: 1.40, duration: 0.25, ease: "power2.out" }, 2.55);
       tl.to(atmosphereRef.current, { opacity: 0.22, duration: 0.60, ease: "sine.inOut" }, 2.20);
-      tl.to([topLeftLightRef.current, bottomRightLightRef.current], { opacity: 0.90, scale: 1.10, duration: 0.60, ease: "sine.inOut" }, 2.20);
+      tl.to([topLeftLightRef.current, bottomRightLightRef.current], { opacity: 1.0, scale: 1.25, duration: 0.60, ease: "power2.in" }, 2.20);
 
       // --- PHASE 3: Exact Contact Moment, Radiant Flash & Explosive Sparks (2.80s → 2.95s) ---
-      // Brilliant contact touch flare
-      tl.to(contactPointRef.current, { opacity: 1.0, scale: 2.8, duration: 0.05, ease: "power4.out" }, 2.80);
-      tl.to(contactPointRef.current, { opacity: 0, duration: 0.10, ease: "power2.in" }, 2.85);
+      // The central singularity ignites only upon physical contact (Zero stray dot before touch)
+      tl.fromTo(contactPointRef.current,
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1.0, scale: 3.2, duration: 0.05, ease: "power4.out" },
+        2.80
+      );
+      tl.to(contactPointRef.current, { opacity: 0, scale: 4.0, duration: 0.12, ease: "power2.in" }, 2.85);
       tl.to(anticipationGlowRef.current, { opacity: 0, scale: 0.2, duration: 0.04, ease: "power3.in" }, 2.81);
 
-      // High-visibility Contact Flash
-      tl.fromTo(contactFlashRef.current, { opacity: 0, scale: 0.4 }, { opacity: 1.0, scale: 2.2, duration: 0.07, ease: "power4.out" }, 2.80);
-      tl.to(contactFlashRef.current, { opacity: 0, scale: 2.8, duration: 0.16, ease: "power2.in" }, 2.87);
+      // Brilliant Contact Flash
+      tl.fromTo(contactFlashRef.current, { opacity: 0, scale: 0.4 }, { opacity: 1.0, scale: 2.5, duration: 0.08, ease: "power4.out" }, 2.80);
+      tl.to(contactFlashRef.current, { opacity: 0, scale: 3.2, duration: 0.18, ease: "power2.in" }, 2.88);
 
-      // Expanding Energy Pulse
-      tl.fromTo(energyPulseRef.current, { opacity: 0.95, scale: 0.15 }, { opacity: 0, scale: 1.8, duration: 0.32, ease: "power2.out" }, 2.82);
+      // Expanding Energy Shockwave Pulse
+      tl.fromTo(energyPulseRef.current, { opacity: 1.0, scale: 0.10 }, { opacity: 0, scale: 2.2, duration: 0.35, ease: "power2.out" }, 2.81);
 
       // 18 Radiant Contact Spark Particles shooting outward with sparkling trail
       contactParticlesRef.current.forEach((particle, idx) => {
