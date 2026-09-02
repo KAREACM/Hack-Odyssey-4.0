@@ -17,8 +17,8 @@ const Navbar = () => {
 
   const menuItems = [
     { name: "The Odyssey", href: "#welcome" },
-    { name: "Prize Pool", href: "#prizepool" },
     { name: "Our Team", href: "#page3" },
+    { name: "Prize Pool", href: "#prizepool" },
     { name: "Gallery", href: "#gallery" },
   ];
 
@@ -53,20 +53,29 @@ const Navbar = () => {
     return () => disposers.forEach((d) => d());
   });
 
-  // 2. High-Performance Nav Relocation (No Laggy Multi-Section Scrubbing)
+  // 2. High-Performance Nav Relocation with Accurate Pinned-Section Calculation
   const handleNavClick = (e, href) => {
     e.preventDefault();
     const targetEl = document.querySelector(href);
 
-    // Relocate viewport immediately while the menu curtain is still covering the screen
     if (targetEl) {
       const smoother = ScrollSmoother.get();
       if (smoother) {
-        smoother.scrollTo(targetEl, false);
+        ScrollTrigger.refresh();
+
+        // Check if the target or its pin has an active ScrollTrigger instance (e.g. pinned Gallery / Winners)
+        const matchedST = ScrollTrigger.getAll().find(
+          (st) => st.trigger === targetEl || st.pin === targetEl
+        );
+
+        // Use ScrollTrigger's exact start scroll coordinate if pinned, or smoother's calculated offset
+        const targetPos = matchedST ? matchedST.start : smoother.offset(targetEl, "top top");
+
+        // Directly set ScrollSmoother's internal scrollTop position (prevents snapping back to top)
+        smoother.scrollTop(targetPos);
       } else {
         targetEl.scrollIntoView({ behavior: "instant" });
       }
-      ScrollTrigger.refresh();
     }
 
     // Retract menu smoothly, revealing the target section already in place
