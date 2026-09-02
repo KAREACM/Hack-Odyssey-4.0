@@ -163,7 +163,7 @@ export default function HackOdysseyPreloader() {
       const finalTargetBY = cy + finalGapY;
       const minDim = Math.min(width, height);
       const orbitRadius = isMobile
-        ? Math.min(width * 0.38, height * 0.28, minDim * 0.32)
+        ? Math.min(width * 0.38, height * 0.28, minDim * 0.35)
         : Math.min(width * 0.38, height * 0.36, minDim * 0.34);
 
       const posKare = { x: 0, y: -orbitRadius };
@@ -584,7 +584,7 @@ export default function HackOdysseyPreloader() {
   const minDim = Math.min(width, height);
   const isMobile = width < 768;
   const orbitRadius = isMobile
-    ? Math.min(width * 0.38, height * 0.28, minDim * 0.32)
+    ? Math.min(width * 0.38, height * 0.28, minDim * 0.35)
     : Math.min(width * 0.38, height * 0.36, minDim * 0.34);
 
   const toRad = Math.PI / 180;
@@ -684,27 +684,31 @@ export default function HackOdysseyPreloader() {
             A COLLABORATION BETWEEN
           </div>
           <div className="hop-collab-names-line">
-            <span ref={collabNameKareRef} className="hop-collab-item" style={{ opacity: 0 }}>
-              KARE ACM
-            </span>
-            <span ref={collabSep1Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
+            <div className="hop-collab-row hop-collab-row-1">
+              <span ref={collabNameKareRef} className="hop-collab-item" style={{ opacity: 0 }}>
+                KARE ACM
+              </span>
+              <span ref={collabSep1Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
+                ×
+              </span>
+              <span ref={collabNameAcmWRef} className="hop-collab-item" style={{ opacity: 0 }}>
+                ACM-W
+              </span>
+            </div>
+            <span ref={collabSep2Ref} className="hop-collab-sep hop-collab-sep-mid" style={{ opacity: 0 }}>
               ×
             </span>
-            <span ref={collabNameAcmWRef} className="hop-collab-item" style={{ opacity: 0 }}>
-              ACM-W
-            </span>
-            <span ref={collabSep2Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
-              ×
-            </span>
-            <span ref={collabNameIeeeRef} className="hop-collab-item" style={{ opacity: 0 }}>
-              IEEE EDUCATION SOCIETY
-            </span>
-            <span ref={collabSep3Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
-              ×
-            </span>
-            <span ref={collabNameGfgRef} className="hop-collab-item" style={{ opacity: 0 }}>
-              GFG
-            </span>
+            <div className="hop-collab-row hop-collab-row-2">
+              <span ref={collabNameIeeeRef} className="hop-collab-item" style={{ opacity: 0 }}>
+                IEEE EDUCATION SOCIETY
+              </span>
+              <span ref={collabSep3Ref} className="hop-collab-sep" style={{ opacity: 0 }}>
+                ×
+              </span>
+              <span ref={collabNameGfgRef} className="hop-collab-item" style={{ opacity: 0 }}>
+                GFG
+              </span>
+            </div>
           </div>
         </div>
 

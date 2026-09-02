@@ -426,8 +426,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.45rem;
+}
+
+.hackodyssey-preloader .hop-collab-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.hackodyssey-preloader .hop-collab-sep-mid {
+  display: inline-flex;
 }
 
 .hackodyssey-preloader .hop-collab-item {
@@ -570,8 +581,48 @@
     height: clamp(36px, 9.5vw, 47px);
   }
 
+  /* Collaboration alignment & safe clearance on mobile screens */
+  .hackodyssey-preloader .hop-collab-group {
+    max-width: min(230px, 62vw);
+    width: 100%;
+  }
+
+  .hackodyssey-preloader .hop-collab-eyebrow {
+    font-size: clamp(0.50rem, 2.2vw, 0.60rem);
+    letter-spacing: clamp(0.16em, 1.2vw, 0.22em);
+    margin-bottom: 0.38rem;
+    white-space: nowrap;
+  }
+
   .hackodyssey-preloader .hop-collab-names-line {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 0.30rem;
+    max-width: min(230px, 62vw);
+    width: 100%;
+  }
+
+  .hackodyssey-preloader .hop-collab-row {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.30rem;
+    white-space: nowrap;
+  }
+
+  .hackodyssey-preloader .hop-collab-item {
+    font-size: clamp(0.58rem, 2.4vw, 0.68rem);
+    letter-spacing: 0.05em;
+  }
+
+  .hackodyssey-preloader .hop-collab-sep {
+    font-size: clamp(0.54rem, 2.2vw, 0.62rem);
+    padding: 0 0.02rem;
+  }
+
+  .hackodyssey-preloader .hop-collab-sep-mid {
+    display: none !important;
   }
 }
 
