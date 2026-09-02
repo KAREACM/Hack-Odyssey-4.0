@@ -17,10 +17,8 @@ const Navbar = () => {
 
   const menuItems = [
     { name: "The Odyssey", href: "#welcome" },
-    { name: "Our Team", href: "#page3" },
     { name: "Prize Pool", href: "#prizepool" },
-    { name: "Past Winners", href: "#winners" },
-    { name: "Highlights", href: "#highlights" },
+    { name: "Our Team", href: "#page3" },
     { name: "Gallery", href: "#gallery" },
   ];
 
@@ -173,23 +171,16 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Expanded Full-Screen Menu Overlay (Balanced Vertical Rhythm & Spacing) */}
+      {/* Expanded Full-Screen Menu Overlay (Optically Centered & Balanced Spacing) */}
       <div
         ref={menuRef}
-        className="navmenu fixed inset-0 w-full h-screen bg-[#030206]/98 backdrop-blur-3xl flex flex-col justify-between items-center z-[1000] hidden overflow-hidden select-none px-6 py-8 sm:py-10 md:py-12"
+        className="navmenu fixed inset-0 w-full h-screen bg-[#030206]/98 backdrop-blur-3xl flex flex-col justify-center items-center z-[1000] hidden overflow-hidden select-none px-6"
       >
         {/* Subtle Purple Ambient Nebula Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-purple-600/10 rounded-full blur-[160px] pointer-events-none" />
 
-        {/* Top Eyebrow Header */}
-        <div className="relative z-10 pt-16 sm:pt-14 md:pt-12 text-center">
-          <span className="text-[10px] sm:text-xs font-mono font-semibold tracking-[0.3em] text-[#a855f7] uppercase opacity-85">
-            HACK ODYSSEY 4.0 &middot; NAVIGATION
-          </span>
-        </div>
-
-        {/* Centered Navigation Links */}
-        <div className="relative z-10 flex flex-col justify-center items-center text-center space-y-1 sm:space-y-1.5 md:space-y-2 max-w-4xl px-6 w-full">
+        {/* Centered Navigation Links (Dead Center with Generous Vertical Rhythm) */}
+        <div className="relative z-10 flex flex-col justify-center items-center text-center space-y-3 sm:space-y-4 md:space-y-5 max-w-4xl px-6 w-full my-auto">
           {menuItems.map((item) => (
             <a
               key={item.name}
@@ -197,7 +188,7 @@ const Navbar = () => {
               onClick={(e) => handleNavClick(e, item.href)}
               onMouseEnter={() => setHovered(item.name)}
               onMouseLeave={() => setHovered(null)}
-              className={`navmenu-link font-hero-bebas uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5rem] tracking-tight leading-[1.08] transition-all duration-300 block py-0.5 sm:py-1 cursor-pointer ${
+              className={`navmenu-link font-hero-bebas uppercase text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] tracking-tight leading-[1.04] transition-all duration-300 block py-1 cursor-pointer ${
                 hovered === item.name
                   ? "text-white scale-105 drop-shadow-[0_0_30px_rgba(168,85,247,0.7)]"
                   : hovered
@@ -211,7 +202,7 @@ const Navbar = () => {
         </div>
 
         {/* Bottom Social Links: LinkedIn, Instagram, GitHub */}
-        <div className="relative z-10 navmenu-social flex items-center justify-center gap-7 sm:gap-10 text-xs sm:text-sm font-mono tracking-widest text-[#a199b0] pb-4 sm:pb-6 pt-4 border-t border-white/10 w-full max-w-md">
+        <div className="relative z-10 navmenu-social flex items-center justify-center gap-7 sm:gap-10 text-xs sm:text-sm font-mono tracking-widest text-[#a199b0] mb-8 sm:mb-10 md:mb-12 pt-4 border-t border-white/10 w-full max-w-md">
           <a
             href="https://linkedin.com"
             target="_blank"
