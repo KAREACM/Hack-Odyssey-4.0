@@ -49,7 +49,7 @@ const BenefitVideo = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="video-highlight-section w-full bg-[#030206] text-[#f4efe7] relative">
+        <section id="highlights" ref={containerRef} className="video-highlight-section w-full bg-[#030206] text-[#f4efe7] relative">
             {/* Top Introductory Section Tailored to Hack Odyssey */}
             <div className="max-w-6xl mx-auto pt-20 sm:pt-28 pb-10 sm:pb-14 px-6 sm:px-12 flex flex-col items-center text-center relative z-10">
                 {/* Eyebrow with Purple Accent Line */}

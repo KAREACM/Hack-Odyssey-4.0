@@ -168,7 +168,7 @@ const Winners = () => {
     };
 
     return (
-        <section className="winners-page4" ref={pageRef}>
+        <section id="winners" className="winners-page4" ref={pageRef}>
             {/* Ambient Lighting matching Prize Pool */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[#25104A]/30 rounded-full blur-[170px] pointer-events-none z-0" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[500px] bg-[#7C3CFF]/14 rounded-full blur-[150px] pointer-events-none z-0" />

@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/all";
 import { IoMdClose } from "react-icons/io";
 import { MdArrowOutward } from "react-icons/md";
 import { FaLinkedin, FaInstagram, FaGithub } from "react-icons/fa6";
 import acmLogo from "../../assets/acm_logo.png";
+
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,10 +17,11 @@ const Navbar = () => {
 
   const menuItems = [
     { name: "The Odyssey", href: "#welcome" },
-    { name: "Prize Pool", href: "#prizepool" },
     { name: "Our Team", href: "#page3" },
+    { name: "Prize Pool", href: "#prizepool" },
+    { name: "Past Winners", href: "#winners" },
+    { name: "Highlights", href: "#highlights" },
     { name: "Gallery", href: "#gallery" },
-    { name: "Register Now", href: "#prizepool" },
   ];
 
   // 1. Spylt-Inspired Magnetic Cursor Hover Effect on Nav Elements
@@ -50,7 +55,27 @@ const Navbar = () => {
     return () => disposers.forEach((d) => d());
   });
 
-  // 2. Spylt GSAP Slide-Down Menu Expand Animation
+  // 2. High-Performance Nav Relocation (No Laggy Multi-Section Scrubbing)
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    const targetEl = document.querySelector(href);
+
+    // Relocate viewport immediately while the menu curtain is still covering the screen
+    if (targetEl) {
+      const smoother = ScrollSmoother.get();
+      if (smoother) {
+        smoother.scrollTo(targetEl, false);
+      } else {
+        targetEl.scrollIntoView({ behavior: "instant" });
+      }
+      ScrollTrigger.refresh();
+    }
+
+    // Retract menu smoothly, revealing the target section already in place
+    setIsMenuOpen(false);
+  };
+
+  // 3. Spylt GSAP Slide-Down Menu Expand / Retract Animation
   useEffect(() => {
     const menu = menuRef.current;
     if (!menu) return;
@@ -60,26 +85,26 @@ const Navbar = () => {
       gsap.fromTo(
         menu,
         { yPercent: -100, opacity: 0, display: "flex" },
-        { yPercent: 0, opacity: 1, duration: 0.75, ease: "power3.out", display: "flex" }
+        { yPercent: 0, opacity: 1, duration: 0.65, ease: "power3.out", display: "flex" }
       );
       // Stagger in links with upward slide
       gsap.fromTo(
         ".navmenu-link",
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, delay: 0.2, ease: "power3.out" }
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.06, delay: 0.15, ease: "power3.out" }
       );
       // Stagger in bottom social row
       gsap.fromTo(
         ".navmenu-social",
-        { y: 25, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, delay: 0.45, ease: "power3.out" }
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.45, delay: 0.4, ease: "power3.out" }
       );
     } else {
       // Smooth Slide-Up Close Animation
       gsap.to(menu, {
         yPercent: -100,
         opacity: 0,
-        duration: 0.6,
+        duration: 0.5,
         ease: "power3.in",
         onComplete: () => {
           gsap.set(menu, { display: "none" });
@@ -131,10 +156,15 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Right: Action Pill Button (Spylt Style: FIND STORES -> REGISTER NOW) */}
+        {/* Right: Action Pill Button (Spylt Style: REGISTER NOW) */}
         <div className="flex items-center pointer-events-auto flex-1 justify-end">
           <a
             href="#prizepool"
+            onClick={(e) => {
+              if (isMenuOpen) {
+                handleNavClick(e, "#prizepool");
+              }
+            }}
             className="nav-cta px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#f4efe7] hover:bg-white text-[#181717] font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-[0_0_20px_rgba(244,239,231,0.4)] transition-all duration-300 flex items-center gap-2 group cursor-pointer"
           >
             <span>REGISTER NOW</span>
@@ -143,28 +173,31 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Expanded Full-Screen Menu Overlay (Centered Links + Socials, No Right Image) */}
+      {/* Expanded Full-Screen Menu Overlay (Balanced Vertical Rhythm & Spacing) */}
       <div
         ref={menuRef}
-        className="navmenu fixed inset-0 w-full h-screen bg-[#030206]/98 backdrop-blur-3xl flex flex-col justify-center items-center z-[1000] hidden overflow-hidden select-none"
+        className="navmenu fixed inset-0 w-full h-screen bg-[#030206]/98 backdrop-blur-3xl flex flex-col justify-between items-center z-[1000] hidden overflow-hidden select-none px-6 py-8 sm:py-10 md:py-12"
       >
         {/* Subtle Purple Ambient Nebula Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-purple-600/10 rounded-full blur-[160px] pointer-events-none" />
 
-        {/* Centered Navigation Content */}
-        <div className="relative z-10 flex flex-col justify-center items-center text-center space-y-1 sm:space-y-2 max-w-4xl px-6">
-          <span className="text-[10px] sm:text-xs font-mono font-semibold tracking-[0.3em] text-[#a855f7] uppercase mb-4 sm:mb-6 opacity-85">
+        {/* Top Eyebrow Header */}
+        <div className="relative z-10 pt-16 sm:pt-14 md:pt-12 text-center">
+          <span className="text-[10px] sm:text-xs font-mono font-semibold tracking-[0.3em] text-[#a855f7] uppercase opacity-85">
             HACK ODYSSEY 4.0 &middot; NAVIGATION
           </span>
+        </div>
 
+        {/* Centered Navigation Links */}
+        <div className="relative z-10 flex flex-col justify-center items-center text-center space-y-1 sm:space-y-1.5 md:space-y-2 max-w-4xl px-6 w-full">
           {menuItems.map((item) => (
             <a
               key={item.name}
               href={item.href}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => handleNavClick(e, item.href)}
               onMouseEnter={() => setHovered(item.name)}
               onMouseLeave={() => setHovered(null)}
-              className={`navmenu-link font-hero-bebas uppercase text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] tracking-tight transition-all duration-300 block py-1 cursor-pointer ${
+              className={`navmenu-link font-hero-bebas uppercase text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5rem] tracking-tight leading-[1.08] transition-all duration-300 block py-0.5 sm:py-1 cursor-pointer ${
                 hovered === item.name
                   ? "text-white scale-105 drop-shadow-[0_0_30px_rgba(168,85,247,0.7)]"
                   : hovered
@@ -175,37 +208,37 @@ const Navbar = () => {
               {item.name}
             </a>
           ))}
+        </div>
 
-          {/* Bottom Social Links: LinkedIn, Instagram, GitHub */}
-          <div className="navmenu-social flex items-center justify-center gap-7 sm:gap-10 text-xs sm:text-sm font-mono tracking-widest text-[#a199b0] mt-8 sm:mt-12 md:mt-14 pt-4 border-t border-white/10 w-full max-w-md">
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
-            >
-              <FaLinkedin className="text-sm sm:text-base text-purple-400 group-hover:scale-110 transition-transform" />
-              <span>LinkedIn</span>
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
-            >
-              <FaInstagram className="text-pink-400 group-hover:scale-110 transition-transform text-sm sm:text-base" />
-              <span>Instagram</span>
-            </a>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
-            >
-              <FaGithub className="text-white group-hover:scale-110 transition-transform text-sm sm:text-base" />
-              <span>GitHub</span>
-            </a>
-          </div>
+        {/* Bottom Social Links: LinkedIn, Instagram, GitHub */}
+        <div className="relative z-10 navmenu-social flex items-center justify-center gap-7 sm:gap-10 text-xs sm:text-sm font-mono tracking-widest text-[#a199b0] pb-4 sm:pb-6 pt-4 border-t border-white/10 w-full max-w-md">
+          <a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
+          >
+            <FaLinkedin className="text-sm sm:text-base text-purple-400 group-hover:scale-110 transition-transform" />
+            <span>LinkedIn</span>
+          </a>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
+          >
+            <FaInstagram className="text-pink-400 group-hover:scale-110 transition-transform text-sm sm:text-base" />
+            <span>Instagram</span>
+          </a>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
+          >
+            <FaGithub className="text-white group-hover:scale-110 transition-transform text-sm sm:text-base" />
+            <span>GitHub</span>
+          </a>
         </div>
       </div>
     </>

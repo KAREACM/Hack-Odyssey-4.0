@@ -45,7 +45,7 @@ const Welcome = () => {
     });
 
     return (
-        <section className="welcome-section w-full min-h-screen text-[#f4efe7] px-6 sm:px-12 md:px-16 lg:px-24 pt-24 md:pt-32 pb-24 relative overflow-hidden bg-[#030206]">
+        <section id="welcome" className="welcome-section w-full min-h-screen text-[#f4efe7] px-6 sm:px-12 md:px-16 lg:px-24 pt-24 md:pt-32 pb-24 relative overflow-hidden bg-[#030206]">
             {/* Cinematic Background Layer - shifted lower so top remains deep cinematic black */}
             <div
                 className="absolute inset-x-0 bottom-0 top-24 md:top-36 bg-cover bg-bottom bg-no-repeat opacity-85 pointer-events-none z-0 scale-105"
