@@ -6,6 +6,7 @@ import PrizePool from '../../components/PrizePool/PrizePool'
 import Winners from '../../components/Winners/Winners'
 import BenefitVideo from '../../components/BenefitVideo/BenefitVideo'
 import Gallery from '../../components/Gallery/Gallery'
+import FAQ from '../../components/FAQ/FAQ'
 
 const Home = () => {
     return (
@@ -17,6 +18,7 @@ const Home = () => {
             <Winners />
             <BenefitVideo />
             <Gallery />
+            <FAQ />
         </div>
     )
 }

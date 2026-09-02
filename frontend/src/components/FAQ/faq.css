@@ -1,0 +1,136 @@
+/* ====================================================================
+   HACK ODYSSEY 4.0 — FAQ COMPONENT STYLES
+   ==================================================================== */
+
+.faq-section {
+  background-color: #040208;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Atmospheric Ambient Nebula Glow */
+.faq-ambient-glow {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: clamp(350px, 45vw, 650px);
+  height: clamp(350px, 45vw, 650px);
+  background: radial-gradient(circle, rgba(155, 77, 255, 0.09) 0%, rgba(37, 16, 74, 0.04) 55%, transparent 75%);
+  border-radius: 9999px;
+  filter: blur(140px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.faq-ambient-glow-secondary {
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+  width: clamp(300px, 35vw, 500px);
+  height: clamp(300px, 35vw, 500px);
+  background: radial-gradient(circle, rgba(124, 60, 255, 0.07) 0%, rgba(16, 7, 32, 0.03) 60%, transparent 75%);
+  border-radius: 9999px;
+  filter: blur(130px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Accordion Row Micro-Interactions */
+.faq-row-btn {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-row-btn:hover .faq-question-text {
+  transform: translateX(4px);
+  color: #ffffff;
+}
+
+/* Smooth Accordion Height Expansion using Grid-Template-Rows */
+.faq-answer-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.faq-answer-wrapper.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+/* Circular Plus / Minus Indicator */
+.faq-toggle-circle {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-row-btn:hover .faq-toggle-circle {
+  border-color: rgba(168, 85, 247, 0.6);
+  background-color: rgba(155, 77, 255, 0.1);
+  color: #c084fc;
+}
+
+.faq-row-btn.is-active .faq-toggle-circle {
+  border-color: #a855f7;
+  background-color: rgba(155, 77, 255, 0.22);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.35);
+}
+
+/* Support Card Styling */
+.faq-support-card {
+  background: linear-gradient(180deg, rgba(16, 8, 30, 0.85) 0%, rgba(8, 4, 19, 0.95) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(155, 77, 255, 0.06);
+  backdrop-filter: blur(20px);
+}
+
+.faq-support-card:hover {
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(155, 77, 255, 0.1);
+}
+
+/* Signature Warm Off-White Pill CTA (Matches Hack Odyssey REGISTER NOW Button) */
+.faq-cta-pill {
+  background-color: #f4efe7;
+  color: #181717;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 25px rgba(244, 239, 231, 0.25);
+}
+
+.faq-cta-pill:hover {
+  background-color: #ffffff;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 35px rgba(244, 239, 231, 0.45);
+}
+
+.faq-cta-pill .faq-arrow-circle {
+  background-color: #181717;
+  color: #f4efe7;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s;
+}
+
+.faq-cta-pill:hover .faq-arrow-circle {
+  transform: rotate(45deg) scale(1.08);
+  background-color: #030206;
+  color: #ffffff;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .faq-answer-wrapper {
+    transition: none !important;
+  }
+  .faq-row-btn,
+  .faq-question-text,
+  .faq-toggle-circle,
+  .faq-cta-pill,
+  .faq-cta-pill .faq-arrow-circle {
+    transition: none !important;
+    transform: none !important;
+  }
+}
