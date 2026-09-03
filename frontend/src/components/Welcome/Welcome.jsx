@@ -216,11 +216,11 @@ const Welcome = () => {
                     </div>
                 </div>
 
-                {/* ─── MOBILE SECOND PART: TOUCH GALLERY SHOWCASE + GLASS MANIFESTO ─── */}
-                <div className="flex md:hidden flex-col gap-7 pt-2">
+                {/* ─── MOBILE SECOND PART: CLEAN TOUCH GALLERY + EDITORIAL STATEMENT ─── */}
+                <div className="flex md:hidden flex-col gap-6 pt-2">
                     
-                    {/* 1. Tactile Touch-Swipeable Dual Pill Showcase */}
-                    <div className="welcome-mobile-cards w-full flex flex-col gap-3">
+                    {/* 1. Pure Clean Touch-Swipeable Dual Pill Visuals (No Badges) */}
+                    <div className="welcome-mobile-cards w-full flex flex-col gap-2.5">
                         {/* Scroll-Snap Touch Track with 60-120fps Hardware Momentum */}
                         <div
                             ref={carouselRef}
@@ -233,7 +233,7 @@ const Welcome = () => {
                                 onClick={() => scrollToCard(0)}
                                 className={`shrink-0 snap-center w-[78vw] max-w-[310px] aspect-[16/11] rounded-[2.2rem] overflow-hidden relative border transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                                     activeCard === 0
-                                        ? "border-purple-500/40 shadow-[0_10px_32px_rgba(168,85,247,0.22)] scale-100"
+                                        ? "border-purple-500/25 shadow-[0_8px_25px_rgba(168,85,247,0.15)] scale-100"
                                         : "border-white/10 opacity-75 scale-[0.97]"
                                 }`}
                             >
@@ -243,13 +243,6 @@ const Welcome = () => {
                                     className="w-full h-full object-cover will-change-transform"
                                     loading="eager"
                                 />
-                                {/* Ambient bottom fade & luxury tag */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#030206]/85 via-[#030206]/20 to-transparent pointer-events-none" />
-                                <div className="absolute top-3.5 left-4 pointer-events-none">
-                                    <span className="backdrop-blur-md bg-black/60 border border-white/15 text-[9px] font-mono tracking-widest text-[#d8b4fe] px-2.5 py-1 rounded-full uppercase font-semibold">
-                                        01 &middot; COLLABORATION
-                                    </span>
-                                </div>
                             </div>
 
                             {/* Card 2: Rapid Prototyping */}
@@ -257,7 +250,7 @@ const Welcome = () => {
                                 onClick={() => scrollToCard(1)}
                                 className={`shrink-0 snap-center w-[78vw] max-w-[310px] aspect-[16/11] rounded-[2.2rem] overflow-hidden relative border transition-all duration-300 active:scale-[0.98] cursor-pointer ${
                                     activeCard === 1
-                                        ? "border-purple-500/40 shadow-[0_10px_32px_rgba(168,85,247,0.22)] scale-100"
+                                        ? "border-purple-500/25 shadow-[0_8px_25px_rgba(168,85,247,0.15)] scale-100"
                                         : "border-white/10 opacity-75 scale-[0.97]"
                                 }`}
                             >
@@ -267,71 +260,42 @@ const Welcome = () => {
                                     className="w-full h-full object-cover will-change-transform"
                                     loading="eager"
                                 />
-                                {/* Ambient bottom fade & luxury tag */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#030206]/85 via-[#030206]/20 to-transparent pointer-events-none" />
-                                <div className="absolute top-3.5 left-4 pointer-events-none">
-                                    <span className="backdrop-blur-md bg-black/60 border border-white/15 text-[9px] font-mono tracking-widest text-[#d8b4fe] px-2.5 py-1 rounded-full uppercase font-semibold">
-                                        02 &middot; PROTOTYPING
-                                    </span>
-                                </div>
                             </div>
                         </div>
 
-                        {/* Tactile Indicator Controls */}
-                        <div className="flex items-center justify-between px-1">
-                            {/* Interactive Touch Indicators */}
-                            <div className="flex items-center gap-2">
-                                <button
-                                    onClick={() => scrollToCard(0)}
-                                    className={`transition-all duration-300 rounded-full cursor-pointer ${
-                                        activeCard === 0
-                                            ? "w-7 h-1.5 bg-[#a855f7] shadow-[0_0_8px_#a855f7]"
-                                            : "w-2 h-1.5 bg-white/20 hover:bg-white/40"
-                                    }`}
-                                    aria-label="View slide 1"
-                                />
-                                <button
-                                    onClick={() => scrollToCard(1)}
-                                    className={`transition-all duration-300 rounded-full cursor-pointer ${
-                                        activeCard === 1
-                                            ? "w-7 h-1.5 bg-[#a855f7] shadow-[0_0_8px_#a855f7]"
-                                            : "w-2 h-1.5 bg-white/20 hover:bg-white/40"
-                                    }`}
-                                    aria-label="View slide 2"
-                                />
-                            </div>
-
-                            {/* Swipe gesture indicator */}
-                            <span className="text-[9.5px] font-mono tracking-widest text-[#8e859f]/80 uppercase">
-                                SWIPE TO DISCOVER &rarr;
-                            </span>
+                        {/* Minimalist Centered Indicator Dots */}
+                        <div className="flex items-center justify-center gap-2 pt-0.5">
+                            <button
+                                onClick={() => scrollToCard(0)}
+                                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                                    activeCard === 0
+                                        ? "w-6 h-1.5 bg-[#a855f7] shadow-[0_0_6px_#a855f7]"
+                                        : "w-1.5 h-1.5 bg-white/20 hover:bg-white/40"
+                                }`}
+                                aria-label="View slide 1"
+                            />
+                            <button
+                                onClick={() => scrollToCard(1)}
+                                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                                    activeCard === 1
+                                        ? "w-6 h-1.5 bg-[#a855f7] shadow-[0_0_6px_#a855f7]"
+                                        : "w-1.5 h-1.5 bg-white/20 hover:bg-white/40"
+                                }`}
+                                aria-label="View slide 2"
+                            />
                         </div>
                     </div>
 
-                    {/* 2. Elevated Mobile Manifesto Glassmorphic Card */}
-                    <div className="welcome-mobile-manifesto relative overflow-hidden rounded-[2rem] border border-white/[0.09] bg-gradient-to-br from-white/[0.05] via-[#120b1e]/60 to-purple-950/[0.15] backdrop-blur-2xl p-6 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
-                        {/* Ambient Corner Radial Glow */}
-                        <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#a855f7]/20 rounded-full blur-2xl pointer-events-none" />
-
-                        {/* Hackathon Creed Micro-Label */}
-                        <div className="flex items-center gap-2 mb-3">
-                            <span className="w-2 h-2 rounded-full bg-[#a855f7] shadow-[0_0_6px_#a855f7]" />
-                            <p className="text-[9px] font-mono font-semibold tracking-[0.24em] text-[#c084fc] uppercase">
-                                HACKATHON CREED
-                            </p>
-                        </div>
-
-                        {/* Core Statement */}
-                        <p className="text-[20px] sm:text-[22px] text-[#f1ecf7] leading-[1.32] font-normal tracking-[-0.015em]">
+                    {/* 2. Clean Editorial Statement (No Unnecessary Badges or Heavy Boxes) */}
+                    <div className="welcome-mobile-manifesto flex flex-col justify-center pt-2">
+                        <p className="text-[20px] sm:text-[22px] text-[#c7c2d1] leading-[1.32] font-normal tracking-[-0.2px]">
                             <span>One challenge.</span><br />
                             <span>One team.</span><br />
-                            <span><strong className="font-bold text-white drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]">One</strong> idea at a time.</span>
+                            <span><strong className="font-bold text-white">One</strong> idea at a time.</span>
                         </p>
-
-                        {/* Chapter Signature */}
-                        <div className="flex items-center gap-2 mt-5 pt-4 border-t border-white/[0.08]">
-                            <span className="w-4 h-[1.5px] bg-[#a855f7] inline-block rounded-full shadow-[0_0_6px_#a855f7]" />
-                            <span className="text-[10px] tracking-[0.22em] font-semibold text-[#8e859f] uppercase font-mono">
+                        <div className="flex items-center gap-2 mt-4 sm:mt-5">
+                            <span className="w-4 h-[1.5px] bg-[#a855f7] inline-block"></span>
+                            <span className="text-[10px] sm:text-[11px] tracking-[0.22em] font-semibold text-[#716886] uppercase">
                                 KARE &middot; ACM STUDENT CHAPTER
                             </span>
                         </div>
