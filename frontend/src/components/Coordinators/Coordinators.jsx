@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { useMediaQuery } from 'react-responsive';
 import WavyImageCard from './WavyImageCard';
 
 // Primary Coordinator Images
@@ -29,19 +30,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Coordinators = () => {
     const pageRef = useRef(null);
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
     useGSAP(() => {
         if (!pageRef.current) return;
 
         // 1. Eyebrow Scroll Reveal Animation
         gsap.from('.team-eyebrow', {
-            x: -25,
+            x: isMobile ? 0 : -25,
+            y: isMobile ? 15 : 0,
             opacity: 0,
             duration: 0.8,
             ease: 'power3.out',
             scrollTrigger: {
                 trigger: pageRef.current,
-                start: 'top 78%',
+                start: 'top 82%',
             }
         });
 
@@ -56,7 +59,7 @@ const Coordinators = () => {
             ease: 'power4.out',
             scrollTrigger: {
                 trigger: pageRef.current,
-                start: 'top 74%',
+                start: 'top 76%',
             }
         });
 
@@ -70,7 +73,7 @@ const Coordinators = () => {
                 ease: 'power3.out',
                 scrollTrigger: {
                     trigger: pageRef.current,
-                    start: 'top 70%',
+                    start: 'top 72%',
                 }
             }
         );
@@ -79,14 +82,14 @@ const Coordinators = () => {
         const cards = pageRef.current.querySelectorAll('.card');
         cards.forEach((card) => {
             gsap.from(card, {
-                y: 60,
+                y: isMobile ? 40 : 60,
                 opacity: 0,
                 scale: 0.96,
                 duration: 0.85,
                 ease: 'power3.out',
                 scrollTrigger: {
                     trigger: card,
-                    start: 'top 88%',
+                    start: 'top 90%',
                     toggleActions: 'play none none reverse',
                 }
             });
@@ -101,7 +104,7 @@ const Coordinators = () => {
                     ease: 'power3.out',
                     scrollTrigger: {
                         trigger: card,
-                        start: 'top 85%',
+                        start: 'top 88%',
                     }
                 });
             }
@@ -117,42 +120,44 @@ const Coordinators = () => {
                         ease: 'power2.out',
                         scrollTrigger: {
                             trigger: card,
-                            start: 'top 82%',
+                            start: 'top 86%',
                         }
                     }
                 );
             }
         });
 
-        // 5. Interactive Gravity Circles Reveal & Scroll Parallax
-        const circles = pageRef.current.querySelectorAll('.gravity');
-        circles.forEach((circle) => {
-            gsap.from(circle, {
-                scale: 0.6,
-                opacity: 0,
-                rotate: -20,
-                duration: 1.0,
-                ease: 'back.out(1.5)',
-                scrollTrigger: {
-                    trigger: circle,
-                    start: 'top 88%',
-                }
-            });
+        // 5. Interactive Gravity Circles Reveal & Scroll Parallax (Desktop Only)
+        if (!isMobile) {
+            const circles = pageRef.current.querySelectorAll('.gravity');
+            circles.forEach((circle) => {
+                gsap.from(circle, {
+                    scale: 0.6,
+                    opacity: 0,
+                    rotate: -20,
+                    duration: 1.0,
+                    ease: 'back.out(1.5)',
+                    scrollTrigger: {
+                        trigger: circle,
+                        start: 'top 88%',
+                    }
+                });
 
-            // Smooth parallax spatial depth on scroll
-            gsap.to(circle, {
-                y: -35,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: circle,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: 1.2,
-                }
+                // Smooth parallax spatial depth on scroll
+                gsap.to(circle, {
+                    y: -35,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: circle,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1.2,
+                    }
+                });
             });
-        });
+        }
 
-    }, { scope: pageRef });
+    }, { scope: pageRef, dependencies: [isMobile] });
 
     return (
         <div id="page3" ref={pageRef} className="relative overflow-hidden bg-[#030206]">
@@ -169,7 +174,7 @@ const Coordinators = () => {
             <div className="absolute inset-x-0 bottom-0 h-40 md:h-64 bg-gradient-to-t from-[#030206] via-[#030206]/85 to-transparent pointer-events-none z-1" />
 
             {/* Eyebrow with Purple Accent Line matching The Odyssey */}
-            <div className="team-eyebrow w-[70%] ml-[30%] max-md:w-[88%] max-md:ml-[12%] flex items-center gap-2.5 mb-3 sm:mb-4 relative z-10">
+            <div className="team-eyebrow w-[70%] ml-[30%] max-md:w-[90%] max-md:mx-auto flex items-center gap-2.5 mb-3 sm:mb-4 relative z-10">
                 <span className="w-6 md:w-8 h-[1.5px] bg-[#a855f7] inline-block rounded-full shadow-[0_0_6px_#a855f7]"></span>
                 <p className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] text-[#8e859f] uppercase">
                     OUR TEAM

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 
 const vertexShader = `
@@ -116,8 +116,25 @@ const WavyImageCard = ({
 }) => {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return window.innerWidth <= 768 || (window.matchMedia && window.matchMedia('(hover: none)').matches);
+        }
+        return false;
+    });
 
     useEffect(() => {
+        const checkMobile = () => {
+            const isTouch = window.innerWidth <= 768 || (window.matchMedia && window.matchMedia('(hover: none)').matches);
+            setIsMobile(isTouch);
+        };
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    useEffect(() => {
+        if (isMobile) return; // Skip heavy Three.js WebGL rendering on mobile for 60-120 FPS performance
+
         const container = containerRef.current;
         const canvas = canvasRef.current;
         if (!container || !canvas) return;
@@ -297,19 +314,27 @@ const WavyImageCard = ({
             tex2.dispose();
             renderer.dispose();
         };
-    }, [primaryImg, secondaryImg]);
+    }, [primaryImg, secondaryImg, isMobile]);
 
     return (
         <div
             ref={containerRef}
             className={`img-div relative overflow-hidden bg-[#161616] group ${className}`}
         >
-            <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-700 ease-out group-hover:scale-105" />
+            {!isMobile && (
+                <canvas 
+                    ref={canvasRef} 
+                    className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-700 ease-out group-hover:scale-105" 
+                />
+            )}
             <img
                 src={primaryImg}
                 alt={alt}
-                className="w-full h-full object-cover opacity-0 pointer-events-none"
+                className={`w-full h-full object-cover select-none pointer-events-none transform-gpu transition-transform duration-700 ease-out group-hover:scale-105 ${
+                    isMobile ? 'opacity-100' : 'opacity-0'
+                }`}
                 loading="lazy"
+                decoding="async"
             />
         </div>
     );

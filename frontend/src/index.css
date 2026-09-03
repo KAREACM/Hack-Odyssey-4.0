@@ -689,48 +689,63 @@ body:has(.hackodyssey-preloader) #crsr {
 	padding: 2vw;
 }
 
-/* Mobile Responsiveness for Obys Page3 */
+/* Mobile Responsiveness for Obys Page3 (Our Team) */
 @media (max-width: 768px) {
+	#page3 {
+		padding: 14vw 0vw 10vw;
+	}
 	#page3 > h1 {
-		width: 88%;
-		margin-left: 12%;
-		font-size: 11vw;
-		line-height: 11vw;
+		width: 90%;
+		margin: 0 auto;
+		font-size: clamp(2.4rem, 11vw, 3.4rem);
+		line-height: 1.05;
 	}
 	#page3-underline {
-		width: 88%;
-		margin-left: 12%;
+		width: 90%;
+		margin: 3vw auto 8vw;
 	}
 	#img-div-container {
 		flex-direction: column;
 		align-items: center;
-		padding: 4vw;
-		gap: 12vw;
+		padding: 0 5vw;
+		gap: 9vw;
 	}
-	.card,
+	.card {
+		width: 100% !important;
+		max-width: 360px !important;
+		margin-top: 0 !important;
+	}
 	.card .img-div,
 	#img-div-container .card:nth-child(2) .img-div,
 	#img-div-container .card:nth-child(6) .img-div,
 	#img-div-container .card:nth-child(7) .img-div,
 	#img-div-container .card:nth-child(10) .img-div {
-		width: 85vw !important;
-		height: 105vw !important;
+		width: 100% !important;
+		height: auto !important;
+		aspect-ratio: 4 / 5 !important;
 		margin-top: 0 !important;
+		border-radius: 6px;
+		overflow: hidden;
 	}
 	.card-heading-container > h1 {
-		font-size: 6vw;
+		font-size: clamp(1.25rem, 5.2vw, 1.55rem);
+		margin-bottom: 0.45rem;
+		letter-spacing: -0.01em;
+	}
+	.card .card-details {
+		padding-top: 0.75rem;
+		padding-bottom: 0.5rem;
 	}
 	.card .card-details h6 {
-		font-size: 3.5vw;
-		line-height: 5vw;
+		font-size: clamp(0.78rem, 3.2vw, 0.88rem);
+		line-height: 1.4;
 	}
-	.page3-circle1, .page3-circle2, .page3-circle3, .page4-circle4 {
-		width: 70vw !important;
-		height: 70vw !important;
-		margin-top: 0 !important;
-	}
-	.circle-text1, .circle-text2, .circle-text3, .page4-circle4 {
-		font-size: 4vw !important;
+	/* Completely eliminate the arrow circles and the orange bubble on mobile */
+	.page3-circle1,
+	.page3-circle2,
+	.page3-circle3,
+	.page4-circle4 {
+		display: none !important;
 	}
 }
 
