@@ -118,7 +118,7 @@ const Hero = () => {
     return (
         <section 
             ref={heroRef}
-            className="hero-section w-full min-h-dvh h-[100vh] relative overflow-hidden bg-[#030206] flex flex-col justify-between"
+            className="hero-section w-full h-[100dvh] min-h-[100dvh] max-h-[100dvh] relative overflow-hidden bg-[#030206] flex flex-col justify-between"
         >
             {/* Desktop Background Layer - Edge-to-edge */}
             <div
@@ -223,30 +223,30 @@ const Hero = () => {
             </div>
 
             {/* ════════════ MOBILE LAYOUT: CENTER-ALIGNED HARMONIOUS HIERARCHY (md:hidden flex) ════════════ */}
-            <div className="relative z-20 w-full h-full md:hidden flex flex-col justify-between pt-18 sm:pt-20 pb-4 sm:pb-6 px-5 select-none pointer-events-none">
+            <div className="relative z-20 w-full h-full md:hidden flex flex-col justify-between pt-20 sm:pt-24 pb-2 sm:pb-3 px-4 select-none pointer-events-none">
                 
                 {/* Mobile Top Centered Brand & Action Hub */}
                 <div className="flex flex-col items-center text-center w-full max-w-sm mx-auto pointer-events-auto">
                     {/* Eyebrow: — KARE ACM PRESENTS — */}
-                    <div className="hero-eyebrow flex items-center justify-center gap-2 mb-1">
-                        <span className="w-3.5 sm:w-4 h-[1.5px] bg-[#a855f7] rounded-full inline-block shadow-[0_0_6px_#a855f7]" />
-                        <p className="text-[9px] sm:text-[10px] font-mono font-semibold tracking-[0.25em] text-[#d8b4fe] uppercase">
+                    <div className="hero-eyebrow flex items-center justify-center gap-2 mb-1.5">
+                        <span className="w-4 sm:w-5 h-[1.5px] bg-[#a855f7] rounded-full inline-block shadow-[0_0_6px_#a855f7]" />
+                        <p className="text-[10px] sm:text-xs font-mono font-semibold tracking-[0.25em] text-[#d8b4fe] uppercase">
                             KARE ACM PRESENTS
                         </p>
-                        <span className="w-3.5 sm:w-4 h-[1.5px] bg-[#a855f7] rounded-full inline-block shadow-[0_0_6px_#a855f7]" />
+                        <span className="w-4 sm:w-5 h-[1.5px] bg-[#a855f7] rounded-full inline-block shadow-[0_0_6px_#a855f7]" />
                     </div>
 
-                    {/* Unified HACK ODYSSEY 4.0 Lockup */}
+                    {/* Unified HACK ODYSSEY 4.0 Lockup - Big, Heroic, Impactful */}
                     <div className="flex flex-col items-center justify-center leading-none">
-                        <h1 className="hero-title-hack font-hero-bebas text-white tracking-tight uppercase leading-[0.82] text-[2.85rem] sm:text-5xl drop-shadow-[0_10px_25px_rgba(0,0,0,0.95)]">
+                        <h1 className="hero-title-hack font-hero-bebas text-white tracking-tight uppercase leading-[0.82] text-[3.6rem] sm:text-6xl drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
                             HACK
                         </h1>
                         <div className="relative inline-flex items-start justify-center -mt-1 sm:-mt-1.5">
-                            <h1 className="hero-title-odyssey font-hero-bebas text-white tracking-tight uppercase leading-[0.82] text-[2.85rem] sm:text-5xl drop-shadow-[0_10px_25px_rgba(0,0,0,0.95)]">
+                            <h1 className="hero-title-odyssey font-hero-bebas text-white tracking-tight uppercase leading-[0.82] text-[3.6rem] sm:text-6xl drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
                                 ODYSSEY
                             </h1>
                             <span 
-                                className="hero-badge-exponent inline-flex items-center justify-center w-5.5 h-5.5 sm:w-6.5 sm:h-6.5 rounded-full border-[1.5px] border-white/80 text-white font-mono font-bold text-[7.5px] sm:text-[8.5px] -mt-1 ml-1 shadow-[0_0_10px_rgba(168,85,247,0.4)] backdrop-blur-sm bg-purple-950/40 select-none shrink-0"
+                                className="hero-badge-exponent inline-flex items-center justify-center w-6.5 h-6.5 sm:w-7.5 sm:h-7.5 rounded-full border-[1.5px] border-white/80 text-white font-mono font-bold text-[8.5px] sm:text-[9.5px] -mt-1.5 ml-1 sm:ml-1.5 shadow-[0_0_12px_rgba(168,85,247,0.4)] backdrop-blur-sm bg-purple-950/40 select-none shrink-0"
                                 title="Version 4.0"
                             >
                                 4.0
@@ -255,22 +255,22 @@ const Hero = () => {
                     </div>
 
                     {/* Subtitle & Date Description */}
-                    <div className="hero-subtext mt-1.5 sm:mt-2 text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] max-w-xs mx-auto">
-                        <p className="text-white font-medium text-xs sm:text-[13px]">
+                    <div className="hero-subtext mt-2 sm:mt-2.5 text-center drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] max-w-xs mx-auto">
+                        <p className="text-white font-medium text-xs sm:text-sm">
                             Enter the Code Dimension
                         </p>
-                        <p className="text-[#a199b0] text-[10px] sm:text-[11px] mt-0.5 leading-normal">
+                        <p className="text-[#cbd5e1] text-[11px] sm:text-xs mt-0.5 leading-relaxed">
                             October 27 – 28, 2026 &middot; 24-Hour Hackathon
                         </p>
                     </div>
 
                     {/* Primary CTA Button */}
-                    <div className="hero-btn-wrap mt-2.5 sm:mt-3">
+                    <div className="hero-btn-wrap mt-3 sm:mt-3.5">
                         <a
                             href="#prizepool"
-                            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#f4efe7] hover:bg-white text-[#181717] font-bold text-[11px] uppercase tracking-wider shadow-[0_0_18px_rgba(244,239,231,0.28)] hover:shadow-[0_0_28px_rgba(244,239,231,0.5)] transition-all duration-300 transform active:scale-95 group cursor-pointer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#f4efe7] hover:bg-white text-[#181717] font-bold text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(244,239,231,0.3)] hover:shadow-[0_0_30px_rgba(244,239,231,0.55)] transition-all duration-300 transform active:scale-95 group cursor-pointer"
                         >
-                            <span className="font-semibold tracking-wider">
+                            <span className="font-semibold tracking-wider text-[11px]">
                                 REGISTER NOW
                             </span>
                             <div className="w-4.5 h-4.5 rounded-full bg-[#181717] text-[#f4efe7] flex items-center justify-center group-hover:rotate-45 transition-transform duration-300">
@@ -280,16 +280,16 @@ const Hero = () => {
                     </div>
                 </div>
 
-                {/* Mobile Bottom Centered Venue Block */}
-                <div className="hero-venue-box text-center select-none drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] pointer-events-auto max-w-xs mx-auto pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+                {/* Mobile Bottom Centered Venue Block - Guaranteed In-View Above Fold */}
+                <div className="hero-venue-box text-center select-none drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] pointer-events-auto max-w-xs mx-auto pb-1 sm:pb-2">
                     <div className="flex items-center justify-center gap-1.5 mb-0.5">
                         <span className="w-3 h-[1.5px] bg-[#a855f7] rounded-full inline-block shadow-[0_0_6px_#a855f7]" />
-                        <span className="text-[9px] font-semibold tracking-[0.2em] text-[#a855f7] uppercase">
+                        <span className="text-[9.5px] font-semibold tracking-[0.2em] text-[#a855f7] uppercase font-mono">
                             VENUE &middot; CAMPUS
                         </span>
                         <span className="w-3 h-[1.5px] bg-[#a855f7] rounded-full inline-block shadow-[0_0_6px_#a855f7]" />
                     </div>
-                    <h4 className="text-white text-[10.5px] sm:text-[11px] font-semibold tracking-tight uppercase leading-snug">
+                    <h4 className="text-white text-[11px] sm:text-xs font-semibold tracking-tight uppercase leading-snug">
                         Kalasalingam Academy of Research and Education
                     </h4>
                     <p className="text-[#a199b0] text-[9.5px] tracking-wide mt-0.5">

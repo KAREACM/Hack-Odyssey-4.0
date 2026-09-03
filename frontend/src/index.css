@@ -194,6 +194,13 @@ body {
 	line-height: 1.2;
 }
 
+@media (max-width: 768px) {
+	/* Accessible, luxurious editorial ghost typography for mobile before scrub illumination */
+	.text-darkBrown {
+		color: rgba(255, 255, 255, 0.32);
+	}
+}
+
 .clip-text-welcome {
 	display: inline-block;
 	position: absolute;
@@ -203,6 +210,8 @@ body {
 	clip-path: inset(0 0 100% 0);
 	white-space: nowrap;
 	transition: none;
+	will-change: clip-path, transform;
+	transform: translateZ(0);
 }
 
 @media (max-width: 768px) {
@@ -211,6 +220,15 @@ body {
 		top: 33%;
 	}
 
+	/* Mobile smooth horizontal carousel touch physics */
+	.mobile-carousel-container {
+		-webkit-overflow-scrolling: touch;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+	}
+	.mobile-carousel-container::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 /* -------------- Choose Section Styles ----------------- */
