@@ -38,7 +38,7 @@
 
 /* Accordion Row Micro-Interactions */
 .faq-row-btn {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .faq-row-btn:hover .faq-question-text {
@@ -50,7 +50,7 @@
 .faq-answer-wrapper {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transition: grid-template-rows 0.26s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
   opacity: 0;
 }
 
@@ -65,7 +65,7 @@
 
 /* Circular Plus / Minus Indicator */
 .faq-toggle-circle {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .faq-row-btn:hover .faq-toggle-circle {

@@ -360,6 +360,11 @@
   height: clamp(70px, 6.6vw, 92px);
 }
 
+.hackodyssey-preloader .hop-box-gdg {
+  width: clamp(70px, 6.6vw, 92px);
+  height: clamp(70px, 6.6vw, 92px);
+}
+
 .hackodyssey-preloader .hop-box-ieee {
   width: clamp(120px, 11vw, 155px);
   height: clamp(48px, 4.4vw, 60px);
@@ -437,7 +442,8 @@
   gap: 0.45rem;
 }
 
-.hackodyssey-preloader .hop-collab-sep-mid {
+.hackodyssey-preloader .hop-collab-sep-mid,
+.hackodyssey-preloader .hop-collab-sep-mid-2 {
   display: inline-flex;
 }
 
@@ -562,35 +568,40 @@
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .hackodyssey-preloader .hop-box-kare {
-    width: clamp(54px, 14vw, 68px);
-    height: clamp(54px, 14vw, 68px);
+    width: clamp(52px, 13vw, 64px);
+    height: clamp(52px, 13vw, 64px);
   }
 
   .hackodyssey-preloader .hop-box-acmw {
-    width: clamp(56px, 14.5vw, 70px);
-    height: clamp(56px, 14.5vw, 70px);
+    width: clamp(54px, 13.5vw, 66px);
+    height: clamp(54px, 13.5vw, 66px);
   }
 
   .hackodyssey-preloader .hop-box-gfg {
-    width: clamp(54px, 14vw, 68px);
-    height: clamp(54px, 14vw, 68px);
+    width: clamp(52px, 13vw, 64px);
+    height: clamp(52px, 13vw, 64px);
+  }
+
+  .hackodyssey-preloader .hop-box-gdg {
+    width: clamp(52px, 13vw, 64px);
+    height: clamp(52px, 13vw, 64px);
   }
 
   .hackodyssey-preloader .hop-box-ieee {
-    width: clamp(92px, 24vw, 118px);
-    height: clamp(36px, 9.5vw, 47px);
+    width: clamp(86px, 22vw, 110px);
+    height: clamp(34px, 9vw, 44px);
   }
 
   /* Collaboration alignment & safe clearance on mobile screens */
   .hackodyssey-preloader .hop-collab-group {
-    max-width: min(230px, 62vw);
+    max-width: min(210px, 58vw);
     width: 100%;
   }
 
   .hackodyssey-preloader .hop-collab-eyebrow {
-    font-size: clamp(0.50rem, 2.2vw, 0.60rem);
-    letter-spacing: clamp(0.16em, 1.2vw, 0.22em);
-    margin-bottom: 0.38rem;
+    font-size: clamp(0.48rem, 2.0vw, 0.58rem);
+    letter-spacing: clamp(0.14em, 1.0vw, 0.20em);
+    margin-bottom: 0.32rem;
     white-space: nowrap;
   }
 
@@ -598,8 +609,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.30rem;
-    max-width: min(230px, 62vw);
+    gap: 0.25rem;
+    max-width: min(210px, 58vw);
     width: 100%;
   }
 
@@ -612,16 +623,17 @@
   }
 
   .hackodyssey-preloader .hop-collab-item {
-    font-size: clamp(0.58rem, 2.4vw, 0.68rem);
+    font-size: clamp(0.54rem, 2.2vw, 0.64rem);
     letter-spacing: 0.05em;
   }
 
   .hackodyssey-preloader .hop-collab-sep {
-    font-size: clamp(0.54rem, 2.2vw, 0.62rem);
+    font-size: clamp(0.50rem, 2.0vw, 0.58rem);
     padding: 0 0.02rem;
   }
 
-  .hackodyssey-preloader .hop-collab-sep-mid {
+  .hackodyssey-preloader .hop-collab-sep-mid,
+  .hackodyssey-preloader .hop-collab-sep-mid-2 {
     display: none !important;
   }
 }

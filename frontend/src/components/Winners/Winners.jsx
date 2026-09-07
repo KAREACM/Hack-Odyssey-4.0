@@ -77,91 +77,224 @@ const Winners = () => {
     const [activeModal, setActiveModal] = useState(null);
 
     useGSAP(() => {
-        const tl4 = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".winners-page4",
-                start: "10% 10%",
-                end: "220% 30%",
-                scrub: 1,
-                pin: true,
-            }
+        // Prevent layout resize jumping on mobile address-bar hide/show
+        ScrollTrigger.config({ ignoreMobileResize: true });
+
+        const mm = gsap.matchMedia();
+
+        // ════════════ DESKTOP TIMELINE (100% UNTOUCHED) ════════════
+        mm.add("(min-width: 768px)", () => {
+            const tl4 = gsap.timeline({
+                scrollTrigger: {
+                    trigger: pageRef.current,
+                    start: "top top",
+                    end: "+=220%",
+                    scrub: 0.8,
+                    pin: true,
+                    anticipatePin: 1,
+                }
+            });
+
+            gsap.set(".winners-topText, .winners-bottomText", {
+                opacity: 1,
+                x: 0
+            });
+
+            // Animation sequence:
+            // A: Fade marquee ribbon & expand Card 1 to full bleed viewport
+            tl4.to(".winners-marquee-container", {
+                opacity: 0,
+                scale: 0.96,
+                ease: "power2.out",
+            }, 'a')
+                .to(".winners-page4 .winners-background", {
+                    width: "100vw",
+                    height: "100vh",
+                    borderRadius: "0px",
+                    y: 0,
+                    ease: "power2.inOut",
+                }, 'a')
+                .to(".winners-page4 .winners-background img", {
+                    transform: "scale(1)",
+                    ease: "power2.inOut",
+                }, 'a')
+                .from(".winners-background .winners-topText, .winners-background .winners-bottomText", {
+                    opacity: 0,
+                    x: 35,
+                    ease: "power2.out",
+                })
+                .to({}, { duration: 0.4 }, "+=0")
+
+                // B: Card 2 enters from bottom, replaces Card 1
+                .to("#winners-second", {
+                    transform: "translate(-50%, -50%)",
+                    ease: "power2.inOut",
+                }, 'b')
+                .to("#winners-second img", {
+                    transform: "scale(1)",
+                    ease: "power2.inOut",
+                }, 'b')
+                .to(".winners-page4 .winners-background", {
+                    scale: 0.92,
+                    opacity: 0,
+                    y: -50,
+                    ease: "power2.inOut",
+                }, 'b')
+                .from("#winners-second .winners-topText, #winners-second .winners-bottomText", {
+                    opacity: 0,
+                    x: 35,
+                    ease: "power2.out",
+                })
+                .to({}, { duration: 0.4 }, "+=0")
+
+                // C: Card 3 enters from bottom, replaces Card 2
+                .to("#winners-third", {
+                    transform: "translate(-50%, -50%)",
+                    ease: "power2.inOut",
+                }, 'c')
+                .to("#winners-third img", {
+                    transform: "scale(1)",
+                    ease: "power2.inOut",
+                }, 'c')
+                .to("#winners-second", {
+                    scale: 0.92,
+                    opacity: 0,
+                    ease: "power2.inOut",
+                }, 'c')
+                .from("#winners-third .winners-topText, #winners-third .winners-bottomText", {
+                    opacity: 0,
+                    x: 35,
+                    ease: "power2.out",
+                })
+                .to({}, { duration: 0.4 }, "+=0");
         });
 
-        gsap.set(".winners-topText, .winners-bottomText", {
-            opacity: 1,
-            x: 0
+        // ════════════ MOBILE TIMELINE (60-120 FPS JITTER-FREE TOUCH STREAM) ════════════
+        mm.add("(max-width: 767px)", () => {
+            gsap.set(".winners-topText, .winners-bottomText", {
+                opacity: 1,
+                x: 0,
+            });
+
+            const tl4Mob = gsap.timeline({
+                scrollTrigger: {
+                    trigger: pageRef.current,
+                    start: "top top",
+                    end: "+=1800",
+                    scrub: 0.4, // Responsive 0.4s tracks finger 1:1, eliminating rubber-band lag
+                    pin: true,
+                    anticipatePin: 0, // 0 prevents the 1-frame pre-pin snap jump
+                    invalidateOnRefresh: true,
+                    fastScrollEnd: true,
+                    preventOverlaps: true,
+                }
+            });
+
+            // Linear ease matches the constant finger velocity, removing shaky speed-up/slow-down jerks
+            tl4Mob.to(".winners-marquee-container", {
+                opacity: 0,
+                scale: 0.96,
+                ease: "none",
+                duration: 0.6,
+            }, 'a')
+                .to(".winners-page4 .winners-background", {
+                    width: "100vw",
+                    height: "100vh",
+                    borderRadius: "0px",
+                    y: 0,
+                    ease: "none",
+                    duration: 0.8,
+                }, 'a')
+                .to(".winners-page4 .winners-background img", {
+                    scale: 1,
+                    ease: "none",
+                    duration: 0.8,
+                }, 'a')
+                .from(".winners-background .winners-topText, .winners-background .winners-bottomText", {
+                    opacity: 0,
+                    x: 20,
+                    ease: "none",
+                    duration: 0.4,
+                }, 'a+=0.2')
+                .to({}, { duration: 0.2 })
+
+                // B: Card 2 glides smoothly up to replace Card 1
+                .to("#winners-second", {
+                    transform: "translate(-50%, -50%)",
+                    ease: "none",
+                    duration: 0.8,
+                }, 'b')
+                .to("#winners-second img", {
+                    scale: 1,
+                    ease: "none",
+                    duration: 0.8,
+                }, 'b')
+                .to(".winners-page4 .winners-background", {
+                    scale: 0.94,
+                    opacity: 0,
+                    y: -30,
+                    ease: "none",
+                    duration: 0.8,
+                }, 'b')
+                .from("#winners-second .winners-topText, #winners-second .winners-bottomText", {
+                    opacity: 0,
+                    x: 20,
+                    ease: "none",
+                    duration: 0.4,
+                }, 'b+=0.2')
+                .to({}, { duration: 0.2 })
+
+                // C: Card 3 glides smoothly up to replace Card 2
+                .to("#winners-third", {
+                    transform: "translate(-50%, -50%)",
+                    ease: "none",
+                    duration: 0.8,
+                }, 'c')
+                .to("#winners-third img", {
+                    scale: 1,
+                    ease: "none",
+                    duration: 0.8,
+                }, 'c')
+                .to("#winners-second", {
+                    scale: 0.94,
+                    opacity: 0,
+                    ease: "none",
+                    duration: 0.8,
+                }, 'c')
+                .from("#winners-third .winners-topText, #winners-third .winners-bottomText", {
+                    opacity: 0,
+                    x: 20,
+                    ease: "none",
+                    duration: 0.4,
+                }, 'c+=0.2')
+                .to({}, { duration: 0.2 });
         });
 
-        // Animation sequence:
-        // A: Fade marquee & expand Card 1 to full screen with 0 border radius
-        tl4.to(".winners-box h3", {
-            opacity: 0,
-        }, 'a')
-            .to(".winners-page4 .winners-background", {
-                width: "100vw",
-                height: "100vh",
-                borderRadius: "0px",
-                y: 0,
-            }, 'a')
-            .to(".winners-page4 .winners-background img", {
-                transform: "scale(1)",
-            }, 'a')
-            .from(".winners-background .winners-topText, .winners-background .winners-bottomText", {
-                opacity: 0,
-                x: 40,
-            })
-            .to({}, { duration: 0.4 }, "+=0")
-
-            // B: Card 2 enters from bottom, replaces Card 1
-            .to("#winners-second", {
-                transform: "translate(-50%, -50%)",
-            }, 'b')
-            .to("#winners-second img", {
-                transform: "scale(1)",
-            }, 'b')
-            .to(".winners-page4 .winners-background", {
-                scale: 0.9,
-                opacity: 0,
-                y: -50
-            }, 'b')
-            .from("#winners-second .winners-topText, #winners-second .winners-bottomText", {
-                opacity: 0,
-                x: 40,
-            })
-            .to({}, { duration: 0.4 }, "+=0")
-
-            // C: Card 3 enters from bottom, replaces Card 2
-            .to("#winners-third", {
-                transform: "translate(-50%, -50%)",
-            }, 'c')
-            .to("#winners-third img", {
-                transform: "scale(1)",
-            }, 'c')
-            .to("#winners-second", {
-                scale: 0.9,
-                opacity: 0,
-            }, 'c')
-            .from("#winners-third .winners-topText, #winners-third .winners-bottomText", {
-                opacity: 0,
-                x: 40,
-            })
-            .to({}, { duration: 0.4 }, "+=0");
+        return () => mm.revert();
 
     }, { scope: pageRef });
 
-    // Repeating HACK ODYSSEY 3.0 marquee items
-    const generateMarqueeItems = (quantity = 6) => {
-        const items = [];
-        for (let i = 1; i <= quantity; i++) {
-            items.push(
-                <h3 key={i} style={{ "--index": i }} className="font-hero-bebas">
-                    <span className="tracking-tight uppercase">HACK ODYSSEY</span>
-                    <span className="winners-badge-exponent-marquee">3.0</span>
-                </h3>
-            );
-        }
-        return items;
-    };
+    // Continuous Dual-Track Flex Ribbon Marquee for 100% collision-free, seamless 60-120fps scrolling
+    const renderMarqueeGroup = (ariaHidden = false) => (
+        <div 
+            className="winners-marquee-group" 
+            aria-hidden={ariaHidden ? "true" : undefined}
+        >
+            {[1, 2, 3, 4].map((num) => (
+                <div key={num} className="winners-marquee-item">
+                    <span className="winners-marquee-text font-hero-bebas">
+                        HACK <span className="winners-marquee-odyssey">ODYSSEY</span>
+                    </span>
+                    <span 
+                        className="winners-badge-exponent-marquee" 
+                        title="Version 3.0"
+                    >
+                        3.0
+                    </span>
+                </div>
+            ))}
+        </div>
+    );
 
     const toggleModal = (winner) => {
         setActiveModal(activeModal?.id === winner.id ? null : winner);
@@ -174,13 +307,11 @@ const Winners = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[500px] bg-[#7C3CFF]/14 rounded-full blur-[150px] pointer-events-none z-0" />
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[#25104A]/30 rounded-full blur-[170px] pointer-events-none z-0" />
 
-            {/* Side-Scrolling Background Marquee Text */}
-            <div className="winners-slider">
-                <div
-                    className="winners-box"
-                    style={{ "--time": "30s", "--quantity": 6 }}
-                >
-                    {generateMarqueeItems(6)}
+            {/* Seamless Side-Scrolling Background Marquee Text */}
+            <div className="winners-marquee-container">
+                <div className="winners-marquee-track">
+                    {renderMarqueeGroup(false)}
+                    {renderMarqueeGroup(true)}
                 </div>
             </div>
 
@@ -192,7 +323,7 @@ const Winners = () => {
                 {/* Top-Left Corner: HACK ODYSSEY 3.0 + Position */}
                 <div className="winners-topText">
                     <div className="flex flex-col items-start text-left select-none">
-                        <div className="relative inline-flex items-start">
+                        <div className="relative inline-flex items-start whitespace-nowrap">
                             <h2 className="winners-main-title font-hero-bebas">
                                 {WINNERS_DATA[0].edition}
                             </h2>
@@ -203,7 +334,7 @@ const Winners = () => {
                                 {WINNERS_DATA[0].version}
                             </span>
                         </div>
-                        <p className="text-[#d8b4fe] text-xs sm:text-sm font-mono font-medium tracking-wider uppercase mt-1 drop-shadow">
+                        <p className="winners-subtitle text-[#d8b4fe] text-xs sm:text-sm font-mono font-medium tracking-wider uppercase mt-1 drop-shadow">
                             {WINNERS_DATA[0].position} &middot; {WINNERS_DATA[0].prize}
                         </p>
                     </div>
@@ -219,7 +350,7 @@ const Winners = () => {
                     </div>
 
                     {/* Bottom-Right: + Button + Clean Condensed Details */}
-                    <div className="flex items-center gap-3.5 sm:gap-4 max-w-xl text-right justify-end select-none">
+                    <div className="winners-card-info-wrap flex items-center gap-3.5 sm:gap-4 max-w-xl text-right justify-end select-none">
                         <div className="flex flex-col items-end">
                             <h3 className="text-white font-semibold text-xs sm:text-sm md:text-base leading-snug drop-shadow">
                                 <span className="text-[#d8b4fe] font-bold">{WINNERS_DATA[0].team}</span>
@@ -251,7 +382,7 @@ const Winners = () => {
                 {/* Top-Left Corner */}
                 <div className="winners-topText">
                     <div className="flex flex-col items-start text-left select-none">
-                        <div className="relative inline-flex items-start">
+                        <div className="relative inline-flex items-start whitespace-nowrap">
                             <h2 className="winners-main-title font-hero-bebas">
                                 {WINNERS_DATA[1].edition}
                             </h2>
@@ -262,7 +393,7 @@ const Winners = () => {
                                 {WINNERS_DATA[1].version}
                             </span>
                         </div>
-                        <p className="text-[#bae6fd] text-xs sm:text-sm font-mono font-medium tracking-wider uppercase mt-1 drop-shadow">
+                        <p className="winners-subtitle text-[#bae6fd] text-xs sm:text-sm font-mono font-medium tracking-wider uppercase mt-1 drop-shadow">
                             {WINNERS_DATA[1].position} &middot; {WINNERS_DATA[1].prize}
                         </p>
                     </div>
@@ -276,7 +407,7 @@ const Winners = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3.5 sm:gap-4 max-w-xl text-right justify-end select-none">
+                    <div className="winners-card-info-wrap flex items-center gap-3.5 sm:gap-4 max-w-xl text-right justify-end select-none">
                         <div className="flex flex-col items-end">
                             <h3 className="text-white font-semibold text-xs sm:text-sm md:text-base leading-snug drop-shadow">
                                 <span className="text-[#7dd3fc] font-bold">{WINNERS_DATA[1].team}</span>
@@ -308,7 +439,7 @@ const Winners = () => {
                 {/* Top-Left Corner */}
                 <div className="winners-topText">
                     <div className="flex flex-col items-start text-left select-none">
-                        <div className="relative inline-flex items-start">
+                        <div className="relative inline-flex items-start whitespace-nowrap">
                             <h2 className="winners-main-title font-hero-bebas">
                                 {WINNERS_DATA[2].edition}
                             </h2>
@@ -319,7 +450,7 @@ const Winners = () => {
                                 {WINNERS_DATA[2].version}
                             </span>
                         </div>
-                        <p className="text-[#fde68a] text-xs sm:text-sm font-mono font-medium tracking-wider uppercase mt-1 drop-shadow">
+                        <p className="winners-subtitle text-[#fde68a] text-xs sm:text-sm font-mono font-medium tracking-wider uppercase mt-1 drop-shadow">
                             {WINNERS_DATA[2].position} &middot; {WINNERS_DATA[2].prize}
                         </p>
                     </div>
@@ -333,7 +464,7 @@ const Winners = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3.5 sm:gap-4 max-w-xl text-right justify-end select-none">
+                    <div className="winners-card-info-wrap flex items-center gap-3.5 sm:gap-4 max-w-xl text-right justify-end select-none">
                         <div className="flex flex-col items-end">
                             <h3 className="text-white font-semibold text-xs sm:text-sm md:text-base leading-snug drop-shadow">
                                 <span className="text-[#fde047] font-bold">{WINNERS_DATA[2].team}</span>
@@ -376,13 +507,14 @@ const Winners = () => {
                             <button
                                 type="button"
                                 onClick={() => setActiveModal(null)}
-                                className="text-white/60 hover:text-white transition-colors cursor-pointer"
+                                className="winners-modal-close-btn text-white/60 hover:text-white transition-colors cursor-pointer p-1.5 -mr-1.5 -mt-1.5"
+                                aria-label="Close modal"
                             >
-                                <BsXCircleFill className="w-5 h-5" />
+                                <BsXCircleFill className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                         </div>
 
-                        <div className="space-y-2.5 text-xs text-[#cbd5e1]">
+                        <div className="space-y-2.5 text-xs text-[#cbd5e1] winners-modal-body">
                             <div>
                                 <span className="text-[10px] font-mono text-[#a855f7] uppercase tracking-wider block mb-0.5">
                                     PROJECT

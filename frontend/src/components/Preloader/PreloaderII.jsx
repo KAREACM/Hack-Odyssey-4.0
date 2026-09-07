@@ -193,7 +193,7 @@ export default function PreloaderII() {
                         [ 9.5824° N, 77.6766° E ]
                     </span>
                     <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-white/60 uppercase mt-0.5">
-                        OCTOBER 27–28, 2026
+                        SEPTEMBER 25–26, 2026
                     </span>
                 </div>
             </header>

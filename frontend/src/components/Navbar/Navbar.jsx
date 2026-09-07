@@ -5,8 +5,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/all";
 import { IoMdClose } from "react-icons/io";
 import { MdArrowOutward } from "react-icons/md";
-import { FaLinkedin, FaInstagram, FaGithub } from "react-icons/fa6";
+import { FaLinkedin, FaInstagram, FaGithub, FaWhatsapp } from "react-icons/fa6";
 import acmLogo from "../../assets/acm_logo.png";
+import RegisterButton from "../Buttons/RegisterButton";
+import "./navbar.css";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -14,6 +16,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hovered, setHovered] = useState(null);
   const menuRef = useRef(null);
+  const navCtaRef = useRef(null);
 
   const menuItems = [
     { name: "The Odyssey", href: "#welcome" },
@@ -22,38 +25,164 @@ const Navbar = () => {
     { name: "Gallery", href: "#gallery" },
   ];
 
-  // 1. Spylt-Inspired Magnetic Cursor Hover Effect on Nav Elements
-  useGSAP(() => {
-    const els = document.querySelectorAll(".nav-logo, .menu-hover, .nav-cta");
-    if (!els.length) return;
+  // Close menu on Escape key press & prevent background scroll while overlay is open
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
 
-    const disposers = [];
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.body.style.overflow = "";
+    }
 
-    els.forEach((el) => {
-      const onMove = (e) => {
-        const b = el.getBoundingClientRect();
-        const x = e.clientX - b.left;
-        const y = e.clientY - b.top;
-        const offsetX = (x / b.width - 0.5) * 12;
-        const offsetY = (y / b.height - 0.5) * 12;
-        gsap.to(el, { x: offsetX, y: offsetY, scale: 1.06, duration: 0.25, ease: "power2.out" });
-      };
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
 
-      const onLeave = () => gsap.to(el, { x: 0, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
+  // 1. Spylt-Inspired Magnetic Cursor Hover Effect on Nav Elements & Social Dock
+  useGSAP(
+    () => {
+      const fixedEls = document.querySelectorAll(".nav-logo, .menu-hover");
+      const socialEls = isMenuOpen
+        ? document.querySelectorAll(".navmenu-social .social-dock-btn")
+        : [];
+      const linkEls = isMenuOpen
+        ? document.querySelectorAll(".navmenu-link")
+        : [];
 
-      el.addEventListener("mousemove", onMove);
-      el.addEventListener("mouseleave", onLeave);
+      const crsr = document.getElementById("crsr");
+      const disposers = [];
 
-      disposers.push(() => {
-        el.removeEventListener("mousemove", onMove);
-        el.removeEventListener("mouseleave", onLeave);
+      // Magnetic attraction for interactive buttons (.nav-logo, .menu-hover, .social-dock-btn)
+      [...fixedEls, ...socialEls].forEach((el) => {
+        const isSocial = el.classList.contains("social-dock-btn");
+        const maxOffset = isSocial ? 14 : 12;
+        const targetScale = isSocial ? 1.14 : 1.06;
+
+        const onMove = (e) => {
+          const b = el.getBoundingClientRect();
+          const x = e.clientX - b.left;
+          const y = e.clientY - b.top;
+          const offsetX = (x / b.width - 0.5) * maxOffset;
+          const offsetY = (y / b.height - 0.5) * maxOffset;
+
+          gsap.to(el, {
+            x: offsetX,
+            y: offsetY,
+            scale: targetScale,
+            duration: 0.25,
+            ease: "power2.out",
+          });
+
+          if (crsr) {
+            gsap.to(crsr, {
+              scale: isSocial ? 1.5 : 1.35,
+              borderColor: isSocial ? "#a855f7" : "#ffffffbc",
+              duration: 0.2,
+              ease: "power2.out",
+            });
+          }
+        };
+
+        const onLeave = () => {
+          gsap.to(el, { x: 0, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
+
+          if (crsr) {
+            gsap.to(crsr, {
+              scale: 1.0,
+              borderColor: "#ffffffbc",
+              duration: 0.25,
+              ease: "power2.out",
+            });
+          }
+        };
+
+        el.addEventListener("mousemove", onMove);
+        el.addEventListener("mouseleave", onLeave);
+
+        disposers.push(() => {
+          el.removeEventListener("mousemove", onMove);
+          el.removeEventListener("mouseleave", onLeave);
+        });
       });
-    });
 
-    return () => disposers.forEach((d) => d());
+      // Cursor expansion for full-screen nav links
+      linkEls.forEach((link) => {
+        const onEnter = () => {
+          if (crsr) {
+            gsap.to(crsr, {
+              scale: 2.0,
+              borderColor: "rgba(168, 85, 247, 0.75)",
+              duration: 0.25,
+              ease: "power2.out",
+            });
+          }
+        };
+
+        const onLeave = () => {
+          if (crsr) {
+            gsap.to(crsr, {
+              scale: 1.0,
+              borderColor: "#ffffffbc",
+              duration: 0.25,
+              ease: "power2.out",
+            });
+          }
+        };
+
+        link.addEventListener("mouseenter", onEnter);
+        link.addEventListener("mouseleave", onLeave);
+
+        disposers.push(() => {
+          link.removeEventListener("mouseenter", onEnter);
+          link.removeEventListener("mouseleave", onLeave);
+        });
+      });
+
+      return () => {
+        disposers.forEach((d) => d());
+        if (crsr) {
+          gsap.to(crsr, { scale: 1.0, borderColor: "#ffffffbc", duration: 0.2 });
+        }
+      };
+    },
+    { dependencies: [isMenuOpen] }
+  );
+
+  // 2. Cinematic Register Now CTA Transition (Navbar -> Footer)
+  useGSAP(() => {
+    const navBtn = navCtaRef.current;
+    if (!navBtn) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    // Smooth fluid descent and fade as user scrolls into the footer
+    gsap.fromTo(
+      navBtn,
+      { y: 0, opacity: 1 },
+      {
+        y: 40,
+        opacity: 0,
+        duration: 0.45,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#contact",
+          start: "top 80%",
+          toggleActions: "play reverse play reverse",
+        },
+      }
+    );
   });
 
-  // 2. High-Performance Nav Relocation with Accurate Pinned-Section Calculation
+  // 3. High-Performance Nav Relocation with Accurate Pinned-Section Calculation
   const handleNavClick = (e, href) => {
     e.preventDefault();
     const targetEl = document.querySelector(href);
@@ -97,14 +226,19 @@ const Navbar = () => {
       // Stagger in links with upward slide
       gsap.fromTo(
         ".navmenu-link",
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, stagger: 0.06, delay: 0.15, ease: "power3.out" }
+        { y: 35, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.07, delay: 0.16, ease: "power3.out" }
       );
-      // Stagger in bottom social row
+      // Stagger in bottom social container & glassmorphic dock buttons
       gsap.fromTo(
         ".navmenu-social",
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.45, delay: 0.4, ease: "power3.out" }
+        { y: 0, opacity: 1, duration: 0.45, delay: 0.35, ease: "power3.out" }
+      );
+      gsap.fromTo(
+        ".navmenu-social .social-dock-btn",
+        { scale: 0.5, opacity: 0, y: 15 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.45, stagger: 0.06, delay: 0.4, ease: "back.out(1.8)" }
       );
     } else {
       // Smooth Slide-Up Close Animation
@@ -122,74 +256,79 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Navbar Header Bar (3-Column Balanced Flex Layout at z-[1002] above menu overlay) */}
-      <nav className="fixed top-0 left-0 z-[1002] flex items-center justify-between px-6 sm:px-10 md:px-14 lg:px-16 py-5 sm:py-6 w-full bg-transparent pointer-events-none">
-        
-        {/* Left: ACM Logo (NO background) */}
-        <div className="flex items-center pointer-events-auto flex-1 justify-start">
-          <a
-            href="#"
-            className="nav-logo flex items-center justify-center cursor-pointer transition-transform"
-            title="KARE ACM Student Chapter"
-          >
-            <img
-              src={acmLogo}
-              alt="KARE ACM Student Chapter Logo"
-              className="w-10 sm:w-12 h-auto object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]"
-            />
-          </a>
-        </div>
+      {/* Top Navbar Header Bar (Always completely transparent, NO background) */}
+      <header className="fixed top-0 left-0 w-full z-[1002] bg-transparent pointer-events-none">
+        <nav className="w-full flex items-center justify-between px-3.5 sm:px-6 md:px-14 lg:px-16 py-2.5 sm:py-3.5 md:py-6 relative min-h-[50px] sm:min-h-[56px] md:min-h-[72px] bg-transparent">
+          
+          {/* Left: ACM Logo (NO background, optically centered) */}
+          <div className="flex items-center pointer-events-auto flex-1 justify-start z-10">
+            <a
+              href="#"
+              className="nav-logo flex items-center justify-center cursor-pointer transition-transform select-none"
+              title="KARE ACM Student Chapter"
+            >
+              <img
+                src={acmLogo}
+                alt="KARE ACM Student Chapter Logo"
+                className="w-8 sm:w-9 md:w-11 h-auto object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+              />
+            </a>
+          </div>
 
-        {/* Center: Hamburger (☰) / Close (✕) Menu Button (Fixed at same position & dimensions) */}
-        <div className="flex items-center justify-center pointer-events-auto">
-          <button
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className={`menu-hover w-11 h-11 sm:w-12 sm:h-12 rounded-full backdrop-blur-xl border text-white flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer group ${
-              isMenuOpen
-                ? "bg-white/15 hover:bg-white/25 border-white/40 text-white"
-                : "bg-[#18171f]/85 hover:bg-[#25232e] border-white/15 hover:border-purple-400/40 text-white"
-            }`}
-            aria-label={isMenuOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
-          >
-            {isMenuOpen ? (
-              <IoMdClose className="w-6 h-6 text-white group-hover:rotate-90 group-hover:scale-110 transition-transform duration-300" />
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-1.5">
-                <span className="w-5 h-[2px] bg-white rounded-full group-hover:w-6 transition-all duration-300" />
-                <span className="w-5 h-[2px] bg-white rounded-full group-hover:w-4 transition-all duration-300" />
-                <span className="w-5 h-[2px] bg-white rounded-full group-hover:w-5 transition-all duration-300" />
-              </div>
-            )}
-          </button>
-        </div>
+          {/* Center: Hamburger (☰) / Close (✕) Menu Button (True Viewport Center via Absolute Positioning) */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto z-20">
+            <button
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className={`menu-hover w-9.5 h-9.5 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full backdrop-blur-xl border text-white flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer group ${
+                isMenuOpen
+                  ? "bg-white/15 hover:bg-white/25 border-white/40 text-white"
+                  : "bg-[#18171f]/85 hover:bg-[#25232e] border-white/15 hover:border-purple-400/40 text-white"
+              }`}
+              aria-label={isMenuOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
+            >
+              {isMenuOpen ? (
+                <IoMdClose className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6 text-white group-hover:rotate-90 group-hover:scale-110 transition-transform duration-300" />
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5">
+                  <span className="w-4 sm:w-4.5 md:w-5 h-[1.8px] md:h-[2px] bg-white rounded-full group-hover:w-5 md:group-hover:w-6 transition-all duration-300" />
+                  <span className="w-4 sm:w-4.5 md:w-5 h-[1.8px] md:h-[2px] bg-white rounded-full group-hover:w-3.5 md:group-hover:w-4 transition-all duration-300" />
+                  <span className="w-4 sm:w-4.5 md:w-5 h-[1.8px] md:h-[2px] bg-white rounded-full group-hover:w-4.5 md:group-hover:w-5 transition-all duration-300" />
+                </div>
+              )}
+            </button>
+          </div>
 
-        {/* Right: Action Pill Button (Spylt Style: REGISTER NOW) */}
-        <div className="flex items-center pointer-events-auto flex-1 justify-end">
-          <a
-            href="#prizepool"
-            onClick={(e) => {
-              if (isMenuOpen) {
-                handleNavClick(e, "#prizepool");
-              }
-            }}
-            className="nav-cta px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#f4efe7] hover:bg-white text-[#181717] font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-[0_0_20px_rgba(244,239,231,0.4)] transition-all duration-300 flex items-center gap-2 group cursor-pointer"
-          >
-            <span>REGISTER NOW</span>
-            <MdArrowOutward className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-          </a>
-        </div>
-      </nav>
+          {/* Right: Action Pill Button (Visible ONLY on Desktop, Hidden on Mobile Responsive) */}
+          <div className="hidden md:flex items-center pointer-events-auto flex-1 justify-end z-10">
+            <div ref={navCtaRef} className="nav-cta-wrap inline-flex items-center justify-end">
+              <RegisterButton
+                id="navbar-cta-btn"
+                size="navbar"
+                className="nav-cta"
+                href="https://euphoria.kalasalingam.ac.in/"
+                onClick={() => {
+                  if (isMenuOpen) {
+                    setIsMenuOpen(false);
+                  }
+                }}
+              />
+            </div>
+          </div>
+          {/* Mobile Spacer to balance flex row layout on mobile */}
+          <div className="flex md:hidden flex-1 pointer-events-none" aria-hidden="true" />
+        </nav>
+      </header>
 
-      {/* Expanded Full-Screen Menu Overlay (Optically Centered & Balanced Spacing) */}
+      {/* Expanded Full-Screen Menu Overlay (Ergonomic Layout with Guaranteed Clearances) */}
       <div
         ref={menuRef}
-        className="navmenu fixed inset-0 w-full h-screen bg-[#030206]/98 backdrop-blur-3xl flex flex-col justify-center items-center z-[1000] hidden overflow-hidden select-none px-6"
+        className="navmenu fixed inset-0 w-full h-[100dvh] bg-[#030206]/98 backdrop-blur-3xl flex flex-col justify-between items-center z-[1000] hidden overflow-hidden select-none px-6 pt-20 sm:pt-24 pb-8 sm:pb-10"
       >
         {/* Subtle Purple Ambient Nebula Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-purple-600/10 rounded-full blur-[160px] pointer-events-none" />
 
-        {/* Centered Navigation Links (Dead Center with Generous Vertical Rhythm) */}
-        <div className="relative z-10 flex flex-col justify-center items-center text-center space-y-3 sm:space-y-4 md:space-y-5 max-w-4xl px-6 w-full my-auto">
+        {/* Centered Navigation Links (Optically Centered in Available Viewport) */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center items-center text-center space-y-2 sm:space-y-3 md:space-y-4 max-w-4xl px-4 w-full">
           {menuItems.map((item) => (
             <a
               key={item.name}
@@ -197,9 +336,9 @@ const Navbar = () => {
               onClick={(e) => handleNavClick(e, item.href)}
               onMouseEnter={() => setHovered(item.name)}
               onMouseLeave={() => setHovered(null)}
-              className={`navmenu-link font-hero-bebas uppercase text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] tracking-tight leading-[1.04] transition-all duration-300 block py-1 cursor-pointer ${
+              className={`navmenu-link font-hero-bebas uppercase text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem] tracking-tight leading-[1.08] transition-all duration-300 block py-0.5 cursor-pointer ${
                 hovered === item.name
-                  ? "text-white scale-105 drop-shadow-[0_0_30px_rgba(168,85,247,0.7)]"
+                  ? "text-white scale-105 drop-shadow-[0_0_35px_rgba(168,85,247,0.75)]"
                   : hovered
                   ? "text-white/20 scale-95"
                   : "text-white/90 hover:text-white"
@@ -210,35 +349,58 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Bottom Social Links: LinkedIn, Instagram, GitHub */}
-        <div className="relative z-10 navmenu-social flex items-center justify-center gap-7 sm:gap-10 text-xs sm:text-sm font-mono tracking-widest text-[#a199b0] mb-8 sm:mb-10 md:mb-12 pt-4 border-t border-white/10 w-full max-w-md">
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
-          >
-            <FaLinkedin className="text-sm sm:text-base text-purple-400 group-hover:scale-110 transition-transform" />
-            <span>LinkedIn</span>
-          </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
-          >
-            <FaInstagram className="text-pink-400 group-hover:scale-110 transition-transform text-sm sm:text-base" />
-            <span>Instagram</span>
-          </a>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-white transition-colors flex items-center gap-1.5 group cursor-pointer"
-          >
-            <FaGithub className="text-white group-hover:scale-110 transition-transform text-sm sm:text-base" />
-            <span>GitHub</span>
-          </a>
+        {/* Bottom Social Media Hub (Clean Divider Line + 4 Perfectly Centered Icons, No Text) */}
+        <div className="relative z-10 navmenu-social shrink-0 flex flex-col items-center justify-center w-full max-w-[260px] sm:max-w-[280px] pt-4 sm:pt-5 border-t border-white/10">
+          {/* Single-Row Glassmorphic Social Media Icon Dock (Exact match with Footer) */}
+          <div className="flex items-center justify-center gap-3.5 sm:gap-4.5 flex-nowrap">
+            {/* LinkedIn */}
+            <a
+              href="https://www.linkedin.com/company/acmkare/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-dock-btn social-btn-linkedin"
+              aria-label="KARE ACM on LinkedIn"
+              title="LinkedIn"
+            >
+              <FaLinkedin className="text-lg transition-transform duration-300" />
+            </a>
+
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com/acm_kare"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-dock-btn social-btn-instagram"
+              aria-label="KARE ACM on Instagram"
+              title="Instagram"
+            >
+              <FaInstagram className="text-lg transition-transform duration-300" />
+            </a>
+
+            {/* GitHub */}
+            <a
+              href="https://github.com/KAREACM"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-dock-btn social-btn-github"
+              aria-label="KARE ACM on GitHub"
+              title="GitHub"
+            >
+              <FaGithub className="text-lg transition-transform duration-300" />
+            </a>
+
+            {/* WhatsApp Community */}
+            <a
+              href="https://chat.whatsapp.com/HDdBZ4GAqDULHB9UC6eC3g"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-dock-btn social-btn-whatsapp"
+              aria-label="Join Hack Odyssey WhatsApp Community"
+              title="WhatsApp Group"
+            >
+              <FaWhatsapp className="text-lg transition-transform duration-300" />
+            </a>
+          </div>
         </div>
       </div>
     </>

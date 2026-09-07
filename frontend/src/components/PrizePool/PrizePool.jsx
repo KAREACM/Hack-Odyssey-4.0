@@ -527,14 +527,10 @@ const PrizePool = () => {
             {/* Strategic Call to Action Strip */}
             <div className="prize-cta-container select-none">
                 <a 
-                    href="#register" 
+                    href="https://euphoria.kalasalingam.ac.in/" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="prize-cta-primary group"
-                    onClick={(e) => {
-                        const target = document.querySelector('#register') || document.querySelector('#prizepool');
-                        if (target) {
-                            target.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    }}
                 >
                     <span>CLAIM YOUR STAKE &middot; REGISTER NOW</span>
                     <MdArrowOutward className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />

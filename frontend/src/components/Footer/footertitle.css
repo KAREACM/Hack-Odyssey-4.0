@@ -31,22 +31,33 @@
   z-index: 0;
 }
 
-/* Bracketed Index Menu Typography */
-.footer-bracket-menu a {
+/* Clean Modern Footer Navigation Typography */
+.footer-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-nav-link {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   color: #cbd5e1;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.footer-bracket-menu a:hover {
+.footer-nav-link:hover {
   color: #ffffff;
   transform: translateX(4px);
 }
 
-.footer-bracket-menu a::after {
+.footer-nav-link span:last-child {
+  position: relative;
+}
+
+.footer-nav-link span:last-child::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -57,7 +68,7 @@
   transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.footer-bracket-menu a:hover::after {
+.footer-nav-link:hover span:last-child::after {
   width: 100%;
 }
 
@@ -140,42 +151,80 @@
   vertical-align: top;
 }
 
-/* Colophon Link Styles */
-.colophon-link {
-  position: relative;
+/* Collaboration Consortium Shelf */
+.footer-partners-wrap {
+  width: 100%;
+}
+
+.footer-partners-card {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.footer-partners-card:hover {
+  border-color: rgba(168, 85, 247, 0.25);
+  box-shadow: 0 10px 35px rgba(168, 85, 247, 0.08);
+}
+
+.partner-item {
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.partner-item:hover {
+  transform: translateY(-2px);
+}
+
+/* Professional Glassmorphic Social Media Dock */
+.social-dock-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  font-family: 'Inter', monospace, sans-serif;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.03);
   color: #cbd5e1;
-  transition: all 0.25s ease;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
 }
 
-.colophon-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background-color: #a855f7;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.colophon-link:hover {
+.social-dock-btn:hover {
+  transform: translateY(-3px) scale(1.08);
   color: #ffffff;
 }
 
-.colophon-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+/* LinkedIn Hover Hue */
+.social-btn-linkedin:hover {
+  border-color: #0077b5;
+  background-color: rgba(0, 119, 181, 0.2);
+  box-shadow: 0 0 20px rgba(0, 119, 181, 0.5);
+  color: #38bdf8;
 }
 
-.colophon-link-social:hover {
-  color: #ffffff;
-  text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+/* Instagram Hover Hue */
+.social-btn-instagram:hover {
+  border-color: #e4405f;
+  background-color: rgba(228, 64, 95, 0.2);
+  box-shadow: 0 0 20px rgba(228, 64, 95, 0.5);
+  color: #f472b6;
+}
+
+/* GitHub Hover Hue */
+.social-btn-github:hover {
+  border-color: #a855f7;
+  background-color: rgba(168, 85, 247, 0.2);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+  color: #d8b4fe;
+}
+
+/* WhatsApp Hover Hue */
+.social-btn-whatsapp:hover {
+  border-color: #25d366;
+  background-color: rgba(37, 211, 102, 0.2);
+  box-shadow: 0 0 20px rgba(37, 211, 102, 0.5);
+  color: #4ade80;
 }
 
 /* Responsive Scaling */
@@ -188,7 +237,7 @@
 @media (max-width: 768px) {
   .hack-footer-section {
     min-height: auto;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
     padding-bottom: 2rem;
   }
   
@@ -196,7 +245,7 @@
     font-size: clamp(2.4rem, 12.5vw, 5.5rem);
   }
   
-  .footer-bracket-menu {
+  .footer-nav-list {
     border-left: 1.5px solid rgba(168, 85, 247, 0.4);
     padding-left: 1rem;
   }

@@ -6,16 +6,25 @@
     position: relative;
     overflow: hidden;
     min-height: 100vh;
+    min-height: 100dvh;
     z-index: 10;
+    touch-action: pan-y;
 }
 
 .video-box {
-    will-change: clip-path;
+    will-change: clip-path, transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    contain: paint;
 }
 
 .spin-circle-container {
-    animation: spinCircle 18s linear infinite;
+    animation: spinCircle 20s linear infinite;
     transform-origin: center center;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 @keyframes spinCircle {
@@ -24,5 +33,21 @@
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+/* ══════════ MOBILE 60-120 FPS TOUCH REFINEMENTS ══════════ */
+
+@media (max-width: 768px) {
+    .video-highlight-section {
+        min-height: 100dvh;
+    }
+
+    .spin-circle-container {
+        animation-duration: 16s;
+    }
+
+    .video-box {
+        -webkit-mask-image: -webkit-radial-gradient(white, black);
     }
 }

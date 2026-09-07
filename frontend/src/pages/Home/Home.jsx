@@ -7,6 +7,7 @@ import Winners from '../../components/Winners/Winners'
 import BenefitVideo from '../../components/BenefitVideo/BenefitVideo'
 import Gallery from '../../components/Gallery/Gallery'
 import FAQ from '../../components/FAQ/FAQ'
+import MapLink from '../../components/MapLink/MapLink'
 
 const Home = () => {
     return (
@@ -19,6 +20,7 @@ const Home = () => {
             <BenefitVideo />
             <Gallery />
             <FAQ />
+            <MapLink />
         </div>
     )
 }

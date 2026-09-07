@@ -34,9 +34,22 @@ const CustomCursor = () => {
             });
         };
 
+        const onMouseLeaveDoc = () => {
+            gsap.to(cursor, { opacity: 0, duration: 0.2 });
+        };
+
+        const onMouseEnterDoc = () => {
+            const isNearViewMap = document.querySelector('.venue-map-interactive-trigger.is-hovering');
+            if (!isNearViewMap) {
+                gsap.to(cursor, { opacity: 1, duration: 0.2 });
+            }
+        };
+
         window.addEventListener('mousemove', onMouseMove);
         window.addEventListener('mousedown', onMouseDown);
         window.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('mouseleave', onMouseLeaveDoc);
+        document.addEventListener('mouseenter', onMouseEnterDoc);
 
         // Magnetic hover effect for elements with .gravity
         const items = document.querySelectorAll('.gravity');
@@ -90,6 +103,8 @@ const CustomCursor = () => {
             window.removeEventListener('mousemove', onMouseMove);
             window.removeEventListener('mousedown', onMouseDown);
             window.removeEventListener('mouseup', onMouseUp);
+            document.removeEventListener('mouseleave', onMouseLeaveDoc);
+            document.removeEventListener('mouseenter', onMouseEnterDoc);
             cleanups.forEach((c) => c());
         };
     }, []);

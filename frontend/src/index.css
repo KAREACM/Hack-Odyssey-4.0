@@ -402,6 +402,14 @@ body {
 }
 
 /* ----------------- Obys Custom Cursor Styles ----------------- */
+@media (pointer: fine) {
+	html,
+	body,
+	body * {
+		cursor: none !important;
+	}
+}
+
 #crsr {
 	height: 3.5vw;
 	width: 3.5vw;
@@ -416,6 +424,7 @@ body {
 	mix-blend-mode: difference;
 	transform: translate(-50%, -50%);
 	pointer-events: none;
+	will-change: transform, left, top;
 }
 
 /* Hide cursor ring while preloader is visible */

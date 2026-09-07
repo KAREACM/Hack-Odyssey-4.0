@@ -46,7 +46,7 @@ const SUBTITLE = "Everything you need to know about participating in Hack Odysse
 const SUPPORT_TITLE_WORDS = ["STILL", "HAVE", "QUESTIONS?"];
 const SUPPORT_DESC = "Can't find what you're looking for? Talk directly with the Hack Odyssey team.";
 
-const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) => {
+const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/HDdBZ4GAqDULHB9UC6eC3g" }) => {
   const sectionRef = useRef(null);
   const pillRef = useRef(null);
   const [openIndex, setOpenIndex] = useState(null);
@@ -67,7 +67,7 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 78%",
+          start: "top 85%",
           once: true,
         },
       });
@@ -76,30 +76,30 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
       tl.fromTo(
         ".faq-eyebrow-line",
         { scaleX: 0, transformOrigin: "left center" },
-        { scaleX: 1, duration: 0.6, ease: "power3.out" }
+        { scaleX: 1, duration: 0.35, ease: "power3.out" }
       )
         .from(
           ".faq-eyebrow-text",
           {
-            x: -18,
+            x: -14,
             opacity: 0,
-            duration: 0.6,
+            duration: 0.35,
             ease: "power3.out",
           },
-          "-=0.4"
+          "-=0.22"
         )
 
-        // 2. Main Title: Word-by-word upward reveal (not all at once)
+        // 2. Main Title: Word-by-word upward reveal (snappy & crisp)
         .from(
           ".faq-title-word",
           {
             yPercent: 120,
             opacity: 0,
-            stagger: 0.1,
-            duration: 0.85,
+            stagger: 0.05,
+            duration: 0.45,
             ease: "power4.out",
           },
-          "-=0.35"
+          "-=0.2"
         )
 
         // 3. Subtitle: Word-by-word progressive reveal
@@ -108,37 +108,37 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
           {
             yPercent: 110,
             opacity: 0,
-            stagger: 0.025,
-            duration: 0.6,
+            stagger: 0.012,
+            duration: 0.35,
             ease: "power2.out",
           },
-          "-=0.4"
+          "-=0.3"
         )
 
-        // 4. Staggered reveal for accordion items
+        // 4. Staggered reveal for accordion items — Fast, direct, responsive
         .from(
           ".faq-row-item",
           {
-            y: 35,
+            y: 20,
             opacity: 0,
-            duration: 0.65,
-            stagger: 0.09,
+            duration: 0.4,
+            stagger: 0.045,
             ease: "power3.out",
           },
-          "-=0.3"
+          "-=0.35"
         )
 
         // 5. Support card container rise
         .from(
           ".faq-support-card",
           {
-            y: 45,
+            y: 28,
             opacity: 0,
-            scale: 0.95,
-            duration: 0.85,
+            scale: 0.96,
+            duration: 0.45,
             ease: "power3.out",
           },
-          "-=0.6"
+          "-=0.4"
         )
 
         // 6. 3D Chat image pop-in with back ease
@@ -146,12 +146,12 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
           ".faq-chat-img",
           {
             scale: 0.88,
-            y: 30,
+            y: 20,
             opacity: 0,
-            duration: 0.9,
-            ease: "back.out(1.4)",
+            duration: 0.5,
+            ease: "back.out(1.2)",
           },
-          "-=0.6"
+          "-=0.35"
         )
 
         // 7. Support card title: Word-by-word reveal
@@ -160,24 +160,24 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
           {
             yPercent: 120,
             opacity: 0,
-            stagger: 0.08,
-            duration: 0.65,
+            stagger: 0.04,
+            duration: 0.38,
             ease: "power4.out",
           },
-          "-=0.5"
+          "-=0.3"
         )
 
         // 8. Support card description & CTA pill
         .from(
           ".faq-support-desc, .faq-cta-pill",
           {
-            y: 20,
+            y: 15,
             opacity: 0,
-            stagger: 0.1,
-            duration: 0.6,
+            stagger: 0.06,
+            duration: 0.35,
             ease: "power2.out",
           },
-          "-=0.3"
+          "-=0.2"
         );
 
       // Subtle perpetual floating animation on 3D chat illustration
@@ -304,14 +304,14 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
                       {/* Left: Number + Question text */}
                       <div className="flex items-center gap-3 sm:gap-4 flex-1 pr-2">
                         <span
-                          className={`font-mono text-xs sm:text-sm font-semibold tracking-wider transition-colors duration-300 select-none ${
+                          className={`font-mono text-xs sm:text-sm font-semibold tracking-wider transition-colors duration-200 select-none ${
                             isOpen ? "text-[#B56CFF]" : "text-[#9B4DFF]/70 group-hover:text-[#9B4DFF]"
                           }`}
                         >
                           {item.number}
                         </span>
                         <span
-                          className={`faq-question-text text-sm sm:text-base lg:text-lg font-medium tracking-tight transition-all duration-300 leading-snug ${
+                          className={`faq-question-text text-sm sm:text-base lg:text-lg font-medium tracking-tight transition-all duration-200 leading-snug ${
                             isOpen ? "text-white font-semibold" : "text-[#f4efe7]/90"
                           }`}
                         >
@@ -329,7 +329,7 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
                         }`}
                       >
                         <svg
-                          className="w-3.5 h-3.5 text-current transition-transform duration-300"
+                          className="w-3.5 h-3.5 text-current transition-transform duration-200"
                           viewBox="0 0 16 16"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
@@ -353,7 +353,7 @@ const FAQ = ({ whatsappUrl = "https://chat.whatsapp.com/invite/hackodyssey4" }) 
                             stroke="currentColor"
                             strokeWidth="1.8"
                             strokeLinecap="round"
-                            className={`transition-all duration-300 origin-center ${
+                            className={`transition-all duration-200 origin-center ${
                               isOpen ? "scale-y-0 opacity-0" : "scale-y-100 opacity-100"
                             }`}
                           />

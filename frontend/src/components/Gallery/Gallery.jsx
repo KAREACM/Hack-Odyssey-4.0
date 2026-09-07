@@ -64,16 +64,16 @@ const Gallery = () => {
     useGSAP(() => {
         if (!galleryRef.current) return;
 
-        // Overlay emergence on top of pinned highlights video
-        gsap.set(galleryRef.current, {
-            marginTop: "-100vh",
-        });
-
         // MatchMedia for responsive scroll narrative
         const mm = gsap.matchMedia();
 
-        // ════════════ DESKTOP / TABLET TIMELINE ════════════
+        // ════════════ DESKTOP / TABLET TIMELINE (100% UNTOUCHED) ════════════
         mm.add("(min-width: 768px)", () => {
+            // Overlay emergence on top of pinned highlights video
+            gsap.set(galleryRef.current, {
+                marginTop: "-100vh",
+            });
+
             const galleryTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: galleryRef.current,
@@ -100,9 +100,7 @@ const Gallery = () => {
                 0
             );
 
-            // PHASE 2: Settle & Foreground Focal Composition
-
-            // PHASE 3: Coordinated Kinetic Parallax Typography Shift
+            // PHASE 2 & 3: Coordinated Kinetic Parallax Typography Shift
             galleryTl
                 .to(
                     ".ft-anim",
@@ -136,60 +134,121 @@ const Gallery = () => {
                 );
         });
 
-        // ════════════ MOBILE TIMELINE ════════════
+        // ════════════ MOBILE TIMELINE (60-120 FPS HORIZONTAL STREAM) ════════════
         mm.add("(max-width: 767px)", () => {
+            gsap.set(galleryRef.current, {
+                marginTop: 0,
+            });
+
+            const trackEl = galleryRef.current?.querySelector(".gallery-pin-container");
+            const cardItems = galleryRef.current?.querySelectorAll(".gallery-card-item");
+            const pills = galleryRef.current?.querySelectorAll(".pagination-pill");
+
+            // Direct DOM manipulation for buttery 60-120 FPS without React re-renders
+            const updateActiveMobileCard = (activeIdx) => {
+                if (pills) {
+                    pills.forEach((pill, i) => {
+                        if (i === activeIdx) {
+                            pill.classList.add("active");
+                        } else {
+                            pill.classList.remove("active");
+                        }
+                    });
+                }
+
+                if (cardItems) {
+                    cardItems.forEach((card, i) => {
+                        if (i === activeIdx) {
+                            card.classList.add("mobile-active");
+                        } else {
+                            card.classList.remove("mobile-active");
+                        }
+                    });
+                }
+            };
+
+            // Initialize active card 0
+            updateActiveMobileCard(0);
+
+            // Compute total horizontal shift dynamically on refresh
+            const getShiftDistance = () => {
+                if (!cardItems || !cardItems[0] || !trackEl) return 0;
+                const cardWidth = cardItems[0].offsetWidth;
+                const style = window.getComputedStyle(trackEl);
+                const gap = parseFloat(style.gap) || 20;
+                return (cardWidth + gap) * (cardItems.length - 1);
+            };
+
             const mobTl = gsap.timeline({
                 scrollTrigger: {
+                    id: "galleryMobST",
                     trigger: galleryRef.current,
                     start: "top top",
-                    end: "+=1400",
+                    end: "+=2000",
                     pin: true,
-                    scrub: 1.2,
-                    anticipatePin: 1,
+                    scrub: 0.4, // Immediate 1:1 finger tracking on 60-120Hz touch, no lag or rubber-banding
+                    anticipatePin: 0, // Eliminates pre-pin 1-frame jump
                     invalidateOnRefresh: true,
+                    fastScrollEnd: true,
+                    preventOverlaps: true,
+                    onUpdate: (self) => {
+                        const progress = self.progress;
+                        // Smoothly calculate the active card index across 0 to 1
+                        const activeIdx = Math.min(
+                            cardItems.length - 1,
+                            Math.floor(progress * (cardItems.length - 0.05))
+                        );
+                        updateActiveMobileCard(activeIdx);
+                    },
                 },
             });
 
-            mobTl.from(
-                ".gallery-card-item",
+            // Smooth Horizontal Parallax Reel - all cards aligned on the same vertical baseline
+            mobTl.to(
+                trackEl,
                 {
-                    yPercent: 220,
-                    opacity: 0,
-                    scale: 0.92,
-                    stagger: 0.1,
-                    duration: 1.0,
-                    ease: "power3.out",
+                    x: () => -getShiftDistance(),
+                    ease: "none",
+                    force3D: true,
+                    duration: 3.0,
                 },
                 0
             );
 
+            // Coordinated Kinetic Background Typography Parallax
             mobTl
                 .to(
                     ".ft-anim",
                     {
-                        xPercent: 40,
-                        yPercent: -60,
+                        xPercent: 30,
+                        yPercent: -35,
                         ease: "none",
+                        force3D: true,
+                        duration: 3.0,
                     },
-                    "<+0.15"
+                    0
                 )
                 .to(
                     ".st-anim",
                     {
-                        xPercent: 25,
-                        yPercent: -60,
+                        xPercent: 18,
+                        yPercent: -35,
                         ease: "none",
+                        force3D: true,
+                        duration: 3.0,
                     },
-                    "<"
+                    0
                 )
                 .to(
                     ".tt-anim",
                     {
-                        xPercent: -40,
-                        yPercent: -60,
+                        xPercent: -30,
+                        yPercent: -35,
                         ease: "none",
+                        force3D: true,
+                        duration: 3.0,
                     },
-                    "<"
+                    0
                 );
         });
 
@@ -235,6 +294,19 @@ const Gallery = () => {
         }
     };
 
+    // ════════════ MOBILE DIRECT TOUCH / TAP NAVIGATION ════════════
+    const handleCardClick = (idx) => {
+        if (typeof window === "undefined" || window.innerWidth >= 768) return;
+        const mobSt = ScrollTrigger.getById("galleryMobST");
+        if (!mobSt) return;
+        const targetProgress = idx / (GALLERY_CARDS.length - 1);
+        const targetY = mobSt.start + targetProgress * (mobSt.end - mobSt.start);
+        window.scrollTo({
+            top: targetY,
+            behavior: "smooth",
+        });
+    };
+
     return (
         <section
             id="gallery"
@@ -246,7 +318,7 @@ const Gallery = () => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[550px] bg-[#7C3CFF] opacity-15 rounded-full blur-[160px] pointer-events-none z-0" />
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[#25104A] opacity-30 rounded-full blur-[170px] pointer-events-none z-0" />
 
-            <div className="relative w-full h-screen flex items-center justify-center">
+            <div className="gallery-stage relative w-full h-screen flex items-center justify-center">
                 {/* ════════════ OVERSIZED BACKGROUND TYPOGRAPHY (Z-10) ════════════ */}
                 <div className="all-title absolute inset-0 size-full flex flex-col items-center justify-center pointer-events-none z-10 select-none">
                     <h1 className="font-hero-bebas text-white first-title ft-anim">
@@ -260,19 +332,20 @@ const Gallery = () => {
                     </h1>
                 </div>
 
-                {/* ════════════ PINNED FANNED GALLERY RIBBON (Z-20 & Z-30) ════════════ */}
+                {/* ════════════ PINNED GALLERY CONTAINER (Z-20 & Z-30) ════════════ */}
                 <div className="gallery-pin-container z-20">
-                    {GALLERY_CARDS.map((card) => {
+                    {GALLERY_CARDS.map((card, idx) => {
                         const isHovered = hoveredCardId === card.id;
                         const isHero = card.type === "hero";
 
                         return (
                             <div
                                 key={card.id}
-                                className="gallery-card-item"
+                                className={`gallery-card-item ${idx === 0 ? "mobile-active" : ""}`}
                                 style={{
                                     zIndex: isHovered ? 40 : isHero ? 30 : card.type === "inner" ? 20 : 10,
                                 }}
+                                onClick={() => handleCardClick(idx)}
                             >
                                 <div
                                     className={`gallery-landscape-card card-${card.type} ${
@@ -297,6 +370,19 @@ const Gallery = () => {
                             </div>
                         );
                     })}
+                </div>
+
+                {/* ════════════ MINIMALIST EDITORIAL PAGINATION (Z-30) ════════════ */}
+                <div className="gallery-mobile-pagination md:hidden z-30">
+                    {GALLERY_CARDS.map((card, idx) => (
+                        <button
+                            key={card.id}
+                            type="button"
+                            aria-label={`View photo ${idx + 1}`}
+                            className={`pagination-pill ${idx === 0 ? "active" : ""}`}
+                            onClick={() => handleCardClick(idx)}
+                        />
+                    ))}
                 </div>
             </div>
         </section>
