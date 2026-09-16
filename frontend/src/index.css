@@ -511,17 +511,17 @@ body:has(.hackodyssey-preloader) #crsr {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: 23px;
+	gap: 16px;
 	padding-top: 0.6vw;
 	padding-bottom: 0.6vw;
 }
 
 .card .card-details h6 {
-	font-size: 1vw;
-	margin: 0.4vw 0;
+	font-size: 0.9vw;
+	margin: 0.3vw 0;
 	font-weight: 400;
 	color: #e0e0e0;
-	line-height: 1.5vw;
+	line-height: 1.35vw;
 	font-family: 'plain light', sans-serif;
 }
 
@@ -532,6 +532,7 @@ body:has(.hackodyssey-preloader) #crsr {
 	height: 2px;
 }
 
+/* Row 1: Staggered feature card (Dr. P. Chinnasamy) */
 #img-div-container .card:nth-child(2) {
 	margin-top: 10vw;
 }
@@ -540,25 +541,35 @@ body:has(.hackodyssey-preloader) #crsr {
 	width: 30vw;
 }
 
+/* Row 2: Staggered standard card (Mrs. N. Krithiga) and feature card (Ms. S. Reshini) */
 #img-div-container .card:nth-child(5) {
 	margin-top: 15vw;
 }
-
 #img-div-container .card:nth-child(6) .img-div {
 	height: 40vw;
 	width: 30vw;
 }
 
-#img-div-container .card:nth-child(7) .img-div {
+/* Row 3: GDG Campus Body Faculty - Staggered feature card (Mr. Arvind Chandran) */
+#img-div-container .card:nth-child(8) {
+	margin-top: 10vw;
+}
+#img-div-container .card:nth-child(8) .img-div {
 	height: 40vw;
 	width: 30vw;
 }
 
-#img-div-container .card:nth-child(9) {
+/* Row 4: Student Leads - Staggered card (Shaik Thaha) and feature card (Harini Aedulla) */
+#img-div-container .card:nth-child(11) {
 	margin-top: 15vw;
 }
+#img-div-container .card:nth-child(12) .img-div {
+	height: 40vw;
+	width: 30vw;
+}
 
-#img-div-container .card:nth-child(10) .img-div {
+/* Row 5: Student Leads - Feature card (Umesh Chandra) */
+#img-div-container .card:nth-child(13) .img-div {
 	height: 40vw;
 	width: 30vw;
 }
@@ -743,10 +754,7 @@ body:has(.hackodyssey-preloader) #crsr {
 		margin-top: 0 !important;
 	}
 	.card .img-div,
-	#img-div-container .card:nth-child(2) .img-div,
-	#img-div-container .card:nth-child(6) .img-div,
-	#img-div-container .card:nth-child(7) .img-div,
-	#img-div-container .card:nth-child(10) .img-div {
+	#img-div-container .card .img-div {
 		width: 100% !important;
 		height: auto !important;
 		aspect-ratio: 4 / 5 !important;
@@ -771,7 +779,9 @@ body:has(.hackodyssey-preloader) #crsr {
 	.page3-circle1,
 	.page3-circle2,
 	.page3-circle3,
-	.page4-circle4 {
+	.page4-circle4,
+	.page3-circle-gdg,
+	.page3-circle-acm {
 		display: none !important;
 	}
 }

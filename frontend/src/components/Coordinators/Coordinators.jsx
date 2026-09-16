@@ -7,12 +7,14 @@ import WavyImageCard from './WavyImageCard';
 
 // Primary Coordinator Images
 import drDeepalakshmiImg from '../../assets/dr_p_deepalakshmi.jpg';
-import drChinnasamyImg from '../../assets/dr_p_chinnasamy.jpg';
+import drChinnasamyImg from '../../assets/dr_p_chinnasamy.jpeg';
 import mrsKrithigaImg from '../../assets/mrs_n_krithiga.jpeg';
 import msReshiniImg from '../../assets/ms_reshini.jpg';
+import mrRajaSekarImg from '../../assets/Mr RAJA SEKAR R.jpg';
+import mrArvindChandranImg from '../../assets/Arvind Chandran.png';
 import shaikThahaImg from '../../assets/shaik_thaha.jpg';
 import hariniAedullaImg from '../../assets/harini_aedulla.jpg';
-import umeshChandraImg from '../../assets/umesh_chandra.jpeg';
+import umeshChandraImg from '../../assets/umesh_chandra.jpg';
 import karliTejasreeImg from '../../assets/karli_tejasree.jpg';
 
 // Studio Secondary Wavy Artworks
@@ -226,7 +228,7 @@ const Coordinators = () => {
                         alt="Dr. P. Chinnasamy"
                     />
                     <div className="card-details">
-                        <h6>Faculty Sponsor, Assoc. Prof</h6>
+                        <h6>Faculty Sponsor, KARE ACM Chapter</h6>
                         <h6>2026</h6>
                     </div>
                     <div className="card-underline"></div>
@@ -258,7 +260,7 @@ const Coordinators = () => {
                     </span>
                 </div>
 
-                {/* 5. Card 3: Mrs. N. Krithiga (Assistant Professor) */}
+                {/* 5. Card 3: Mrs. N. Krithiga (Faculty Coordinator) */}
                 <div className="card">
                     <div className="card-heading-container">
                         <h1>Mrs. N. Krithiga</h1>
@@ -269,13 +271,13 @@ const Coordinators = () => {
                         alt="Mrs. N. Krithiga"
                     />
                     <div className="card-details">
-                        <h6>Assistant Professor, CSE</h6>
+                        <h6>Faculty Coordinator, KARE ACM Chapter</h6>
                         <h6>2026</h6>
                     </div>
                     <div className="card-underline"></div>
                 </div>
 
-                {/* 6. Card 4: Ms. S. Reshini (Assistant Professor) */}
+                {/* 6. Card 4: Ms. S. Reshini (Faculty Coordinator) */}
                 <div className="card">
                     <div className="card-heading-container">
                         <h1>Ms. S. Reshini</h1>
@@ -286,13 +288,73 @@ const Coordinators = () => {
                         alt="Ms. S. Reshini"
                     />
                     <div className="card-details">
-                        <h6>Assistant Professor, CSE</h6>
+                        <h6>Faculty Coordinator, KARE ACM Chapter</h6>
                         <h6>2026</h6>
                     </div>
                     <div className="card-underline"></div>
                 </div>
 
-                {/* 7. Card 5: Shaik Thaha (Chair) */}
+                {/* 7. Card 5: Mr. RAJA SEKAR R (Faculty Coordinator) */}
+                <div className="card">
+                    <div className="card-heading-container">
+                        <h1>Mr. RAJA SEKAR R</h1>
+                    </div>
+                    <WavyImageCard
+                        primaryImg={mrRajaSekarImg}
+                        secondaryImg={mrRajaSekarImg}
+                        alt="Mr. RAJA SEKAR R"
+                    />
+                    <div className="card-details">
+                        <h6>Faculty Coordinator, GDG Campus Body KARE</h6>
+                        <h6>2026</h6>
+                    </div>
+                    <div className="card-underline"></div>
+                </div>
+
+                {/* 8. Card 6: Mr. Arvind Chandran (Faculty Coordinator) */}
+                <div className="card">
+                    <div className="card-heading-container">
+                        <h1>Mr. Arvind Chandran</h1>
+                    </div>
+                    <WavyImageCard
+                        primaryImg={mrArvindChandranImg}
+                        secondaryImg={mrArvindChandranImg}
+                        alt="Mr. Arvind Chandran"
+                    />
+                    <div className="card-details">
+                        <h6>Faculty Coordinator, GDG KARE</h6>
+                        <h6>2026</h6>
+                    </div>
+                    <div className="card-underline"></div>
+                </div>
+
+                {/* 9. Circle 3: Arrow pointing DOWN (↓) */}
+                <div className="page3-circle1 page3-circle-gdg gravity">
+                    <svg className="button__arrow" viewBox="0 0 91 118" fill="white" stroke="white">
+                        <path
+                            d="M15.2307 57.4152L15.9378 56.708L15.2307 56.0009L14.5236 56.708L15.2307 57.4152ZM34.9813 77.1658L34.2742 77.8729L35.9813 79.58L35.9813 77.1658L34.9813 77.1658ZM0.151478 72.4944L-0.555622 71.7873L-1.26273 72.4944L-0.555622 73.2015L0.151478 72.4944ZM45.29 117.633L44.5828 118.34L45.29 119.047L45.9971 118.34L45.29 117.633ZM60.3692 102.554L61.0763 103.261L61.7839 102.553L61.0758 101.846L60.3692 102.554ZM60.3685 102.553L59.6614 101.846L58.9538 102.553L59.6619 103.261L60.3685 102.553ZM90.427 72.4944L91.1341 73.2015L91.8412 72.4944L91.1341 71.7873L90.427 72.4944ZM75.3478 57.4152L76.0549 56.7081L75.3478 56.001L74.6407 56.7081L75.3478 57.4152ZM56.3065 76.4565L55.3065 76.4565L55.3065 78.8707L57.0136 77.1636L56.3065 76.4565ZM56.3065 0.120074L57.3065 0.120074L57.3065 -0.879926L56.3065 -0.879926L56.3065 0.120074ZM34.9813 0.120076L34.9813 -0.879924L33.9813 -0.879924L33.9813 0.120076L34.9813 0.120076ZM14.5236 58.1223L34.2742 77.8729L35.6884 76.4587L15.9378 56.708L14.5236 58.1223ZM0.858585 73.2015L15.9378 58.1223L14.5236 56.708L-0.555622 71.7873L0.858585 73.2015ZM45.9971 116.926L0.858585 71.7873L-0.555622 73.2015L44.5828 118.34L45.9971 116.926ZM59.662 101.846L44.5828 116.926L45.9971 118.34L61.0763 103.261L59.662 101.846ZM59.6619 103.261L59.6625 103.261L61.0758 101.846L61.0751 101.845L59.6619 103.261ZM61.0756 103.26L91.1341 73.2015L89.7199 71.7873L59.6614 101.846L61.0756 103.26ZM91.1341 71.7873L76.0549 56.7081L74.6407 58.1223L89.7199 73.2015L91.1341 71.7873ZM74.6407 56.7081L55.5994 75.7494L57.0136 77.1636L76.0549 58.1223L74.6407 56.7081ZM57.3065 76.4565L57.3065 0.120074L55.3065 0.120074L55.3065 76.4565L57.3065 76.4565ZM56.3065 -0.879926L34.9813 -0.879924L34.9813 1.12008L56.3065 1.12007L56.3065 -0.879926ZM33.9813 0.120076L33.9813 77.1658L35.9813 77.1658L35.9813 0.120076L33.9813 0.120076Z"
+                            fill="#ffffff"
+                        />
+                    </svg>
+                    <span className="circle-text1">
+                        Google Developer Groups on Campus · KARE · Connect, Learn & Build 🌐
+                    </span>
+                </div>
+
+                {/* 10. Circle 4: Arrow pointing DOWN-RIGHT (↘) */}
+                <div className="page3-circle2 page3-circle-acm gravity">
+                    <svg className="button__arrow" viewBox="0 0 91 118" fill="white" stroke="white">
+                        <path
+                            d="M15.2307 57.4152L15.9378 56.708L15.2307 56.0009L14.5236 56.708L15.2307 57.4152ZM34.9813 77.1658L34.2742 77.8729L35.9813 79.58L35.9813 77.1658L34.9813 77.1658ZM0.151478 72.4944L-0.555622 71.7873L-1.26273 72.4944L-0.555622 73.2015L0.151478 72.4944ZM45.29 117.633L44.5828 118.34L45.29 119.047L45.9971 118.34L45.29 117.633ZM60.3692 102.554L61.0763 103.261L61.7839 102.553L61.0758 101.846L60.3692 102.554ZM60.3685 102.553L59.6614 101.846L58.9538 102.553L59.6619 103.261L60.3685 102.553ZM90.427 72.4944L91.1341 73.2015L91.8412 72.4944L91.1341 71.7873L90.427 72.4944ZM75.3478 57.4152L76.0549 56.7081L75.3478 56.001L74.6407 56.7081L75.3478 57.4152ZM56.3065 76.4565L55.3065 76.4565L55.3065 78.8707L57.0136 77.1636L56.3065 76.4565ZM56.3065 0.120074L57.3065 0.120074L57.3065 -0.879926L56.3065 -0.879926L56.3065 0.120074ZM34.9813 0.120076L34.9813 -0.879924L33.9813 -0.879924L33.9813 0.120076L34.9813 0.120076ZM14.5236 58.1223L34.2742 77.8729L35.6884 76.4587L15.9378 56.708L14.5236 58.1223ZM0.858585 73.2015L15.9378 58.1223L14.5236 56.708L-0.555622 71.7873L0.858585 73.2015ZM45.9971 116.926L0.858585 71.7873L-0.555622 73.2015L44.5828 118.34L45.9971 116.926ZM59.662 101.846L44.5828 116.926L45.9971 118.34L61.0763 103.261L59.662 101.846ZM59.6619 103.261L59.6625 103.261L61.0758 101.846L61.0751 101.845L59.6619 103.261ZM61.0756 103.26L91.1341 73.2015L89.7199 71.7873L59.6614 101.846L61.0756 103.26ZM91.1341 71.7873L76.0549 56.7081L74.6407 58.1223L89.7199 73.2015L91.1341 71.7873ZM74.6407 56.7081L55.5994 75.7494L57.0136 77.1636L76.0549 58.1223L74.6407 56.7081ZM57.3065 76.4565L57.3065 0.120074L55.3065 0.120074L55.3065 76.4565L57.3065 76.4565ZM56.3065 -0.879926L34.9813 -0.879924L34.9813 1.12008L56.3065 1.12007L56.3065 -0.879926ZM33.9813 0.120076L33.9813 77.1658L35.9813 77.1658L35.9813 0.120076L33.9813 0.120076Z"
+                            fill="#ffffff"
+                        />
+                    </svg>
+                    <span className="circle-text2">
+                        KARE ACM Student Chapter · Innovate, Collaborate & Build ❤️
+                    </span>
+                </div>
+
+                {/* 11. Card 7: Shaik Thaha (Chair) */}
                 <div className="card">
                     <div className="card-heading-container">
                         <h1>Shaik Thaha</h1>
@@ -309,20 +371,7 @@ const Coordinators = () => {
                     <div className="card-underline"></div>
                 </div>
 
-                {/* 8. Circle 3: Arrow pointing UP-RIGHT (↗) */}
-                <div className="page3-circle3 gravity">
-                    <svg className="button__arrow" viewBox="0 0 91 118" fill="white" stroke="white">
-                        <path
-                            d="M15.2307 57.4152L15.9378 56.708L15.2307 56.0009L14.5236 56.708L15.2307 57.4152ZM34.9813 77.1658L34.2742 77.8729L35.9813 79.58L35.9813 77.1658L34.9813 77.1658ZM0.151478 72.4944L-0.555622 71.7873L-1.26273 72.4944L-0.555622 73.2015L0.151478 72.4944ZM45.29 117.633L44.5828 118.34L45.29 119.047L45.9971 118.34L45.29 117.633ZM60.3692 102.554L61.0763 103.261L61.7839 102.553L61.0758 101.846L60.3692 102.554ZM60.3685 102.553L59.6614 101.846L58.9538 102.553L59.6619 103.261L60.3685 102.553ZM90.427 72.4944L91.1341 73.2015L91.8412 72.4944L91.1341 71.7873L90.427 72.4944ZM75.3478 57.4152L76.0549 56.7081L75.3478 56.001L74.6407 56.7081L75.3478 57.4152ZM56.3065 76.4565L55.3065 76.4565L55.3065 78.8707L57.0136 77.1636L56.3065 76.4565ZM56.3065 0.120074L57.3065 0.120074L57.3065 -0.879926L56.3065 -0.879926L56.3065 0.120074ZM34.9813 0.120076L34.9813 -0.879924L33.9813 -0.879924L33.9813 0.120076L34.9813 0.120076ZM14.5236 58.1223L34.2742 77.8729L35.6884 76.4587L15.9378 56.708L14.5236 58.1223ZM0.858585 73.2015L15.9378 58.1223L14.5236 56.708L-0.555622 71.7873L0.858585 73.2015ZM45.9971 116.926L0.858585 71.7873L-0.555622 73.2015L44.5828 118.34L45.9971 116.926ZM59.662 101.846L44.5828 116.926L45.9971 118.34L61.0763 103.261L59.662 101.846ZM59.6619 103.261L59.6625 103.261L61.0758 101.846L61.0751 101.845L59.6619 103.261ZM61.0756 103.26L91.1341 73.2015L89.7199 71.7873L59.6614 101.846L61.0756 103.26ZM91.1341 71.7873L76.0549 56.7081L74.6407 58.1223L89.7199 73.2015L91.1341 71.7873ZM74.6407 56.7081L55.5994 75.7494L57.0136 77.1636L76.0549 58.1223L74.6407 56.7081ZM57.3065 76.4565L57.3065 0.120074L55.3065 0.120074L55.3065 76.4565L57.3065 76.4565ZM56.3065 -0.879926L34.9813 -0.879924L34.9813 1.12008L56.3065 1.12007L56.3065 -0.879926ZM33.9813 0.120076L33.9813 77.1658L35.9813 77.1658L35.9813 0.120076L33.9813 0.120076Z"
-                            fill="#ffffff"
-                        />
-                    </svg>
-                    <span className="circle-text3">
-                        KARE ACM Student Chapter · Innovate, Collaborate & Build ❤️
-                    </span>
-                </div>
-
-                {/* 9. Card 6: Harini Aedulla (Vice Chair) */}
+                {/* 12. Card 8: Harini Aedulla (Vice Chair) */}
                 <div className="card">
                     <div className="card-heading-container">
                         <h1>Harini Aedulla</h1>
@@ -339,7 +388,7 @@ const Coordinators = () => {
                     <div className="card-underline"></div>
                 </div>
 
-                {/* 10. Card 7: Umesh Chandra (President) */}
+                {/* 13. Card 9: Umesh Chandra (President) */}
                 <div className="card">
                     <div className="card-heading-container">
                         <h1>Umesh Chandra</h1>
@@ -356,7 +405,7 @@ const Coordinators = () => {
                     <div className="card-underline"></div>
                 </div>
 
-                {/* 11. Card 8: Karli Tejasree (Treasurer) */}
+                {/* 14. Card 10: Karli Tejasree (Treasurer) */}
                 <div className="card">
                     <div className="card-heading-container">
                         <h1>Karli Tejasree</h1>
@@ -373,11 +422,11 @@ const Coordinators = () => {
                     <div className="card-underline"></div>
                 </div>
 
-                {/* 12. Circle 4: HackOdyssey 2026 Event Emblem */}
+                {/* 15. Circle 5: HackOdyssey 2026 Event Emblem */}
                 <div className="page4-circle4 gravity">
                     <div className="flex flex-col items-center justify-center text-center">
                         <span className="font-bold text-white tracking-widest text-[1.4vw] font-plain-reg">HACKODYSSEY</span>
-                        <span className="text-[0.9vw] font-mono text-white/90 mt-1">2026 · KARE ACM</span>
+                        <span className="text-[0.9vw] font-mono text-white/90 mt-1">2026 · KARE ACM & GDG</span>
                     </div>
                 </div>
             </div>
